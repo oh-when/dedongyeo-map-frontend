@@ -19,6 +19,8 @@ const GET_MAP_SPOTS = gql`
       stickers(populate: true) {
         _id
         is_used
+        sweet_percent
+        sticker_index
       }
       place_name
       category_name
@@ -182,9 +184,27 @@ const MapArea: React.FC = () => {
 
     mapSpots
       .map((spot) => {
+        // 스티커 배열 -> Map 으로 ex. { sugar0_0 : 2, sugar30_1 : 1 }
+        console.log(spot.stickers);
+        const stickerMap = spot.stickers.reduce((accu, curVal) => {
+          if (accu[`sugar${curVal.sweet_percent}_${curVal.sticker_index}`]) accu[`sugar${curVal.sweet_percent}_${curVal.sticker_index}`]++
+          else accu[`sugar${curVal.sweet_percent}_${curVal.sticker_index}`] = 1;
+          return accu;
+        }, {});
+        console.log(stickerMap);
         const emojiObj = {
           pos: new LatLng(spot.y, spot.x),
           imgSrc: emojis.sugar0.stickers[0].imageUrl,
+          imgSize: new Size(50, 50),
+          imgOptions: {
+            spriteOrigin: new Point(0, 0),
+            spriteSize: new Size(50, 50),
+          },
+        };
+
+        const emojiObj2 = {
+          pos: new LatLng(spot.y, spot.x + 0.0001),
+          imgSrc: emojis.sugar30.stickers[0].imageUrl,
           imgSize: new Size(50, 50),
           imgOptions: {
             spriteOrigin: new Point(0, 0),
@@ -197,14 +217,27 @@ const MapArea: React.FC = () => {
           emojiObj.imgSize,
           emojiObj.imgOptions
         );
+
+        const markerImg2 = new MarkerImage(
+          emojiObj2.imgSrc,
+          emojiObj2.imgSize,
+          emojiObj2.imgOptions
+        );
+
         const marker = new Marker({
           position: emojiObj.pos,
           image: markerImg,
         });
 
-        return { marker };
+        const marker2 = new Marker({
+          position: emojiObj2.pos,
+          image: markerImg2,
+        });
+
+        return { marker, marker2 };
       })
-      .forEach(({ marker }) => {
+      .forEach(({ marker, marker2 }) => {
+        marker2.setMap(kakaoMap);
         marker.setMap(kakaoMap);
       });
 
