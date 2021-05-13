@@ -3,11 +3,8 @@ import createReactiveVarHooks from '~/util/createReactiveVarHooks';
 
 export const mapSpots = makeVar<GQL.Spot[]>([]);
 
-export const [
-  useMapSpots,
-  useMapSpotsSetter,
-  useMapSpotsState,
-] = createReactiveVarHooks(mapSpots);
+export const [useMapSpots, useMapSpotsSetter, useMapSpotsState] =
+  createReactiveVarHooks(mapSpots);
 
 export const currentPosition = makeVar({
   lngX: 127.0671244,
