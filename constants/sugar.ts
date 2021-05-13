@@ -69,25 +69,38 @@ const stickerMapper = (sugarMap: SugarMap): StickerMap =>
     return stickerMap;
   }, {});
 
-// 중간에 논의가 바뀌는 바람에
-// id를 파싱해서 당도와 스티커 인덱스를 얻어와야 함.
-// 추후 리팩토링 필요.
+export function toStickerIconId(
+  sweetPercent: number,
+  stickerIndex: number
+): string {
+  return `sweets_${sweetPercent}_${stickerIndex}`;
+}
 
-export const parseStickerId = (stickerId: string): [number, number] => {
-  const firstIndexOfUnderbar = stickerId.indexOf('_');
-  const lastIndexOfUnderbar = stickerId.lastIndexOf('_');
+export function toStickerData(iconId: string): [number, number] {
+  const firstIndexOfUnderbar = iconId.indexOf('_');
+  const lastIndexOfUnderbar = iconId.lastIndexOf('_');
 
   const stickerIndex: number = parseInt(
-    stickerId.substr(lastIndexOfUnderbar + 1),
+    iconId.substr(lastIndexOfUnderbar + 1),
     10
   );
   const sweetPercent: number = parseInt(
-    stickerId.substr(firstIndexOfUnderbar + 1, lastIndexOfUnderbar),
+    iconId.substr(firstIndexOfUnderbar + 1, lastIndexOfUnderbar),
     10
   );
 
   return [sweetPercent, stickerIndex];
-};
+}
+
+export function getStickerIconWithSugar(
+  sweetPercent: number,
+  stickerIndex: number
+): StickerWithSugarComponent {
+  const id = toStickerIconId(sweetPercent, stickerIndex);
+  const Icon = sticker[id] && sticker[id].IconWithSugar;
+
+  return Icon || null;
+}
 
 const sugar: SugarMap = sugarValueMapper({
   sugar0: {

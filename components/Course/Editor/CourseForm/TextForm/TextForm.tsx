@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  useFormSubmitter,
-  useFormTitleState,
-} from '~/components/Course/Editor/CourseForm/CourseFormState';
+import { useFormSubmitter } from '~/components/Course/Editor/CourseForm/CourseFormState';
+import { useFormTitle, setFormTitle } from './TextFormState';
 import * as $ from './TextFormView';
 
 const CHECKBOX_ID = 'daedong_chbox_allow';
 
 const TextForm: React.FC = () => {
-  const [formTitle, setFormTitle] = useFormTitleState();
+  const formTitle = useFormTitle();
   const submitForm = useFormSubmitter();
 
   const handleClickSubmit = (e: React.MouseEvent) => {

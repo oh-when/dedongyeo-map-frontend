@@ -1,11 +1,3 @@
-export type StickerCardRecord = {
-  id: string;
-  stickerId: string;
-  title: string;
-  partner: string;
-  timestamp: number;
-};
-
 export type CourseCardRecord = {
   id: string;
   title: string;

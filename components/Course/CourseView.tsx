@@ -30,10 +30,6 @@ export const Content = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${painter.grayscale[1]};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const ContentInner = styled.div`
