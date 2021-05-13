@@ -1,5 +1,5 @@
 import React from 'react';
-import CandidateSpots from './CandidateSpots';
+import CandidateSpots from './Candidates';
 import CourseForm from './CourseForm';
 import CourseTab from '~/components/Course/Tab';
 import {

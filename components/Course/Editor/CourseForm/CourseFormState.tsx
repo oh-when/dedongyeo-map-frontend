@@ -1,20 +1,9 @@
-import { makeVar, gql, useMutation, useApolloClient } from '@apollo/client';
-import createReactiveVarHooks from '~/util/createReactiveVarHooks';
-import { useEndSpotsRemover } from '../CandidateSpots/CandidateSpotsState';
-import { useSpotFormResetter } from './SpotForm/SpotFormState';
+import { gql, useMutation, useApolloClient } from '@apollo/client';
+import { removeMovedCandidates } from '~/components/Course/Editor/Candidates/CandidatesState';
+import { resetFormTable, formArrayVar } from './StickerForm/StickerFormState';
+import { formTitleVar } from './TextForm/TextFormState';
 import { PopupType } from '~/@types/popup.d';
 import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
-import Storage from '~/lib/storage';
-import type { StickerCardRecord } from '~/@types/record.d';
-
-const formTitle = makeVar<string>('');
-const formSpots = makeVar<StickerCardRecord[]>([]);
-
-export const [useFormTitle, useFormTitleSetter, useFormTitleState] =
-  createReactiveVarHooks(formTitle);
-
-export const [useFormSpots, useFormSpotsSetter, useFormSpotsState] =
-  createReactiveVarHooks(formSpots);
 
 const GET_COURSE = gql`
   query Course($courseInput: CourseInput!) {
@@ -53,6 +42,13 @@ export const useFormSubmitter = (): (() => void) => {
     GQL.Mutation.CreateCourse.Data,
     GQL.Mutation.CreateCourse.Variables
   >(CREATE_COURSE, {
+    variables: {
+      createCourseInput: {
+        stickers: [],
+        title: '',
+        is_share: false,
+      },
+    },
     onCompleted({ createCourse: data }) {
       client
         .query<GQL.Query.Course.Data, GQL.Query.Course.Variables>({
@@ -69,13 +65,6 @@ export const useFormSubmitter = (): (() => void) => {
           },
         })
         .then(({ data: { course } }) => {
-          Storage.addCourseCard({
-            id: course._id,
-            numStickers: course.stickers.length,
-            stickers: course.stickers,
-            timestamp: Math.floor(Date.now() / 1000),
-            ...course,
-          });
           openPopup({
             popupType: PopupType.COURSE_SHARE,
             popupProps: {
@@ -89,17 +78,16 @@ export const useFormSubmitter = (): (() => void) => {
     },
   });
 
-  const removeEndSpots = useEndSpotsRemover();
-  const resetSpotForm = useSpotFormResetter();
-
   return () => {
-    removeEndSpots();
-    resetSpotForm();
+    removeMovedCandidates();
+    resetFormTable();
     createCourse({
       variables: {
         createCourseInput: {
-          stickers: formSpots().map((spot) => spot.id),
-          title: formTitle(),
+          stickers: formArrayVar()
+            .filter((sticker) => sticker !== null)
+            .map((sticker) => sticker.id),
+          title: formTitleVar(),
           is_share: true,
         },
       },

@@ -1,5 +1,5 @@
 import { makeVar, gql, useMutation } from '@apollo/client';
-import sugar, { parseStickerId } from '~/constants/sugar';
+import sugar, { toStickerData } from '~/constants/sugar';
 import Storage from '~/lib/storage';
 import createReactiveVarHooks from '~/util/createReactiveVarHooks';
 import type { Sugar } from '~/constants/sugar';
@@ -86,7 +86,7 @@ export const useCreateSticker = (): CreateSticker => {
   const createSticker: CreateSticker = (place: SpotGeneratorProps['place']) => {
     stickerId = formStickerState();
 
-    const [sweetPercent, stickerIndex] = parseStickerId(stickerId);
+    const [sweetPercent, stickerIndex] = toStickerData(stickerId);
 
     partner = formPartnerState();
     request({
