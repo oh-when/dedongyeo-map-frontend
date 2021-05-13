@@ -10,17 +10,11 @@ import type { StickerCardRecord } from '~/@types/record.d';
 const formTitle = makeVar<string>('');
 const formSpots = makeVar<StickerCardRecord[]>([]);
 
-export const [
-  useFormTitle,
-  useFormTitleSetter,
-  useFormTitleState,
-] = createReactiveVarHooks(formTitle);
+export const [useFormTitle, useFormTitleSetter, useFormTitleState] =
+  createReactiveVarHooks(formTitle);
 
-export const [
-  useFormSpots,
-  useFormSpotsSetter,
-  useFormSpotsState,
-] = createReactiveVarHooks(formSpots);
+export const [useFormSpots, useFormSpotsSetter, useFormSpotsState] =
+  createReactiveVarHooks(formSpots);
 
 const GET_COURSE = gql`
   query Course($courseInput: CourseInput!) {
@@ -56,18 +50,18 @@ export const useFormSubmitter = (): (() => void) => {
   const client = useApolloClient();
   const openPopup = usePopupOpener();
   const [createCourse] = useMutation<
-    GQL.CreateCourse.Data,
-    GQL.CreateCourse.Variables
+    GQL.Mutation.CreateCourse.Data,
+    GQL.Mutation.CreateCourse.Variables
   >(CREATE_COURSE, {
     onCompleted({ createCourse: data }) {
       client
-        .query<GQL.GetCourse.Data, GQL.GetCourse.Variables>({
+        .query<GQL.Query.Course.Data, GQL.Query.Course.Variables>({
           query: GET_COURSE,
           variables: {
             courseInput: {
               courseId: data._id,
               courseImageInput: {
-                theme: 'street',
+                theme: GQL.ImageThemeType.street,
                 width: 800,
                 height: 800,
               },

@@ -18,29 +18,17 @@ const formStickerState = makeVar<FormStickerState>(
 const formPartnerState = makeVar<FormPartnerState>(null);
 const formDateState = makeVar<FormDateState>(null);
 
-export const [
-  useFormSugar,
-  useFormSugarSetter,
-  useFormSugarState,
-] = createReactiveVarHooks(formSugarState);
+export const [useFormSugar, useFormSugarSetter, useFormSugarState] =
+  createReactiveVarHooks(formSugarState);
 
-export const [
-  useFormSticker,
-  useFormStickerSetter,
-  useFormStickerState,
-] = createReactiveVarHooks(formStickerState);
+export const [useFormSticker, useFormStickerSetter, useFormStickerState] =
+  createReactiveVarHooks(formStickerState);
 
-export const [
-  useFormPartner,
-  useFormPartnerSetter,
-  useFormPartnerState,
-] = createReactiveVarHooks(formPartnerState);
+export const [useFormPartner, useFormPartnerSetter, useFormPartnerState] =
+  createReactiveVarHooks(formPartnerState);
 
-export const [
-  useFormDate,
-  useFormDateSetter,
-  useFormDateState,
-] = createReactiveVarHooks(formDateState);
+export const [useFormDate, useFormDateSetter, useFormDateState] =
+  createReactiveVarHooks(formDateState);
 
 export const useFormResetter = (): FormResetter => {
   const resetForm: FormResetter = () => {
@@ -79,8 +67,8 @@ export const useCreateSticker = (): CreateSticker => {
   let stickerId: string = formStickerState();
 
   const [request] = useMutation<
-    GQL.CreateSticker.Data,
-    GQL.CreateSticker.Variables
+    GQL.Mutation.CreateSticker.Data,
+    GQL.Mutation.CreateSticker.Variables
   >(CREATE_STICKER, {
     onCompleted({ createSticker: data }) {
       const stickerCard = {

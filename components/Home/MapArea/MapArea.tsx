@@ -71,20 +71,14 @@ const overlayEventHandlerMap: {
 } = {};
 
 const MapArea: React.FC = () => {
-  const {
-    Circle,
-    LatLng,
-    MarkerImage,
-    Marker,
-    Size,
-    Point,
-  } = (window as any).kakao.maps;
+  const { Circle, LatLng, MarkerImage, Marker, Size, Point } = (window as any)
+    .kakao.maps;
 
   const [kakaoMap, setKakaoMap] = useState(null);
-  const [getMapSpots, { loading, data, called }] = useLazyQuery<
-    GQL.GetMapSpots.Data,
-    GQL.GetMapSpots.Variables
-  >(GET_MAP_SPOTS);
+  const [getMapSpots, { loading, data, called }] =
+    useLazyQuery<GQL.Query.Spots.Data, GQL.Query.Spots.Variables>(
+      GET_MAP_SPOTS
+    );
   const [mapSpots, setMapSpots] = useMapSpotsState();
   const [currentPosition, setCurrentPosition] = useCurrentPositionState();
   const isCustomSpotSetting = useReactiveVar(useIsCustomSpotSetting);
