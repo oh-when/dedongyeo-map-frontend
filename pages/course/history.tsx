@@ -3,7 +3,7 @@ import Head from 'next/head';
 import GNB from '~/components/_layout/GNB';
 import Wrap from '~/components/_layout/Wrap';
 import Main from '~/components/_layout/Main';
-import CourseHistory from '~/components/Course/History';
+import CourseHistory from '~/components/Course/List';
 import { addApolloState, initializeApollo } from '~/lib/apollo/client';
 import type { GetStaticProps } from 'next';
 
