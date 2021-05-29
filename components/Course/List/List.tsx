@@ -1,8 +1,13 @@
 import React from 'react';
-import { CourseLayout } from '~/components/Course/CourseView';
+import CourseMap from './CourseMap';
+import SideBar from './SideBar';
+import { CourseLayout } from '../CourseView';
 
 export default function List(): JSX.Element {
   return (
-    <CourseLayout renderSideBar={() => <></>} renderContent={() => <></>} />
+    <CourseLayout
+      renderSideBar={() => <SideBar />}
+      renderContent={() => <CourseMap />}
+    />
   );
 }

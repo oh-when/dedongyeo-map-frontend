@@ -25,11 +25,11 @@ export type CandidateCardDTO = StickerCardDTO & {
   status: CandidateCardStatus;
 };
 
-export interface FormTableItemDTO {
+export type FormTableItemDTO = {
   type: FormTableItemType;
   order: number;
   sticker: StickerCardDTO | null;
-}
+};
 
 // 화면에 Table 형식으로 렌더링 하기 위한 matrix DTO
 export type FormTableDTO = Array<Array<FormTableItemDTO>>;
