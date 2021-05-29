@@ -5,9 +5,6 @@ import painter from '~/styles/theme/painter';
 export const DatePicker = styled.div`
   width: 100%;
   padding: 20px 16px;
-  border: 1px solid #ebebeb;
-  border-radius: 8px;
-  background-color: ${painter.basic.white};
 `;
 
 export const AreaTitle = styled.div`

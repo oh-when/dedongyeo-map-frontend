@@ -83,4 +83,7 @@ export const DatePickerLayer = styled.div`
   top: -358px;
   left: 0;
   width: 100%;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  background-color: ${painter.basic.white};
 `;
