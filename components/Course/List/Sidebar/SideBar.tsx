@@ -1,5 +1,6 @@
 import React from 'react';
 import Calendar from './Calendar';
+import CourseList from './CourseList';
 import * as $ from './SideBarView';
 
 export default function SideBar(): JSX.Element {
@@ -9,6 +10,9 @@ export default function SideBar(): JSX.Element {
       <$.AreaCalendar>
         <Calendar />
       </$.AreaCalendar>
+      <$.AreaCourseList>
+        <CourseList />
+      </$.AreaCourseList>
     </$.SideBar>
   );
 }

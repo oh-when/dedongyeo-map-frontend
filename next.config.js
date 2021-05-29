@@ -12,7 +12,7 @@ module.exports = {
     return [
       {
         source: '/course',
-        destination: '/course/history',
+        destination: '/course/list',
         permanent: true,
       },
     ];

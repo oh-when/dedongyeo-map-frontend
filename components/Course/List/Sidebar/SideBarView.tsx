@@ -3,7 +3,7 @@ import painter from '~/styles/theme/painter';
 
 export const SideBar = styled.div`
   height: 100%;
-  padding-top: 48px;
+  background-color: ${painter.grayscale[1]};
   overflow-y: auto;
   user-drag: none;
   user-select: none;
@@ -14,12 +14,15 @@ export const SideBar = styled.div`
 `;
 
 export const AreaTitle = styled.h3`
-  padding: 0 40px;
+  padding: 48px 40px 24px;
   font-size: 28px;
   line-height: 40px;
+  background-color: #fff;
   color: ${painter.grayscale[9]};
 `;
 
 export const AreaCalendar = styled.div`
-  margin-top: 24px;
+  background-color: #fff;
 `;
+
+export const AreaCourseList = styled.div``;
