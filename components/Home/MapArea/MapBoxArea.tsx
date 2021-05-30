@@ -72,17 +72,7 @@ const MapBoxArea: React.FC = () => {
   const [currentPosition, setCurrentPosition] = useCurrentPositionState();
   const isCustomSpotSetting = useReactiveVar(useIsCustomSpotSetting);
 
-  const handleClickMap = (e: React.MouseEvent) => {
-    // const elTarget: HTMLElement = e.target as HTMLElement;
-    // const elOverlay = elTarget.closest(`.${CLASS_OVERLAY}`);
-    // if (!elOverlay) {
-    //   return;
-    // }
-    // const spotIdOfOverlay = elOverlay.getAttribute(ATTR_OVERLAY_ID);
-    // const eventHandler = overlayEventHandlerMap[spotIdOfOverlay];
-    //
-    // eventHandler && eventHandler();
-  };
+  const handleClickMap = (e: React.MouseEvent) => {};
 
   useEffect(() => {
     async function fetchCurrentPosition() {
@@ -129,6 +119,7 @@ const MapBoxArea: React.FC = () => {
 
   useEffect(() => {
     if (data && data?.spots) {
+      console.log(data?.spots);
       setMapSpots(data?.spots);
     }
   }, [data, called, loading]);
