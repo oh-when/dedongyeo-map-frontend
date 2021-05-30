@@ -1,1 +1,1 @@
-export { default } from './MapArea';
+export { default } from './MapBoxArea';
