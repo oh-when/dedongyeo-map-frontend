@@ -1,6 +1,6 @@
 import {
   useCurrentPosition,
-  useIsCustomSpotSetting,
+  isCustomSpotFlag,
   mapSpots,
 } from '~/lib/apollo/vars/home';
 
@@ -20,7 +20,7 @@ const home = {
         },
         isCustomSpotSetting: {
           read() {
-            return useIsCustomSpotSetting();
+            return isCustomSpotFlag();
           },
         },
       },

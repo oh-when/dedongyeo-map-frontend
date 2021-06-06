@@ -6,7 +6,8 @@ import { useReactiveVar } from '@apollo/client';
 import {
   currentPosition,
   useCurrentPositionSetter,
-  useIsCustomSpotSetting,
+  useCurrentPositionState,
+  useIsCustomSpotFlagState,
 } from '~/lib/apollo/vars/home';
 
 //TODO: 스팟 클릭시 지도 이동
@@ -57,7 +58,7 @@ const buttons = [
 ];
 
 const SearchPlace: React.FC = () => {
-  const isCustomSpotSetting = useReactiveVar(useIsCustomSpotSetting);
+  const [isCustomSpotFlag, setIsCustomSpotFlag] = useIsCustomSpotFlagState();
   const [keyword, setKeyword] = useState('');
   const query = keyword;
   const [isClicked, setIsClicked] = useState(false);
@@ -84,6 +85,7 @@ const SearchPlace: React.FC = () => {
       },
     }
   );
+
   const debounceFunc = React.useCallback(
     debounce(() => !loading && loadData(), 300),
     [loadData]
@@ -127,7 +129,7 @@ const SearchPlace: React.FC = () => {
 
   const handleCustomSpotSetting = (e: any) => {
     e.preventDefault();
-    useIsCustomSpotSetting(!isCustomSpotSetting);
+    setIsCustomSpotFlag(!isCustomSpotFlag);
   };
 
   const handleClickSpotBtn = (e: React.MouseEvent, key: string) => {

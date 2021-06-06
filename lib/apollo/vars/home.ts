@@ -20,4 +20,10 @@ export const [
   useCurrentPositionState,
 ] = createReactiveVarHooks(currentPosition);
 
-export const useIsCustomSpotSetting = makeVar(false);
+export const isCustomSpotFlag = makeVar(false);
+
+export const [
+  useIsCustomSpotFlag,
+  useIsCustomSpotFlagSetter,
+  useIsCustomSpotFlagState,
+] = createReactiveVarHooks(isCustomSpotFlag);
