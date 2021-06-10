@@ -57,7 +57,7 @@ declare namespace GQL {
     sticker_index: number;
     sweet_percent: number;
     is_used: boolean;
-    spot: Spot;
+    spot?: Spot;
   }
   export interface Course {
     _id: string;

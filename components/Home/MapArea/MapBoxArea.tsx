@@ -8,6 +8,9 @@ import {
 } from '~/lib/apollo/vars/home';
 import Storage from '~/lib/storage';
 import * as $ from '~/components/Home/MapArea/MapAreaView';
+import SpotItem from '~/components/Home/MapArea/SpotItem';
+import { DUMMY_SPOT } from '~/components/Home/MapArea/SpotItem/SpotItem';
+import styled from 'styled-components';
 
 const GET_MAP_SPOTS = gql`
   query GetMapSpots($searchSpotDto: SearchSpotDto) {
@@ -17,6 +20,8 @@ const GET_MAP_SPOTS = gql`
       stickers(populate: true) {
         _id
         is_used
+        sticker_index
+        sweet_percent
       }
       place_name
       category_name
@@ -61,10 +66,10 @@ const getLocation = () => {
 //   [spotId: string]: any;
 // } = {};
 
-type LatLng = {
-  lngX: number;
-  latY: number;
-};
+// type LatLng = {
+//   lngX: number;
+//   latY: number;
+// };
 
 const MapBoxArea: React.FC = () => {
   const [map, setMap] = useState(null);
@@ -83,7 +88,7 @@ const MapBoxArea: React.FC = () => {
   // });
   // const customSpotMarker = new mapboxgl.Marker();
 
-  const handleClickMap = (e: React.MouseEvent) => {};
+  // const handleClickMap = (e: React.MouseEvent) => {};
 
   useEffect(() => {
     async function fetchCurrentPosition() {
@@ -126,20 +131,21 @@ const MapBoxArea: React.FC = () => {
       });
 
       map.on('click', (e) => {
-        const marker = new mapboxgl.Marker();
-        marker.setLngLat(e.lngLat).addTo(map);
-        console.log(marker);
-
-        if (isCustomSpotFlag) {
-          console.log('커스텀 스팟을 찍자!');
-        }
+        clickEventHandler(e);
       });
     };
-
-    if (!map) initMap({ setMap, mapContainer, currentPosition });
-    else map.jumpTo({ center: [currentPosition.lngX, currentPosition.latY] });
-
     console.log(isCustomSpotFlag);
+    if (!map) {
+      console.log('init map');
+      initMap({ setMap, mapContainer, currentPosition });
+    } else {
+      map.jumpTo({ center: [currentPosition.lngX, currentPosition.latY] });
+      // 스팟들을 지도에 그리기
+      console.log(mapSpots);
+      new mapboxgl.Marker(<SpotItem spot={DUMMY_SPOT} />)
+        .setLngLat([DUMMY_SPOT.x, DUMMY_SPOT.y])
+        .addTo(map);
+    }
   }, [map, isCustomSpotFlag]);
 
   useEffect(() => {
@@ -152,10 +158,20 @@ const MapBoxArea: React.FC = () => {
       setMapSpots(data?.spots);
     }
   }, [data, called, loading]);
+
+  const clickEventHandler = (e) => {
+    console.log(isCustomSpotFlag);
+    if (isCustomSpotFlag) {
+      console.log('커스텀 스팟을 찍자!');
+      const marker = new mapboxgl.Marker();
+      marker.setLngLat(e.lngLat).addTo(map);
+    }
+  };
+
   return (
     <>
       <$.MapArea
-        onClick={handleClickMap}
+        // onClick={handleClickMap}
         ref={(el) => (mapContainer.current = el)}
       />
     </>
