@@ -1,16 +1,48 @@
 import { useEffect } from 'react';
-import { makeVar, useReactiveVar } from '@apollo/client';
+import { gql, makeVar, useApolloClient, useReactiveVar } from '@apollo/client';
 import { CandidateCardStatus } from '~/components/Course/Editor/Editor.d';
 import type { CandidateCardDTO } from '~/components/Course/Editor/Editor.d';
 
 export const candidatesVar = makeVar<CandidateCardDTO[]>([]);
 
+const GET_CANDIDATE_STICKERS = gql`
+  query GetStickers {
+    stickers {
+      _id
+      sticker_index
+      sweet_percent
+      is_used
+      spot(populate: true) {
+        _id
+        place_name
+      }
+    }
+  }
+`;
+
 export function useCandidates(): CandidateCardDTO[] {
+  const client = useApolloClient();
   const candidates = useReactiveVar(candidatesVar);
 
   useEffect(() => {
-    // TODO: query
-    candidatesVar([]);
+    client
+      .query<GQL.Query.Stickers.Data>({
+        query: GET_CANDIDATE_STICKERS,
+      })
+      .then(({ data }) => {
+        const candidates: CandidateCardDTO[] = data.stickers
+          .filter((sticker) => sticker.is_used)
+          .map((sticker) => ({
+            id: sticker._id,
+            spotName: sticker.spot.place_name,
+            sweetPercent: sticker.sweet_percent,
+            stickerIndex: sticker.sticker_index,
+            partner: '애인', // TODO: BE 지원
+            timestamp: Date.now(), // TODO: BE 지원
+            status: CandidateCardStatus.Wait,
+          }));
+        candidatesVar(candidates);
+      });
   }, []);
 
   return candidates;
