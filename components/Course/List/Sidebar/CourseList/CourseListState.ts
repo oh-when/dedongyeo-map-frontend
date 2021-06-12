@@ -22,3 +22,7 @@ export function useCurrentStickers(): GQL.Sticker[] {
 export function changeCurrentCourses(courses: GQL.Course[]): void {
   currentCoursesVar(courses);
 }
+
+export function changeCurrentCourseIndex(index: number): void {
+  currentCourseIndexVar(index);
+}

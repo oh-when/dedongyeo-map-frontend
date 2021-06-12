@@ -14,6 +14,15 @@ export const CourseItem = styled.div`
   }
 `;
 
+export const CourseLink = styled.a.attrs({ href: '#' })`
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+`;
+
 export const AreaInfo = styled.div`
   padding-right: 108px;
 `;
@@ -63,6 +72,7 @@ export const AreaButton = styled.div`
   position: absolute;
   top: 24px;
   right: 24px;
+  z-index: 2;
 `;
 
 export const ItemButton = styled.button.attrs({

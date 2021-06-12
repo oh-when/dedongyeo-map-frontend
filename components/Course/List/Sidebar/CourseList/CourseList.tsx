@@ -8,9 +8,10 @@ export default function CourseList(): JSX.Element {
 
   return (
     <$.CourseList>
-      {currentCourses.map((course) => (
+      {currentCourses.map((course, i) => (
         <CourseItem
           key={`cl-${course._id}`}
+          idx={i}
           title={course.title}
           spotCount={course.stickers ? course.stickers.length : 0}
           timestamp={Math.floor(Date.now() / 1000)}

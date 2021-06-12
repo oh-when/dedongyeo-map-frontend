@@ -1,8 +1,10 @@
 import React from 'react';
 import { formatDate } from '~/util';
+import { changeCurrentCourseIndex } from '../CourseListState';
 import * as $ from './CourseItemView';
 
 type Props = {
+  idx: number;
   title: string;
   spotCount: number;
   timestamp: number;
@@ -10,6 +12,7 @@ type Props = {
 };
 
 export default function CourseItem({
+  idx,
   title,
   spotCount,
   timestamp,
@@ -17,6 +20,10 @@ export default function CourseItem({
 }: Props): JSX.Element {
   const dateStamp = formatDate(timestamp, true);
 
+  const handleClickLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    changeCurrentCourseIndex(idx);
+  };
   const handleClickShare = () => {
     // TODO;
   };
@@ -38,6 +45,7 @@ export default function CourseItem({
         </$.Info>
       </$.AreaInfo>
       {isPrivate && <$.AreaLabel>비공개</$.AreaLabel>}
+      <$.CourseLink onClick={handleClickLink} />
       <$.AreaButton>
         <$.ItemButton onClick={handleClickShare}>
           <$.ShareIcon />
