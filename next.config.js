@@ -8,13 +8,12 @@ module.exports = {
 
     return config;
   },
-  async redirects() {
+  async rewrites() {
     return [
       {
         source: '/course',
         destination: '/course/list',
-        permanent: true,
       },
-    ];
+    ]
   },
 };

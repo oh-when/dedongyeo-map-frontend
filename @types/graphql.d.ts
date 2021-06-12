@@ -183,7 +183,9 @@ declare namespace GQL {
       };
     }
     export namespace Courses {
-      export type Data = Array<GQL.Course>;
+      export type Data = {
+        courses: GQL.Course[];
+      };
     }
     export namespace Course {
       export type Variables = {

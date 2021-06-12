@@ -1,4 +1,24 @@
-import { makeVar, ReactiveVar } from '@apollo/client';
+import { makeVar, ReactiveVar, useReactiveVar } from '@apollo/client';
 
-export const courses: ReactiveVar<GQL.Course[]> = makeVar([]);
-export const currentCourseIndex: ReactiveVar<number> = makeVar(0);
+export const currentCoursesVar: ReactiveVar<GQL.Course[]> = makeVar([]);
+export const currentCourseIndexVar: ReactiveVar<number> = makeVar(0);
+
+export function useCurrentCourses(): GQL.Course[] {
+  return useReactiveVar(currentCoursesVar);
+}
+
+export function useCurrentStickers(): GQL.Sticker[] {
+  const courses = useReactiveVar(currentCoursesVar);
+  const currentCourseIndex = useReactiveVar(currentCourseIndexVar);
+  const course = courses[currentCourseIndex];
+
+  if (!course) {
+    return [];
+  }
+
+  return course.stickers || [];
+}
+
+export function changeCurrentCourses(courses: GQL.Course[]): void {
+  currentCoursesVar(courses);
+}

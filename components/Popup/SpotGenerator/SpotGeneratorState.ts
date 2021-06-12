@@ -1,6 +1,5 @@
 import { makeVar, gql, useMutation } from '@apollo/client';
 import sugar, { toStickerData } from '~/constants/sugar';
-import Storage from '~/lib/storage';
 import createReactiveVarHooks from '~/util/createReactiveVarHooks';
 import type { Sugar } from '~/constants/sugar';
 import type { Props as SpotGeneratorProps } from './SpotGenerator';
@@ -63,32 +62,22 @@ export const CREATE_STICKER = gql`
 `;
 
 export const useCreateSticker = (): CreateSticker => {
-  let partner: string = formPartnerState() || '';
+  // TODO : BE 측 추가 필요
+  // let partner: string = formPartnerState() || '';
   let stickerId: string = formStickerState();
 
-  const [request] = useMutation<
-    GQL.Mutation.CreateSticker.Data,
-    GQL.Mutation.CreateSticker.Variables
-  >(CREATE_STICKER, {
-    onCompleted({ createSticker: data }) {
-      const stickerCard = {
-        id: data._id,
-        stickerId,
-        title: data.spot.place_name,
-        partner,
-        timestamp: Math.floor(Date.now() / 1000),
-      };
-
-      Storage.addStickerCard(stickerCard);
-    },
-  });
+  const [request] =
+    useMutation<
+      GQL.Mutation.CreateSticker.Data,
+      GQL.Mutation.CreateSticker.Variables
+    >(CREATE_STICKER);
 
   const createSticker: CreateSticker = (place: SpotGeneratorProps['place']) => {
     stickerId = formStickerState();
 
     const [sweetPercent, stickerIndex] = toStickerData(stickerId);
 
-    partner = formPartnerState();
+    // partner = formPartnerState();
     request({
       variables: {
         createStickerInput: {

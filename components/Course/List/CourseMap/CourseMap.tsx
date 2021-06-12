@@ -1,5 +1,11 @@
 import React from 'react';
+import SpotNavigator from './SpotNavigator';
+import * as $ from './CourseMapView';
 
 export default function CourseMap(): JSX.Element {
-  return null;
+  return (
+    <$.CourseMap>
+      <SpotNavigator />
+    </$.CourseMap>
+  );
 }
