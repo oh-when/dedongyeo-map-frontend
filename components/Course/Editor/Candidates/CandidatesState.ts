@@ -20,6 +20,31 @@ const GET_CANDIDATE_STICKERS = gql`
   }
 `;
 
+function updateCandidates(newCandidates: GQL.Sticker[]) {
+  const prevs: CandidateCardDTO[] = candidatesVar();
+  const candidates: CandidateCardDTO[] = newCandidates
+    .filter((sticker) => !sticker.is_used)
+    .map((sticker) => {
+      const prev = prevs.find((c) => c.id === sticker._id);
+
+      if (prev) {
+        return prev;
+      }
+
+      return {
+        id: sticker._id,
+        spotName: sticker.spot.place_name,
+        sweetPercent: sticker.sweet_percent,
+        stickerIndex: sticker.sticker_index,
+        partner: '애인', // TODO: BE 지원
+        timestamp: Math.floor(Date.now() / 1000), // TODO: BE 지원
+        status: CandidateCardStatus.Wait,
+      };
+    });
+
+  candidatesVar(candidates);
+}
+
 export function useCandidates(): CandidateCardDTO[] {
   const client = useApolloClient();
   const candidates = useReactiveVar(candidatesVar);
@@ -30,22 +55,15 @@ export function useCandidates(): CandidateCardDTO[] {
         query: GET_CANDIDATE_STICKERS,
       })
       .then(({ data }) => {
-        const candidates: CandidateCardDTO[] = data.stickers
-          .filter((sticker) => !sticker.is_used)
-          .map((sticker) => ({
-            id: sticker._id,
-            spotName: sticker.spot.place_name,
-            sweetPercent: sticker.sweet_percent,
-            stickerIndex: sticker.sticker_index,
-            partner: '애인', // TODO: BE 지원
-            timestamp: Date.now(), // TODO: BE 지원
-            status: CandidateCardStatus.Wait,
-          }));
-        candidatesVar(candidates);
+        updateCandidates(data.stickers);
       });
   }, []);
 
   return candidates;
+}
+
+export function resetCandidates(): void {
+  candidatesVar([]);
 }
 
 export function setCandidateStatus(

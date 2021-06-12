@@ -26,8 +26,18 @@ export default function CandidateCard(props: Props): JSX.Element {
     e.dataTransfer.effectAllowed = 'move';
   };
 
+  const handleDragEnd = () => {
+    if (candidate.status !== CandidateCardStatus.Moved) {
+      setCandidateStatus(candidate.id, CandidateCardStatus.Wait);
+    }
+  };
+
   return (
-    <$.CandidateCard draggable={isDraggable} onDragStart={handleDragStart}>
+    <$.CandidateCard
+      draggable={isDraggable}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <$.AreaIcon>
         {StickerIcon && <StickerIcon width="72" height="72" />}
       </$.AreaIcon>
