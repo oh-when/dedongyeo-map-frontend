@@ -86,6 +86,7 @@ const MapBoxArea: React.FC = () => {
   //   lngX: null,
   //   latY: null,
   // });
+
   // const customSpotMarker = new mapboxgl.Marker();
 
   // const handleClickMap = (e: React.MouseEvent) => {};
@@ -131,15 +132,31 @@ const MapBoxArea: React.FC = () => {
       });
 
       map.on('click', (e) => {
-        clickEventHandler(e);
+        // 이전 커스텀 스팟 삭제
+        const arr = document.getElementsByClassName('custom-marker');
+        console.log(arr);
+        for (let i = 0; i < arr.length; i++) {
+          arr[i].parentNode.removeChild(arr[i]);
+        }
+
+        // 커스텀 스팟 마커 만들기
+        const el = document.createElement('div');
+        el.className = 'marker custom-marker';
+        el.style.backgroundImage =
+          'url(https://s3.ap-northeast-2.amazonaws.com/asset-dev.goodoc.kr/owen/spot_marker.png)';
+        el.style.width = '50px';
+        el.style.height = '50px';
+        el.style.backgroundSize = '100%';
+        new mapboxgl.Marker(el).setLngLat(e.lngLat).addTo(map);
       });
     };
-    console.log(isCustomSpotFlag);
+
     if (!map) {
       console.log('init map');
       initMap({ setMap, mapContainer, currentPosition });
     } else {
       map.jumpTo({ center: [currentPosition.lngX, currentPosition.latY] });
+
       // 스팟들을 지도에 그리기
       console.log(mapSpots);
       new mapboxgl.Marker(<SpotItem spot={DUMMY_SPOT} />)
@@ -158,15 +175,6 @@ const MapBoxArea: React.FC = () => {
       setMapSpots(data?.spots);
     }
   }, [data, called, loading]);
-
-  const clickEventHandler = (e) => {
-    console.log(isCustomSpotFlag);
-    if (isCustomSpotFlag) {
-      console.log('커스텀 스팟을 찍자!');
-      const marker = new mapboxgl.Marker();
-      marker.setLngLat(e.lngLat).addTo(map);
-    }
-  };
 
   return (
     <>
