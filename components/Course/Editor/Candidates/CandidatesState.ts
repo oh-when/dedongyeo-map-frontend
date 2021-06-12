@@ -31,7 +31,7 @@ export function useCandidates(): CandidateCardDTO[] {
       })
       .then(({ data }) => {
         const candidates: CandidateCardDTO[] = data.stickers
-          .filter((sticker) => sticker.is_used)
+          .filter((sticker) => !sticker.is_used)
           .map((sticker) => ({
             id: sticker._id,
             spotName: sticker.spot.place_name,
