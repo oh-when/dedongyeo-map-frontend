@@ -6,12 +6,13 @@ export namespace MB {
   export type Lat = number; // y
   export type Coordinate = [Lng, Lat];
 
-  export type MarkerProps = {
+  export type MarkerProps<T extends Record<string, any>> = T & {
     id: string;
     coord: Coordinate;
+    onClick?: (props: MarkerProps) => void;
   };
-  export type Marker = MarkerProps & {
-    Component: React.ComponentType<MarkerProps>;
+  export type Marker<T = Record<string, any>> = MarkerProps<T> & {
+    Component: React.ComponentType<MarkerProps<T>>;
   };
   export type MarkerRecord = {
     data: Marker;

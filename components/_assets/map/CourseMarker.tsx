@@ -1,12 +1,14 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 import painter from '~/styles/theme/painter';
+import { MB } from '~/components/_common/MapBox/MapBox.d';
 
-type Props = {
+export type Props = MB.MarkerProps<{
   className?: string;
-};
+  num: string;
+}>;
 
 const Box = styled.div`
   position: relative;
@@ -18,35 +20,54 @@ const Marker = styled.div`
   bottom: 100%;
   left: 0;
   width: 48px;
-  margin-bottom: 8px;
+  height: 57px;
+  margin-bottom: 4px;
+  overflow: hidden;
+`;
+const MarkerNum = styled.div`
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: ${painter.basic.white};
+  font-size: 18px;
+  line-height: 32px;
+  text-align: center;
+  color: ${painter.primary.basic};
 `;
 const Point = styled.div`
   width: 40px;
   height: 40px;
   margin: 0 auto;
+  padding-top: 5px;
   border-radius: 50%;
+  border: 1px solid ${painter.grayscale[3]};
   background-color: ${painter.basic.white};
   &::after {
     display: block;
     width: 28px;
     height: 28px;
+    margin: 0 auto;
     border-radius: 50%;
     background-color: ${painter.primary.basic};
     content: '';
   }
 `;
 
-export default function CourseMarker(props: Props): ReactNode {
+export default function CourseMarker(props: Props): ReactElement {
   const theme = useContext(ThemeContext);
 
   return (
-    <div className={props.className}>
+    <div id={props.id} className={props.className}>
       <Box>
         <Marker>
+          <MarkerNum>{props.num}</MarkerNum>
           <svg
             width="96"
             height="104"
-            viewBox="0 0 96 104"
+            viewBox="24 20 96 104"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -56,11 +77,6 @@ export default function CourseMarker(props: Props): ReactNode {
                 fill={theme.primary.basic}
               />
             </g>
-            <circle cx="48" cy="44" r="16" fill="white" />
-            <path
-              d="M45.3873 39.2V36.878H49.7253V50H47.1333V39.2H45.3873Z"
-              fill={theme.primary.basic}
-            />
             <defs>
               <filter
                 id="filter0_d"

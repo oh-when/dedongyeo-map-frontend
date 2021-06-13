@@ -21,6 +21,9 @@ export default class MapBox extends React.Component<Props, State> {
   private map: Map = null;
   private markerRegistry: Registry<MB.MarkerRecord> =
     new Registry<MB.MarkerRecord>();
+  // 클릭 이벤트 시 불필요한 탐색비용을 줄이기 위해서
+  private markerHandlerRegistry: Registry<MB.MarkerProps<any>['onClick']> =
+    new Registry<MB.MarkerProps<any>['onClick']>();
 
   constructor(props: Props) {
     super(props);
@@ -83,7 +86,11 @@ export default class MapBox extends React.Component<Props, State> {
 
     return (
       <>
-        <div id={this.props.id} style={{ width: '100%', height: '100%' }}></div>
+        <div
+          id={this.props.id}
+          style={{ width: '100%', height: '100%' }}
+          onClick={this.handleClickMap}
+        ></div>
         {ReactDOM.createPortal(markerNodes, markerContainer)}
       </>
     );
@@ -92,7 +99,7 @@ export default class MapBox extends React.Component<Props, State> {
   private mountMap() {
     this.map = new Map({
       container: this.props.id,
-      style: 'mapbox://styles/mapbox/streets-v11', // style URL
+      style: 'mapbox://styles/mapbox/light-v10',
       center: this.state.center,
       zoom: this.state.zoom,
     });
@@ -122,6 +129,7 @@ export default class MapBox extends React.Component<Props, State> {
       if (newRids.indexOf(record.rid)) return;
       record.marker.remove();
       this.markerRegistry.remove(record.data.id);
+      this.markerHandlerRegistry.remove(record.data.id);
     });
   }
 
@@ -142,7 +150,7 @@ export default class MapBox extends React.Component<Props, State> {
 
       const element =
         shadow.firstElementChild &&
-        (shadow.firstElementChild.cloneNode() as HTMLElement);
+        (shadow.firstElementChild.cloneNode(true) as HTMLElement);
       const marker: Marker = new Marker({ element });
 
       marker.setLngLat(coord).addTo(this.map);
@@ -154,6 +162,9 @@ export default class MapBox extends React.Component<Props, State> {
       };
 
       this.markerRegistry.set(record.data.id, record);
+      if (record.data.onClick) {
+        this.markerHandlerRegistry.set(record.data.id, record.data.onClick);
+      }
     }
   }
 
@@ -167,5 +178,14 @@ export default class MapBox extends React.Component<Props, State> {
 
   private readonly handleLoadMap = () => {
     this.mountMarkers(this.props.markers);
+  };
+
+  private readonly handleClickMap = (e: React.MouseEvent) => {
+    this.markerHandlerRegistry.each((id, handler) => {
+      const target = e.target as Element;
+      const marker = target.closest(`#${id}`);
+
+      if (marker) handler(this.markerRegistry.get(id).data);
+    });
   };
 }
