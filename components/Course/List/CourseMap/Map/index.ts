@@ -1,1 +1,1 @@
-export { default } from './MapWithScript';
+export { default } from './Map';

@@ -5,18 +5,32 @@ import Wrap from '~/components/_layout/Wrap';
 import Main from '~/components/_layout/Main';
 import CourseList from '~/components/Course/List';
 import { addApolloState, initializeApollo } from '~/lib/apollo/client';
-import type { GetStaticProps } from 'next';
+import type { GetServerSideProps } from 'next';
+import { GET_COURSES_BY_DATE } from '~/components/Course/List/SideBar/Calendar/CalendarState';
+import { changeCurrentCourses } from '~/components/Course/List/SideBar/CourseList/CourseListState';
 
-export const getStaticProps: GetStaticProps = async () => {
-  const apolloClient = initializeApollo();
+type Props = {
+  courses: GQL.Course[];
+};
 
-  return addApolloState(apolloClient, {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const client = initializeApollo();
+  const { data } = await client.query<GQL.Query.Courses.Data>({
+    query: GET_COURSES_BY_DATE,
+  });
+  const courses = (data && data.courses) || [];
+
+  addApolloState(client, {
     props: {},
     revalidate: 1,
   });
+
+  return { props: { courses } };
 };
 
-const CourseListPage: React.FC = () => {
+const CourseListPage: React.FC<Props> = ({ courses }) => {
+  changeCurrentCourses(courses);
+
   return (
     <>
       <Head>

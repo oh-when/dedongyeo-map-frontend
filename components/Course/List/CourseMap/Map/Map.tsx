@@ -10,19 +10,39 @@ export default function Map(): JSX.Element {
     return null;
   }
 
-  const center = getCenter(stickers);
+  const props = getMapProps(stickers);
 
-  return <MapBox id="course-list-map" zoom={12} center={center}></MapBox>;
+  return <MapBox id="course-list-map" zoom={12} {...props}></MapBox>;
 }
 
-function getCenter(stickers: GQL.Sticker[]): MB.Center {
-  let xSum = 0;
-  let ySum = 0;
+function getMapProps(stickers: GQL.Sticker[]): {
+  center: MB.Coordinate;
+  markers: MB.Marker[];
+} {
+  const center: MB.Coordinate = [0, 0];
+  const markers: MB.Marker[] = [];
 
-  for (const { spot } of stickers) {
-    xSum += spot.x;
-    ySum += spot.y;
+  for (const { _id, spot } of stickers) {
+    center[0] += spot.x;
+    center[1] += spot.y;
+    markers.push({
+      id: _id,
+      coord: [spot.x, spot.y],
+      Component: function MarkerComponent() {
+        return (
+          <div
+            style={{ width: '50px', height: '50px', background: 'black' }}
+          ></div>
+        );
+      },
+    });
   }
 
-  return [xSum / stickers.length, ySum / stickers.length];
+  center[0] = center[0] / stickers.length;
+  center[1] = center[1] / stickers.length;
+
+  return {
+    center,
+    markers,
+  };
 }

@@ -5,7 +5,7 @@ import type { CandidateCardDTO } from '~/components/Course/Editor/Editor.d';
 
 export const candidatesVar = makeVar<CandidateCardDTO[]>([]);
 
-const GET_CANDIDATE_STICKERS = gql`
+export const GET_CANDIDATE_STICKERS = gql`
   query GetStickers {
     stickers {
       _id
@@ -20,7 +20,7 @@ const GET_CANDIDATE_STICKERS = gql`
   }
 `;
 
-function updateCandidates(newCandidates: GQL.Sticker[]) {
+export function updateCandidates(newCandidates: GQL.Sticker[]): void {
   const prevs: CandidateCardDTO[] = candidatesVar();
   const candidates: CandidateCardDTO[] = newCandidates
     .filter((sticker) => !sticker.is_used)

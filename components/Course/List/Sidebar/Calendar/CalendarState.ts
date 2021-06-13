@@ -8,7 +8,7 @@ import {
 import { useEffect } from 'react';
 import { changeCurrentCourses } from '~/components/Course/List/SideBar/CourseList/CourseListState';
 
-const GET_COURSES_BY_DATE = gql`
+export const GET_COURSES_BY_DATE = gql`
   query GetCoursesByDate {
     courses {
       _id
