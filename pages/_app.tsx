@@ -4,6 +4,7 @@ import Router from 'next/router';
 import theme from '../styles/theme';
 import '../styles/reset.css';
 import '../styles/globals.css';
+import '../styles/swiper-bundle.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { resetCourseState } from '~/components/Course/CourseState';

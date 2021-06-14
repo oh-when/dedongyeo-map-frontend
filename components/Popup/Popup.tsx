@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import SpotGenerator, { Props as SpotGeneratorProps } from './SpotGenerator';
 import CourseShare, { Props as CourseShareProps } from './CourseShare';
@@ -11,7 +11,7 @@ import Modal from '~/components/_common/Modal';
  * App 전체의 Stacking Context(zIndex)를 일괄적으로 관리하고,
  * 모달 통합관리를 위한 모듈
  */
-const Popup: React.FC = () => {
+export default function Popup(): ReactElement {
   const { popupType, popupProps } = useReactiveVar(popupState);
 
   console.log('RENDER POPUP: ', popupType, popupProps);
@@ -41,6 +41,4 @@ const Popup: React.FC = () => {
   }
 
   return null;
-};
-
-export default Popup;
+}

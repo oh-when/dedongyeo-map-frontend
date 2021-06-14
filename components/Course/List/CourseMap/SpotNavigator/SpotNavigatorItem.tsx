@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStickerIconWithSugar } from '~/constants/sugar';
+import StickerIcon from '~/components/_assets/sticker';
 import * as $ from './SpotNavigatorView';
 
 type Props = {
@@ -9,16 +9,16 @@ type Props = {
 
 export default function SpotNavigatorItem(props: Props): JSX.Element {
   const { sticker, index } = props;
-  const Sticker = getStickerIconWithSugar(
-    sticker.sweet_percent,
-    sticker.sticker_index
-  );
-
   return (
     <$.Item>
       <$.Navigator>
         <$.AreaSticker>
-          <Sticker width={56} height={56} />
+          <StickerIcon
+            width={56}
+            height={56}
+            sweetPercent={sticker.sweet_percent}
+            stickerIndex={sticker.sticker_index}
+          />
         </$.AreaSticker>
         <$.AreaInfo>
           <$.Meta>{`스팟 ${index + 1}`}</$.Meta>

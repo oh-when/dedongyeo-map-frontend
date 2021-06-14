@@ -12,11 +12,11 @@ declare module 'styled-components' {
     };
     secondary: {
       all: string;
-      sugar0: string;
-      sugar30: string;
-      sugar50: string;
-      sugar70: string;
-      sugar100: string;
+      0: string;
+      30: string;
+      50: string;
+      70: string;
+      100: string;
     };
     basic: {
       black: string;

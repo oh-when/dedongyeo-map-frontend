@@ -1,58 +1,98 @@
-import React from 'react';
-import sugar from '~/constants/sugar';
+import React, { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import {
+  StickerIndex,
+  SweetPercent,
+  stickerIndexes,
+} from '~/constants/stickers';
 import {
   useFormStickerState,
-  useFormSugar,
+  useFormSweet,
 } from '~/components/Popup/SpotGenerator/SpotGeneratorState';
 import * as $ from './AreaStickerView';
-import type { Sticker, Sugar } from '~/constants/sugar';
+import { useEffect } from 'react';
 
 const AreaSticker: React.FC = () => {
-  const selectedSugar: Sugar = useFormSugar();
-  const [selectedStickerId, setSelectedStickerId] = useFormStickerState();
+  const [swiper, setSwiper] = useState(null);
+  const [page, setPage] = useState(0);
+  const sweet: SweetPercent = useFormSweet();
+  const [sticker, setSticker] = useFormStickerState();
+  const firstStickers = stickerIndexes.slice(0, 6);
+  const secondStickers = stickerIndexes.slice(6);
 
-  const stickers = sugar[selectedSugar].stickers;
-  // @see Flex로 Flexible Grid 정렬을 하기 위한, 더미 아이템 요소를 3n개에 맞게 추가
-  const stickersToGrid: Sticker[] = [null, null, null].reduce(
-    (stickersToGrid, dummy) => {
-      if (stickersToGrid.length % 3 !== 0) stickersToGrid.push(dummy);
-      return stickersToGrid;
-    },
-    stickers
-  );
-
-  const handleClickSticker = (e: React.MouseEvent, stickerId: string) => {
+  const handleClickSticker = (
+    e: React.MouseEvent,
+    stickerInput: StickerIndex
+  ) => {
     e.preventDefault();
-
-    if (stickerId !== selectedStickerId) {
-      setSelectedStickerId(stickerId);
+    if (stickerInput !== sticker) {
+      setSticker(stickerInput);
     }
   };
 
+  useEffect(() => {
+    swiper?.destroy(false, true);
+    swiper?.init();
+  }, [swiper]);
+
+  useEffect(() => {
+    page > 0 && setPage(0);
+  }, [sweet]);
+
+  useEffect(() => {
+    if (!swiper || swiper.activeIndex === page) return;
+    swiper.slideTo(page, 0);
+  }, [page]);
+
   return (
     <$.AreaSticker>
-      <$.StickerList>
-        {stickersToGrid.map((sticker: Sticker, i) => {
-          if (!sticker) {
-            return <$.StickerItem key={`sticker-button-${i}`} />;
-          }
-
-          const { IconWithSugar, id } = sticker;
-
-          return (
-            <$.StickerItem key={`sticker-button-${i}`}>
-              {sticker && (
+      <Swiper
+        spaceBetween={0}
+        slidesPerView={1}
+        onSlideChange={(e) => setPage(e.activeIndex)}
+        onSwiper={setSwiper}
+      >
+        <SwiperSlide>
+          <$.StickerPanel>
+            {firstStickers.map((stickerIndex) => (
+              <$.StickerItem key={`sf-${sweet}-${stickerIndex}`}>
                 <$.StickerButton
-                  onClick={(e) => handleClickSticker(e, id)}
-                  aria-selected={id === selectedStickerId}
+                  onClick={(e) => handleClickSticker(e, stickerIndex)}
                 >
-                  <IconWithSugar />
+                  <$.Sticker
+                    sweetPercent={sweet}
+                    stickerIndex={stickerIndex}
+                    width={112}
+                    height={112}
+                  />
                 </$.StickerButton>
-              )}
-            </$.StickerItem>
-          );
-        })}
-      </$.StickerList>
+              </$.StickerItem>
+            ))}
+          </$.StickerPanel>
+        </SwiperSlide>
+        <SwiperSlide>
+          <$.StickerPanel>
+            {secondStickers.map((stickerIndex) => (
+              <$.StickerItem key={`sf-${sweet}-${stickerIndex}`}>
+                <$.StickerButton
+                  onClick={(e) => handleClickSticker(e, stickerIndex)}
+                >
+                  <$.Sticker
+                    sweetPercent={sweet}
+                    stickerIndex={stickerIndex}
+                    width={112}
+                    height={112}
+                  />
+                </$.StickerButton>
+              </$.StickerItem>
+            ))}
+          </$.StickerPanel>
+        </SwiperSlide>
+      </Swiper>
+      <$.Pagination>
+        <$.Page selected={page === 0} />
+        <$.Page selected={page === 1} />
+      </$.Pagination>
     </$.AreaSticker>
   );
 };

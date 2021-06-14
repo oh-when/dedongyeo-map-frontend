@@ -3,31 +3,28 @@ import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
 export const AreaForm = styled.div`
-  flex-shrink: 0;
-  flex-grow: 0;
-  margin-top: 49px;
+  margin-top: 40px;
 `;
 
 export const FieldSet = styled.div`
   position: relative;
   & + & {
-    margin-top: 42px;
+    margin-top: 32px;
   }
 `;
 
 export const FieldLabel = styled.strong`
   display: block;
-  font-size: 20px;
-  color: ${painter.grayscale['9']};
+  font-size: 18px;
+  color: ${painter.grayscale[9]};
 `;
 
 export const FieldInputBox = styled.div`
   position: relative;
-  height: 56px;
+  height: 48px;
   margin-top: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: ${painter.grayscale[1]};
   border-radius: 8px;
-  background-color: #fff;
 `;
 
 export const InputVisitant = styled.input.attrs({
@@ -37,10 +34,10 @@ export const InputVisitant = styled.input.attrs({
   width: 100%;
   height: 100%;
   padding-left: 16px;
-  font-weight: 600;
-  font-size: 18px;
-  color: ${painter.basic.black};
-  ${painter.form.placeholder('#cdcdcd')}
+  font-weight: 500;
+  font-size: 16px;
+  color: ${painter.grayscale[9]};
+  ${(props) => painter.form.placeholder(painter.grayscale[6](props))}
 `;
 
 export const DateLabel = styled.strong<{
@@ -48,12 +45,14 @@ export const DateLabel = styled.strong<{
 }>`
   display: block;
   height: 100%;
-  padding-left: 16px;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 54px;
+  padding-left: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 48px;
   color: ${(props) =>
-    props.isSelected ? painter.basic.black(props) : '#cdcdcd'};
+    props.isSelected
+      ? painter.grayscale[9](props)
+      : painter.grayscale[6](props)};
 `;
 
 export const DatePickerOpenButton = styled.a.attrs({ href: '#' })`
@@ -66,13 +65,13 @@ export const DatePickerOpenButton = styled.a.attrs({ href: '#' })`
 
 export const SubmitButton = styled.a.attrs({ href: '#', role: 'button' })`
   display: block;
-  height: 64px;
-  margin-top: 41px;
-  border-radius: 12px;
-  background-color: #101721;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 64px;
+  height: 56px;
+  margin-top: 48px;
+  border-radius: 8px;
+  background-color: ${painter.primary.basic};
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 56px;
   text-align: center;
   color: ${painter.basic.white};
 `;

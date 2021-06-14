@@ -12,7 +12,7 @@ const Title: React.FC = () => {
 
   return (
     <$.Title>
-      <$.Text>스팟 찍기</$.Text>
+      <$.Text>스티커 붙이기</$.Text>
       <$.CloseLayerButton onClick={handleClickCloseLayerButton} />
     </$.Title>
   );

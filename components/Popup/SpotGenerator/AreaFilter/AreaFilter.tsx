@@ -1,46 +1,33 @@
 import React from 'react';
-import { useFormSugarState } from '~/components/Popup/SpotGenerator/SpotGeneratorState';
+import { useFormSweetState } from '~/components/Popup/SpotGenerator/SpotGeneratorState';
+import { SweetPercent, sweetPercents } from '~/constants/stickers';
 import * as $ from './AreaFilterView';
-import type { Sugar } from '~/constants/sugar';
-
-type SugarLabels = {
-  sugar: Sugar;
-  label: string;
-}[];
-
-const sugars: SugarLabels = [
-  { sugar: 'sugar0', label: '당도 0%' },
-  { sugar: 'sugar30', label: '30%' },
-  { sugar: 'sugar50', label: '50%' },
-  { sugar: 'sugar70', label: '70%' },
-  { sugar: 'sugar100', label: '100%' },
-];
 
 const AreaFilter: React.FC = () => {
-  const [selectedSugar, setSelectedSugar] = useFormSugarState();
+  const [sweet, setSweet] = useFormSweetState();
 
-  const handleClickSugar = (e: React.MouseEvent, sugar: Sugar) => {
+  const handleClickSugar = (e: React.MouseEvent, sweetInput: SweetPercent) => {
     e.preventDefault();
-    if (selectedSugar !== sugar) {
-      setSelectedSugar(sugar);
+    if (sweetInput !== sweet) {
+      setSweet(sweetInput);
     }
   };
 
   return (
     <$.AreaFilter>
-      <$.SugarList>
-        {sugars.map(({ sugar, label }) => (
-          <$.SugarItem key={`sugar-filter-${sugar}`}>
-            <$.SugarButton
-              sugar={sugar}
-              aria-selected={sugar === selectedSugar}
-              onClick={(e) => handleClickSugar(e, sugar)}
+      <$.SweetList>
+        {sweetPercents.map((sweetPercent) => (
+          <$.SweetItem key={`sugar-filter-${sweetPercent}`}>
+            <$.SweetButton
+              sweetPercent={sweetPercent}
+              aria-selected={sweet === sweetPercent}
+              onClick={(e) => handleClickSugar(e, sweetPercent)}
             >
-              {label}
-            </$.SugarButton>
-          </$.SugarItem>
+              {`${sweetPercent}%`}
+            </$.SweetButton>
+          </$.SweetItem>
         ))}
-      </$.SugarList>
+      </$.SweetList>
     </$.AreaFilter>
   );
 };

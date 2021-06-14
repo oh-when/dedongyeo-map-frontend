@@ -1,4 +1,5 @@
 import type { DefaultTheme } from 'styled-components';
+import { SweetPercent } from '~/constants/stickers';
 
 const theme: DefaultTheme = {
   primary: {
@@ -8,11 +9,11 @@ const theme: DefaultTheme = {
   },
   secondary: {
     all: '#343A40',
-    sugar0: '#449AFF',
-    sugar30: '#4CE5B7',
-    sugar50: '#FFCF52',
-    sugar70: '#FF845E',
-    sugar100: '#9971FF',
+    [SweetPercent.$0]: '#449AFF',
+    [SweetPercent.$30]: '#4CE5B7',
+    [SweetPercent.$50]: '#FFCF52',
+    [SweetPercent.$70]: '#FF845E',
+    [SweetPercent.$100]: '#9971FF',
   },
   basic: {
     black: '#000',

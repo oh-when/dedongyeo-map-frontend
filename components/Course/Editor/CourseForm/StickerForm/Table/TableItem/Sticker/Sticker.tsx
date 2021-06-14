@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStickerIconWithSugar } from '~/constants/sugar';
+import StickerIcon from '~/components/_assets/sticker';
 import { formatDate } from '~/util';
 import * as $ from './StickerView';
 import * as $Common from '../TableItemView';
@@ -9,10 +9,6 @@ export default function StickerCard(props: Props): JSX.Element {
   const {
     item: { order, sticker },
   } = props;
-  const StickerIcon = getStickerIconWithSugar(
-    sticker.sweetPercent,
-    sticker.stickerIndex
-  );
 
   return (
     <$Common.TableItem>
@@ -20,7 +16,12 @@ export default function StickerCard(props: Props): JSX.Element {
       <$Common.Card>
         <$.Card isPressed={false}>
           <$.AreaSticker>
-            <StickerIcon width="72" height="72" />
+            <StickerIcon
+              width={72}
+              height={72}
+              sweetPercent={sticker.sweetPercent}
+              stickerIndex={sticker.stickerIndex}
+            />
           </$.AreaSticker>
           <$.AreaDescription>
             <$.SpotName>{sticker.spotName}</$.SpotName>
