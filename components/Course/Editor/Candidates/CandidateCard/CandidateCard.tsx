@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStickerIconWithSugar } from '~/constants/sugar';
+import StickerIcon from '~/components/_assets/sticker';
 import { CandidateCardStatus } from '~/components/Course/Editor/Editor.d';
 import { setCandidateStatus } from '~/components/Course/Editor/Candidates/CandidatesState';
 import { formatDate } from '~/util';
@@ -13,11 +13,6 @@ type Props = {
 
 export default function CandidateCard(props: Props): JSX.Element {
   const { candidate } = props;
-
-  const StickerIcon = getStickerIconWithSugar(
-    candidate.sweetPercent,
-    candidate.stickerIndex
-  );
   const isDraggable: boolean = candidate.status === CandidateCardStatus.Wait;
 
   const handleDragStart = (e: React.DragEvent) => {
@@ -26,10 +21,25 @@ export default function CandidateCard(props: Props): JSX.Element {
     e.dataTransfer.effectAllowed = 'move';
   };
 
+  const handleDragEnd = () => {
+    if (candidate.status !== CandidateCardStatus.Moved) {
+      setCandidateStatus(candidate.id, CandidateCardStatus.Wait);
+    }
+  };
+
   return (
-    <$.CandidateCard draggable={isDraggable} onDragStart={handleDragStart}>
+    <$.CandidateCard
+      draggable={isDraggable}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <$.AreaIcon>
-        {StickerIcon && <StickerIcon width="72" height="72" />}
+        <StickerIcon
+          width={72}
+          height={72}
+          sweetPercent={candidate.sweetPercent}
+          stickerIndex={candidate.stickerIndex}
+        />
       </$.AreaIcon>
       <$.AreaDescription>
         <$.SpotName>{candidate.spotName}</$.SpotName>

@@ -3,7 +3,7 @@ import painter from '~/styles/theme/painter';
 
 export const Candidate = styled.div`
   height: 100%;
-  padding-top: 80px;
+  padding-top: 48px;
   overflow-y: auto;
   user-drag: none;
   user-select: none;

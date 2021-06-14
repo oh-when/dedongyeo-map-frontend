@@ -1,11 +1,22 @@
 import React from 'react';
+import Image from 'next/image';
 import styled from 'styled-components';
-import type { StickerComponent } from './Sticker.d';
+import { SweetPercent, StickerIndex } from '~/constants/stickers';
+import { ReactElement } from 'react';
 
-const $Image = styled.img`
+type StickerProps = {
+  sweetPercent: SweetPercent;
+  stickerIndex: StickerIndex;
+  className?: string;
+  width?: number;
+  height?: number;
+};
+
+const $Image = styled(Image)`
   display: inline-block;
   width: ${(props) => props.width || 120}px;
   height: ${(props) => props.height || 120}px;
+  border-radius: 50%;
   vertical-align: top;
   user-drag: none;
   user-select: none;
@@ -15,10 +26,23 @@ const $Image = styled.img`
   -ms-user-select: none;
 `;
 
-const Sticker: StickerComponent = ({ src, className, width, height }) => {
+export default function Sticker({
+  sweetPercent,
+  stickerIndex,
+  className,
+  width,
+  height,
+}: StickerProps): ReactElement {
+  const src = getStickerImageUrl(sweetPercent, stickerIndex);
+
   return (
     <$Image src={src} className={className} width={width} height={height} />
   );
-};
+}
 
-export default Sticker;
+export function getStickerImageUrl(
+  sweetPercent: SweetPercent,
+  stickerIndex: StickerIndex
+): string {
+  return `/stickers/sticker_${sweetPercent}_${stickerIndex}.svg`;
+}

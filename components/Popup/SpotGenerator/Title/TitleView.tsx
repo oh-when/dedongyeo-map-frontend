@@ -4,24 +4,23 @@ import painter from '~/styles/theme/painter';
 
 export const Title = styled.div`
   position: relative;
-  height: 112px;
-  border-top-left-radius: 40px;
-  background-color: ${painter.primary.basic};
+  padding-top: 77px;
 `;
 
-export const Text = styled.h3`
-  padding-left: 40px;
+export const Text = styled.h2`
+  height: 44px;
+  padding: 0 32px;
   font-size: 32px;
-  line-height: 112px;
-  color: ${painter.basic.white};
+  line-height: 44px;
+  color: ${painter.grayscale[9]};
 `;
 
 export const CloseLayerButton = styled.a.attrs({ href: '#', role: 'button' })`
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 112px;
-  height: 112px;
+  top: 33px;
+  right: 32px;
+  width: 36px;
+  height: 36px;
   outline: none;
   cursor: pointer;
   &::before,
@@ -35,7 +34,7 @@ export const CloseLayerButton = styled.a.attrs({ href: '#', role: 'button' })`
     width: 27px;
     height: 3px;
     margin: auto;
-    background-color: ${painter.basic.white};
+    background-color: ${painter.grayscale[6]};
   }
   &::before {
     transform: rotate(45deg);

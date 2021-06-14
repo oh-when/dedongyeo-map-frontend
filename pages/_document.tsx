@@ -40,10 +40,15 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto&display=swap"
             rel="stylesheet"
           />
+          <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />
           <div id="modal-root" />
+          <div id="marker-shadow" style={{ display: 'none' }}></div>
           <NextScript />
         </body>
       </Html>

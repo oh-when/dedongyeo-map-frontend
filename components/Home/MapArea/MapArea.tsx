@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as $ from './MapAreaView';
-import emojis from '~/constants/sugar';
+import { getStickerImageUrl } from '~/components/_assets/sticker';
 import Storage from '~/lib/storage';
 import { gql, useLazyQuery, useReactiveVar } from '@apollo/client';
 import {
@@ -75,10 +75,10 @@ const MapArea: React.FC = () => {
     .kakao.maps;
 
   const [kakaoMap, setKakaoMap] = useState(null);
-  const [getMapSpots, { loading, data, called }] =
-    useLazyQuery<GQL.Query.Spots.Data, GQL.Query.Spots.Variables>(
-      GET_MAP_SPOTS
-    );
+  const [getMapSpots, { loading, data, called }] = useLazyQuery<
+    GQL.Query.Spots.Data,
+    GQL.Query.Spots.Variables
+  >(GET_MAP_SPOTS);
   const [mapSpots, setMapSpots] = useMapSpotsState();
   const [currentPosition, setCurrentPosition] = useCurrentPositionState();
   const isCustomSpotSetting = useReactiveVar(useIsCustomSpotSetting);
@@ -178,7 +178,7 @@ const MapArea: React.FC = () => {
       .map((spot) => {
         const emojiObj = {
           pos: new LatLng(spot.y, spot.x),
-          imgSrc: emojis.sugar0.stickers[0].imageUrl,
+          imgSrc: getStickerImageUrl(0, 0),
           imgSize: new Size(50, 50),
           imgOptions: {
             spriteOrigin: new Point(0, 0),

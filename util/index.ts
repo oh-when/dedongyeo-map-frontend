@@ -1,3 +1,6 @@
+export * from './cmp';
+export * from './Registry';
+
 export const isBrowser = (): boolean => {
   return typeof window !== 'undefined';
 };

@@ -71,20 +71,19 @@ const DatePicker: React.FC<Props> = (props) => {
     moveCursor(+1);
   };
 
-  const handleClickDate = (calendarDate: CalendarDate) => (
-    e: React.MouseEvent
-  ) => {
-    e.preventDefault();
-    setState({
-      ...state,
-      selected: [
-        calendarDate.getYear(),
-        calendarDate.getMonth(),
-        calendarDate.getDate(),
-      ],
-    });
-    props.onClickDate && props.onClickDate(calendarDate);
-  };
+  const handleClickDate =
+    (calendarDate: CalendarDate) => (e: React.MouseEvent) => {
+      e.preventDefault();
+      setState({
+        ...state,
+        selected: [
+          calendarDate.getYear(),
+          calendarDate.getMonth(),
+          calendarDate.getDate(),
+        ],
+      });
+      props.onClickDate && props.onClickDate(calendarDate);
+    };
 
   useEffect(() => {
     const now = new Date();

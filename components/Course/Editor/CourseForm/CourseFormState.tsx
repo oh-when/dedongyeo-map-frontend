@@ -5,6 +5,12 @@ import { formTitleVar } from './TextForm/TextFormState';
 import { PopupType } from '~/@types/popup.d';
 import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
 
+enum ImageThemeType {
+  dark = 'dark',
+  light = 'light',
+  street = 'street',
+}
+
 const GET_COURSE = gql`
   query Course($courseInput: CourseInput!) {
     course(courseInput: $courseInput) {
@@ -57,7 +63,7 @@ export const useFormSubmitter = (): (() => void) => {
             courseInput: {
               courseId: data._id,
               courseImageInput: {
-                theme: GQL.ImageThemeType.street,
+                theme: ImageThemeType.street,
                 width: 800,
                 height: 800,
               },
@@ -79,15 +85,18 @@ export const useFormSubmitter = (): (() => void) => {
   });
 
   return () => {
+    const stickers = formArrayVar()
+      .filter((sticker) => sticker !== null)
+      .map((sticker) => sticker.id);
+    const title = formTitleVar();
+
     removeMovedCandidates();
     resetFormTable();
     createCourse({
       variables: {
         createCourseInput: {
-          stickers: formArrayVar()
-            .filter((sticker) => sticker !== null)
-            .map((sticker) => sticker.id),
-          title: formTitleVar(),
+          stickers,
+          title,
           is_share: true,
         },
       },
