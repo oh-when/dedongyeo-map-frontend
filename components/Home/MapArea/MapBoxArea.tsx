@@ -121,7 +121,7 @@ const MapBoxArea: React.FC = () => {
     const initMap = ({ setMap, mapContainer, currentPosition }) => {
       const map = new mapboxgl.Map({
         container: mapContainer.current, // container ID
-        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        style: 'mapbox://styles/mapbox/light-v10', // style URL
         center: [currentPosition.lngX, currentPosition.latY], // starting position [lng, lat]
         zoom: 14, // starting zoom
       });
@@ -147,6 +147,7 @@ const MapBoxArea: React.FC = () => {
         el.style.width = '50px';
         el.style.height = '50px';
         el.style.backgroundSize = '100%';
+        console.log(el);
         new mapboxgl.Marker(el).setLngLat(e.lngLat).addTo(map);
       });
     };
@@ -159,6 +160,7 @@ const MapBoxArea: React.FC = () => {
 
       // 스팟들을 지도에 그리기
       console.log(mapSpots);
+      console.log(<SpotItem spot={DUMMY_SPOT} />);
       new mapboxgl.Marker(<SpotItem spot={DUMMY_SPOT} />)
         .setLngLat([DUMMY_SPOT.x, DUMMY_SPOT.y])
         .addTo(map);
