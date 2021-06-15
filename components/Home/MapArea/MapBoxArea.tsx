@@ -11,6 +11,7 @@ import * as $ from '~/components/Home/MapArea/MapAreaView';
 import SpotItem from '~/components/Home/MapArea/SpotItem';
 import { DUMMY_SPOT } from '~/components/Home/MapArea/SpotItem/SpotItem';
 import styled from 'styled-components';
+import CustomSpotForm from '~/components/Popup/CustomSpotForm/CustomSpotForm';
 
 const GET_MAP_SPOTS = gql`
   query GetMapSpots($searchSpotDto: SearchSpotDto) {
@@ -184,6 +185,8 @@ const MapBoxArea: React.FC = () => {
         // onClick={handleClickMap}
         ref={(el) => (mapContainer.current = el)}
       />
+      <CustomSpotForm />
+      <SpotItem spot={DUMMY_SPOT} />
     </>
   );
 };
