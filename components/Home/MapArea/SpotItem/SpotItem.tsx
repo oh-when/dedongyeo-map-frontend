@@ -48,6 +48,9 @@ export const DUMMY_SPOT: GQL.Spot = {
 const SpotItem: React.FC<Props> = ({ spot = DUMMY_SPOT }) => {
   return (
     <SpotContainer className="spot-item">
+      <SpotNameBalloon nameLen={spot.place_name.length}>
+        {spot.place_name}
+      </SpotNameBalloon>
       {spot.stickers.slice(0, 4).map((sticker, idx) => {
         return (
           <StickerContainer
@@ -60,7 +63,9 @@ const SpotItem: React.FC<Props> = ({ spot = DUMMY_SPOT }) => {
           />
         );
       })}
-      <StickerNumberContainer>{spot.stickers.length}</StickerNumberContainer>
+      <StickerNumberContainer stickerNum={spot.stickers.slice(0, 4).length}>
+        {spot.stickers.length}
+      </StickerNumberContainer>
     </SpotContainer>
   );
 };
@@ -68,17 +73,17 @@ const SpotItem: React.FC<Props> = ({ spot = DUMMY_SPOT }) => {
 export default SpotItem;
 
 const SpotContainer = styled.div`
-  border: 1px solid black;
   width: fit-content;
 `;
 
 const StickerContainer = styled(Sticker)<{ order: number }>`
-  // position: absolute;
-  // top: 200px;
-  // left: ${(props) => 200 + props.order * 48}px;
+  position: relative;
+  top: 20px;
+  left: ${(props) => 40 + props.order * -40}px;
+  z-index: ${(props) => 10 - props.order};
 `;
 
-const StickerNumberContainer = styled.div`
+const StickerNumberContainer = styled.div<{ stickerNum: number }>`
   border: 2px solid ${theme.primary.basic};
   color: ${theme.primary.basic};
   background: #ffffff;
@@ -87,4 +92,35 @@ const StickerNumberContainer = styled.div`
   border-radius: 40px;
   width: fit-content;
   padding: 5px 8px;
+  position: relative;
+  bottom: 60px;
+  left: ${(props) => 40 + props.stickerNum * 40}px;
+  z-index: 11;
+`;
+
+const SpotNameBalloon = styled.div<{ nameLen: number }>`
+  position: relative;
+  width: fit-content;
+  background-color: #ffffff;
+  color: #fd476d;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: center;
+  margin: 0 auto;
+
+  filter: drop-shadow(0px 2px 20px rgba(73, 80, 87, 0.2));
+
+  :after {
+    border-top: 10px solid #ffffff;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    content: '';
+    position: absolute;
+    top: 44px;
+    left: ${(props) => 12 + props.nameLen * 8}px;
+    filter: drop-shadow(0px 2px 20px rgba(73, 80, 87, 0.2));
+  }
 `;
