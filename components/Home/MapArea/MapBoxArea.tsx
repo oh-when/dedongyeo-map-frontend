@@ -10,8 +10,8 @@ import Storage from '~/lib/storage';
 import * as $ from '~/components/Home/MapArea/MapAreaView';
 import SpotItem from '~/components/Home/MapArea/SpotItem';
 import { DUMMY_SPOT } from '~/components/Home/MapArea/SpotItem/SpotItem';
-import styled from 'styled-components';
 import CustomSpotForm from '~/components/Popup/CustomSpotForm/CustomSpotForm';
+import SpotInfoModal from '~/components/Home/MapArea/SpotInfoModal';
 
 const GET_MAP_SPOTS = gql`
   query GetMapSpots($searchSpotDto: SearchSpotDto) {
@@ -187,6 +187,7 @@ const MapBoxArea: React.FC = () => {
       />
       <CustomSpotForm />
       <SpotItem spot={DUMMY_SPOT} />
+      <SpotInfoModal />
     </>
   );
 };

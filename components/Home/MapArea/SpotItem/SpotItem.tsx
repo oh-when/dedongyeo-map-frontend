@@ -117,8 +117,8 @@ const SpotNameBalloon = styled.div<{ nameLen: number }>`
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    content: '';
     position: absolute;
+    content: '';
     top: 44px;
     left: ${(props) => 12 + props.nameLen * 8}px;
     filter: drop-shadow(0px 2px 20px rgba(73, 80, 87, 0.2));
