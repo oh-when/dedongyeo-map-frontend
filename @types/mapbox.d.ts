@@ -16,6 +16,7 @@ declare module 'mapbox-gl' {
     }): this;
 
     loaded(): boolean;
+    getZoom(): number;
     setCenter(coord: [number, number]): void;
     remove(): void;
     on<Type extends keyof MapEventMap>(

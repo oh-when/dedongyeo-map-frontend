@@ -1,52 +1,91 @@
 import React from 'react';
-import MapBox from '~/components/_common/MapBox';
-import { useCurrentStickers } from '~/components/Course/List/SideBar/CourseList/CourseListState';
-import { MB } from '~/components/_common/MapBox/MapBox.d';
-import CourseMarker, {
-  Props as CourseMarkerProps,
-} from '~/components/_assets/map/CourseMarker';
+import { Marker, ZoomControl } from 'react-mapbox-gl';
+import { CommonMap } from '~/components/_common/MapBox';
+import {
+  getCenter,
+  inject,
+} from '~/components/Course/List/SideBar/CourseList/CourseListState';
+import CourseMarker from '~/components/_assets/map/CourseMarker';
+import type { Map } from 'mapbox-gl';
+import { ReactElement } from 'react';
+import cmp from '~/util/cmp';
 
-export default function Map(): JSX.Element {
-  const stickers = useCurrentStickers();
+type Props = {
+  stickers: GQL.Sticker[];
+  center?: [number, number];
+};
 
-  if (stickers.length === 0) {
-    return null;
+type State = {
+  zoom: [number];
+  center: [number, number];
+};
+
+class CourseMap extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      zoom: [14],
+      center: getCenter(this.props.stickers),
+    };
   }
 
-  const { markers, center } = getMapProps(stickers);
+  public componentDidUpdate(prevProps: Props) {
+    const prevStickers = prevProps.stickers.map(({ _id }) => _id);
+    const currentStickers = this.props.stickers.map(({ _id }) => _id);
 
-  return (
-    <MapBox id="course-list-map" zoom={14} markers={markers} center={center} />
-  );
-}
+    console.log('...?');
+    if (!cmp(prevStickers, currentStickers)) {
+      this.setState({
+        ...this.state,
+        center: getCenter(this.props.stickers),
+      });
+    }
+  }
 
-function getMapProps(stickers: GQL.Sticker[]): {
-  center: MB.Coordinate;
-  markers: MB.Marker[];
-} {
-  const center: MB.Coordinate = [0, 0];
-  const markers: MB.Marker<CourseMarkerProps>[] = [];
+  public render(): ReactElement {
+    const { stickers } = this.props;
 
-  for (let i = 0; i < stickers.length; ++i) {
-    const { _id, spot } = stickers[i];
+    if (!this.state.center[0] || !this.state.center[1]) {
+      return null;
+    }
 
-    center[0] += spot.x;
-    center[1] += spot.y;
-    // onClick이 동작하기 위해서는 id 를 반드시 컴포넌트 루트요소에 넣어줘야 함.
-    markers.push({
-      id: `mk_${_id}`,
-      coord: [spot.x, spot.y],
-      num: `${i + 1}`,
-      onClick: (props) => console.log(props), // TODO : 임시
-      Component: CourseMarker,
+    return (
+      <CommonMap
+        center={this.state.center}
+        zoom={this.state.zoom}
+        style="mapbox://styles/mapbox/light-v10"
+        containerStyle={{
+          height: '100%',
+          width: '100%',
+        }}
+        onZoomEnd={this.onZoomEnd}
+      >
+        <ZoomControl />
+        <>
+          {stickers.map((sticker, i) => {
+            return (
+              <Marker
+                key={`mk-${sticker._id}`}
+                coordinates={[sticker.spot.x, sticker.spot.y]}
+                anchor="center"
+                onClick={(e) => console.log(e)}
+                style={{ zIndex: 10000 - i }}
+              >
+                <CourseMarker num={i + 1} zoom={this.state.zoom} />
+              </Marker>
+            );
+          })}
+        </>
+      </CommonMap>
+    );
+  }
+
+  private onZoomEnd = (map: Map) => {
+    this.setState({
+      ...this.state,
+      zoom: [map.getZoom()],
     });
-  }
-
-  center[0] = center[0] / stickers.length;
-  center[1] = center[1] / stickers.length;
-
-  return {
-    center,
-    markers,
   };
 }
+
+export default inject(CourseMap);

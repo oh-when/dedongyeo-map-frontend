@@ -8,12 +8,15 @@ module.exports = {
 
     return config;
   },
+  images: {
+    domains: ['/'],
+  },
   async rewrites() {
     return [
       {
         source: '/course',
         destination: '/course/list',
       },
-    ]
+    ];
   },
 };
