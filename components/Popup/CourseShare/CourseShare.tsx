@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ReactElement } from 'react';
 import * as $ from './CourseShareView';
 import { usePopupCloser } from '~/lib/apollo/hooks/usePopup';
 import SuccessCard from './SuccessCard';
@@ -9,7 +9,7 @@ export type Props = PopupChildProps & {
   course: GQL.Course;
 };
 
-const CourseShare: React.FC<Props> = ({ zIndex, course }) => {
+export default function CourseShare({ zIndex, course }: Props): ReactElement {
   const [isSharePage, setIsSharePage] = useState(false);
   const closePopup = usePopupCloser();
 
@@ -38,6 +38,4 @@ const CourseShare: React.FC<Props> = ({ zIndex, course }) => {
       </$.Layer>
     </$.CourseShare>
   );
-};
-
-export default CourseShare;
+}

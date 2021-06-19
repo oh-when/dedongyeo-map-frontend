@@ -17,6 +17,7 @@ declare module 'mapbox-gl' {
 
     loaded(): boolean;
     getZoom(): number;
+    setZoom(zoom: number): void;
     setCenter(coord: [number, number]): void;
     remove(): void;
     on<Type extends keyof MapEventMap>(
@@ -38,4 +39,24 @@ declare module 'mapbox-gl' {
 
   export { Map, Marker };
   export default mapboxgl;
+}
+
+declare namespace MapBoxService {
+  interface RouteJson {
+    code: string;
+    uuid: string;
+    routes: Array<{
+      distance: number;
+      duration: number;
+      geometry: {
+        coordinates: [number, number][];
+        type: string;
+      };
+    }>;
+    waypoints: Array<{
+      distance: number;
+      location: [number, number];
+      name: string;
+    }>;
+  }
 }

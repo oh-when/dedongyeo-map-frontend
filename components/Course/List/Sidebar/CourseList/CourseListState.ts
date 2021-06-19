@@ -52,6 +52,30 @@ export function getCenter(stickers: GQL.Sticker[]): [number, number] {
     .map((sum) => (sum ? sum / stickers.length : 0)) as [number, number];
 }
 
+export function fetchRoutes(
+  stickers: GQL.Sticker[]
+): Promise<[number, number][]> {
+  const route = stickers
+    .reduce((str, sticker) => `${str};${sticker.spot.x},${sticker.spot.y}`, '')
+    .substr(1);
+  const routeUrl = `https://api.mapbox.com/directions/v5/mapbox/cycling/${route}?geometries=geojson&access_token=${process.env.NEXT_PUBLIC_MAPBOX_PUBLIC_TOKEN}`;
+
+  return fetch(routeUrl)
+    .then((response) => response.json())
+    .then((data: MapBoxService.RouteJson) => {
+      if (
+        !data ||
+        !data.routes ||
+        !data.routes[0] ||
+        !data.routes[0].geometry ||
+        !data.routes[0].geometry.coordinates
+      ) {
+        return [];
+      }
+      return data.routes[0].geometry.coordinates;
+    });
+}
+
 export function changeCurrentCourses(courses: GQL.Course[]): void {
   currentCoursesVar(courses);
 }

@@ -40,8 +40,8 @@ export const Navigator = styled.button.attrs({ type: 'button' })`
   height: 104px;
   padding: 24px;
   border-radius: 16px;
-  border: 1px solid ${painter.grayscale[3]};
-  box-shadow: 0 0 8px 1px ${painter.grayscale[3]};
+  border: 1px solid ${painter.grayscale[4]};
+  box-shadow: 0 0 8px 1px ${painter.grayscale[4]};
   background-color: #fff;
   cursor: pointer;
   &::after {
