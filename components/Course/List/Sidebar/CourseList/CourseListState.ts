@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeVar, ReactiveVar, useReactiveVar } from '@apollo/client';
+import { mapboxService } from '~/services';
 
 export const currentCoursesVar: ReactiveVar<GQL.Course[]> = makeVar([]);
 export const currentCourseIndexVar: ReactiveVar<number> = makeVar(0);
@@ -55,25 +56,15 @@ export function getCenter(stickers: GQL.Sticker[]): [number, number] {
 export function fetchRoutes(
   stickers: GQL.Sticker[]
 ): Promise<[number, number][]> {
-  const route = stickers
-    .reduce((str, sticker) => `${str};${sticker.spot.x},${sticker.spot.y}`, '')
-    .substr(1);
-  const routeUrl = `https://api.mapbox.com/directions/v5/mapbox/cycling/${route}?geometries=geojson&access_token=${process.env.NEXT_PUBLIC_MAPBOX_PUBLIC_TOKEN}`;
+  const spotCoords = stickers.map((sticker) => [
+    sticker.spot.x,
+    sticker.spot.y,
+  ]) as [number, number][];
 
-  return fetch(routeUrl)
-    .then((response) => response.json())
-    .then((data: MapBoxService.RouteJson) => {
-      if (
-        !data ||
-        !data.routes ||
-        !data.routes[0] ||
-        !data.routes[0].geometry ||
-        !data.routes[0].geometry.coordinates
-      ) {
-        return [];
-      }
-      return data.routes[0].geometry.coordinates;
-    });
+  return mapboxService.direction.getDirections({
+    spotCoords,
+    type: 'cycling',
+  });
 }
 
 export function changeCurrentCourses(courses: GQL.Course[]): void {

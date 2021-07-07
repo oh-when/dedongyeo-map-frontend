@@ -8,6 +8,7 @@ import { addApolloState, initializeApollo } from '~/lib/apollo/client';
 import type { GetServerSideProps } from 'next';
 import { GET_COURSES_BY_DATE } from '~/components/Course/List/SideBar/Calendar/CalendarState';
 import { changeCurrentCourses } from '~/components/Course/List/SideBar/CourseList/CourseListState';
+import Popup from '~/components/Popup';
 
 type Props = {
   courses: GQL.Course[];
@@ -41,6 +42,7 @@ const CourseListPage: React.FC<Props> = ({ courses }) => {
         <GNB />
         <Main>
           <CourseList />
+          <Popup />
         </Main>
       </Wrap>
     </>

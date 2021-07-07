@@ -17,12 +17,15 @@ declare namespace GQL {
     _id: string;
     stickers: Array<GQL.Sticker>;
     title: string;
-    is_share: boolean;
-    courseImage: string;
+    isShare: boolean;
   };
-  export type CourseInput = {
-    courseId: string;
-    courseImageInput?: GQL.CreateCourseImageInput;
+  export type CourseSearchInput = {
+    startAt?: number;
+    endAt?: number;
+    title?: string;
+    isShare?: boolean;
+    ids?: string[];
+    partners?: string[];
   };
   export type CreateCourseImageInput = {
     theme: GQL.ImageThemeType;
@@ -189,7 +192,7 @@ declare namespace GQL {
     }
     export namespace Course {
       export type Variables = {
-        courseInput: GQL.CourseInput;
+        searchCourseInput: GQL.CourseSearchInput;
       };
       export type Data = {
         course: GQL.Course;

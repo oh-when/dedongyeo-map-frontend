@@ -9,24 +9,12 @@ import { useEffect } from 'react';
 import { changeCurrentCourses } from '~/components/Course/List/SideBar/CourseList/CourseListState';
 
 export const GET_COURSES_BY_DATE = gql`
-  query GetCoursesByDate {
-    courses {
+  query GetCoursesByDate($searchCourseInput: SearchCourseInput) {
+    courses(searchCourseInput: $searchCourseInput) {
       _id
       title
-      courseImage
-      is_share
-      stickers(populate: true) {
-        _id
-        is_used
-        sticker_index
-        sweet_percent
-        spot(populate: true) {
-          _id
-          place_name
-          x
-          y
-        }
-      }
+      isShare
+      stickers(populate: true)
     }
   }
 `;
@@ -49,8 +37,11 @@ export function useCursorState(): [Cursor, (newCursor: Cursor) => void] {
 
   useEffect(() => {
     client
-      .query<GQL.Query.Courses.Data>({
+      .query<GQL.Query.Courses.Data, GQL.Query.Course.Variables>({
         query: GET_COURSES_BY_DATE,
+        variables: {
+          searchCourseInput: {},
+        },
       })
       .then(({ data }) => {
         changeCurrentCourses(data.courses);

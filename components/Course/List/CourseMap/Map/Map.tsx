@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker, Layer, Feature, ZoomControl } from 'react-mapbox-gl';
+import { Marker, ZoomControl } from 'react-mapbox-gl';
 import { CommonMap } from '~/components/_common/MapBox';
 import {
   getCenter,
