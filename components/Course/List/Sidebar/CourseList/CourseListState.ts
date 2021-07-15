@@ -9,6 +9,10 @@ export function useCurrentCourses(): GQL.Course[] {
   return useReactiveVar(currentCoursesVar);
 }
 
+export function useCurrentCourseIndex(): number {
+  return useReactiveVar(currentCourseIndexVar);
+}
+
 export function useCurrentStickers(): GQL.Sticker[] {
   const courses = useReactiveVar(currentCoursesVar);
   const currentCourseIndex = useReactiveVar(currentCourseIndexVar);

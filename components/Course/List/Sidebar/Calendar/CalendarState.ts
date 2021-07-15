@@ -58,12 +58,14 @@ export function useCursorState(): [Cursor, (newCursor: Cursor) => void] {
         query: GET_COURSES_BY_DATE,
         variables: {
           searchCourseInput: {
-            startAt: range[0],
-            endAt: range[1],
+            // startAt: range[0],
+            // endAt: range[1],
+            isShare: true
           },
         },
       })
       .then(({ data }) => {
+        console.log(data);
         changeCurrentCourses(data.courses);
       });
   }, [cursor]);

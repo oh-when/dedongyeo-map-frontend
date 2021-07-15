@@ -2,12 +2,16 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
-export const CourseItem = styled.div`
+export const CourseItem = styled.div<{ isSelected: boolean }>`
   position: relative;
   padding: 24px 24px 23px;
   border-radius: 16px;
-  border: 1px solid ${painter.grayscale[2]};
-  box-shadow: 0 0 3px 1px ${painter.grayscale[3]};
+  ${props => props.isSelected ? `
+  border: 2px solid ${painter.primary.basic(props)};
+  ` : `
+  border: 1px solid ${painter.grayscale[2](props)};
+  box-shadow: 0 0 3px 1px ${painter.grayscale[3](props)};
+  `}
   background-color: ${painter.basic.white};
   & + & {
     margin-top: 24px;

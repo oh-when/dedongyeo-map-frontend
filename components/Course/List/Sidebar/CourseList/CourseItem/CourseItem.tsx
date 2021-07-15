@@ -9,6 +9,7 @@ type Props = {
   spotCount: number;
   timestamp: number;
   isPrivate: boolean;
+  isSelected: boolean;
 };
 
 export default function CourseItem({
@@ -17,6 +18,7 @@ export default function CourseItem({
   spotCount,
   timestamp,
   isPrivate,
+  isSelected,
 }: Props): JSX.Element {
   const dateStamp = formatDate(timestamp, true);
 
@@ -35,7 +37,7 @@ export default function CourseItem({
   };
 
   return (
-    <$.CourseItem>
+    <$.CourseItem isSelected={isSelected}>
       <$.AreaInfo>
         <$.Stickers />
         <$.Title>{title}</$.Title>
