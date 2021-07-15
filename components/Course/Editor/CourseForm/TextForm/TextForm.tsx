@@ -43,6 +43,7 @@ const TextForm: React.FC = () => {
             id={CHECKBOX_ID}
             defaultChecked={true}
             checked={isShare}
+            onChange={() => {}}
           />
           <$.ViewCheckBox />
           <$.CheckBoxLabel

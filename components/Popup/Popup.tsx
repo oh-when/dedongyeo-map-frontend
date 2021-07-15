@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useReactiveVar } from '@apollo/client';
-import SpotGenerator, { Props as SpotGeneratorProps } from './SpotGenerator';
-import CourseShare, { Props as CourseShareProps } from './CourseShare';
+import SpotGenerator from './SpotGenerator';
+import CourseShare from './CourseShare';
 import { PopupType } from '~/@types/popup.d';
 import { popupState } from '~/lib/apollo/vars/global';
 import Modal from '~/components/_common/Modal';
@@ -16,29 +16,22 @@ export default function Popup(): ReactElement {
 
   console.log('RENDER POPUP: ', popupType, popupProps);
 
-  if (popupType === null) {
-    return null;
+  switch(popupType) {
+    case PopupType.SPOT_GENERATOR: {
+      return (
+        <Modal>
+          <SpotGenerator zIndex="10000" {...popupProps} />
+        </Modal>
+      );
+    }
+    case PopupType.COURSE_SHARE: {
+      return (
+        <Modal>
+          <CourseShare zIndex="10001" {...popupProps} />
+        </Modal>
+      );
+    }
+    default:
+      return null;
   }
-
-  if (popupType === PopupType.SPOT_GENERATOR) {
-    const props = popupProps as SpotGeneratorProps;
-
-    return (
-      <Modal>
-        <SpotGenerator zIndex="10000" {...props} />
-      </Modal>
-    );
-  }
-
-  if (popupType === PopupType.COURSE_SHARE) {
-    const props = popupProps as CourseShareProps;
-
-    return (
-      <Modal>
-        <CourseShare zIndex="10001" {...props} />
-      </Modal>
-    );
-  }
-
-  return null;
 }

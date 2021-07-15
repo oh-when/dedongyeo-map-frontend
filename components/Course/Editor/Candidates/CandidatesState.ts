@@ -81,6 +81,10 @@ export function setCandidateStatus(
   candidatesVar(nextCandidates);
 }
 
+export function activeCandidate(candidateId: string): void {
+  setCandidateStatus(candidateId, CandidateCardStatus.Wait);
+}
+
 export function removeMovedCandidates(): void {
   const nextCandidates = candidatesVar().filter(
     (candidate) => candidate.status === CandidateCardStatus.Moved
