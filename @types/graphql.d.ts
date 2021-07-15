@@ -129,12 +129,19 @@ declare namespace GQL {
   export namespace GetMapSpots {
     export type Variables = {
       searchSpotDto?: {
-        x: number;
-        y: number;
+        keyword: string;
+        page: number;
+        size: number;
       };
     };
     export type Data = {
-      spots: Array<Spot>;
+      spots: {
+        spots: Array<Spot>;
+        cur_page: number;
+        is_end: boolean;
+        total_count: number;
+        total_page_count: number;
+      };
     };
   }
 }

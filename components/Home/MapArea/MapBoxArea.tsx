@@ -16,25 +16,37 @@ import SpotInfoModal from '~/components/Home/MapArea/SpotInfoModal';
 const GET_MAP_SPOTS = gql`
   query GetMapSpots($searchSpotDto: SearchSpotDto) {
     spots(searchSpotDto: $searchSpotDto) {
-      _id
-      place_id
-      stickers(populate: true) {
+      cur_page
+      is_end
+      spots {
         _id
-        is_used
-        sticker_index
-        sweet_percent
+        place_id
+        stickers(populate: true) {
+          _id
+          is_used
+          sticker_index
+          sweet_percent
+        }
+        place_name
+        category_name
+        category_group_code
+        category_group_name
+        phone
+        address_name
+        road_address_name
+        place_url
+        distance
+        x
+        y
+        groupedSticker {
+          sticker_index
+          total_count
+        }
+        is_custom
+        is_custom_share
       }
-      place_name
-      category_name
-      category_group_code
-      category_group_name
-      phone
-      address_name
-      road_address_name
-      place_url
-      distance
-      x
-      y
+      total_count
+      total_page_count
     }
   }
 `;
@@ -110,8 +122,9 @@ const MapBoxArea: React.FC = () => {
       getMapSpots({
         variables: {
           searchSpotDto: {
-            x: currentPosition.lngX,
-            y: currentPosition.latY,
+            keyword: '',
+            page: 1,
+            size: 100,
           },
         },
       });
@@ -161,21 +174,26 @@ const MapBoxArea: React.FC = () => {
 
       // 스팟들을 지도에 그리기
       console.log(mapSpots);
-      console.log(<SpotItem spot={DUMMY_SPOT} />);
-      new mapboxgl.Marker(<SpotItem spot={DUMMY_SPOT} />)
-        .setLngLat([DUMMY_SPOT.x, DUMMY_SPOT.y])
-        .addTo(map);
+      // console.log(<SpotItem spot={DUMMY_SPOT} />);
+      mapSpots.forEach((spot) => {
+        new mapboxgl.Marker(<SpotItem spot={spot} />)
+          .setLngLat([spot.x, spot.y])
+          .addTo(map);
+      });
+      // new mapboxgl.Marker(<SpotItem spot={DUMMY_SPOT} />)
+      //   .setLngLat([DUMMY_SPOT.x, DUMMY_SPOT.y])
+      //   .addTo(map);
     }
-  }, [map, isCustomSpotFlag]);
+  }, [map, isCustomSpotFlag, mapSpots]);
 
   useEffect(() => {
     console.log(currentPosition);
   }, [currentPosition]);
 
   useEffect(() => {
-    if (data && data?.spots) {
-      console.log(data?.spots);
-      setMapSpots(data?.spots);
+    if (data && data?.spots && data?.spots?.spots) {
+      console.log(data.spots.spots);
+      setMapSpots(data.spots.spots);
     }
   }, [data, called, loading]);
 
