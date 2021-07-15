@@ -1,27 +1,31 @@
-import { gql, useMutation, useApolloClient } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { removeMovedCandidates } from '~/components/Course/Editor/Candidates/CandidatesState';
 import { resetFormTable, formArrayVar } from './StickerForm/StickerFormState';
 import { formTitleVar } from './TextForm/TextFormState';
 import { PopupType } from '~/@types/popup.d';
 import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
 
-enum ImageThemeType {
-  dark = 'dark',
-  light = 'light',
-  street = 'street',
-}
-
-const GET_COURSE = gql`
-  query Course($courseInput: CourseInput!) {
-    course(courseInput: $courseInput) {
+const GET_COURSES_BY_ID = gql`
+  query GetCoursesById($courseId: ID!) {
+    courses(courseId: $courseId) {
       _id
+      endAt
+      isShare
+      partners
+      startAt
       stickers(populate: true) {
-        sweet_percent
+        _id
         sticker_index
+        sweet_percent
+        spot(populate: true) {
+          _id
+          place_id
+          place_name
+          x
+          y
+        }
       }
       title
-      is_share
-      courseImage
     }
   }
 `;
@@ -30,13 +34,6 @@ const CREATE_COURSE = gql`
   mutation CreateCourse($createCourseInput: CreateCourseInput!) {
     createCourse(createCourseInput: $createCourseInput) {
       _id
-      stickers(populate: true) {
-        sweet_percent
-        sticker_index
-      }
-      title
-      is_share
-      courseImage
     }
   }
 `;
@@ -48,26 +45,12 @@ export const useFormSubmitter = (): (() => void) => {
     GQL.Mutation.CreateCourse.Data,
     GQL.Mutation.CreateCourse.Variables
   >(CREATE_COURSE, {
-    variables: {
-      createCourseInput: {
-        stickers: [],
-        title: '',
-        is_share: false,
-      },
-    },
-    onCompleted({ createCourse: data }) {
+    onCompleted: ({ createCourse }) => {
       client
         .query<GQL.Query.Course.Data, GQL.Query.Course.Variables>({
-          query: GET_COURSE,
+          query: GET_COURSES_BY_ID,
           variables: {
-            courseInput: {
-              courseId: data._id,
-              courseImageInput: {
-                theme: ImageThemeType.street,
-                width: 800,
-                height: 800,
-              },
-            },
+            courseId: createCourse._id,
           },
         })
         .then(({ data: { course } }) => {
@@ -77,9 +60,6 @@ export const useFormSubmitter = (): (() => void) => {
               course,
             },
           });
-        })
-        .catch((err) => {
-          console.error(err);
         });
     },
   });
@@ -97,7 +77,7 @@ export const useFormSubmitter = (): (() => void) => {
         createCourseInput: {
           stickers,
           title,
-          is_share: true,
+          isShare: true,
         },
       },
     });

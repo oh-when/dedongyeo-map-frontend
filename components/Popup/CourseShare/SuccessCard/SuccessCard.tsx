@@ -2,16 +2,18 @@ import React from 'react';
 import * as $ from './SuccessCardView';
 import { usePopupCloser } from '~/lib/apollo/hooks/usePopup';
 import { formatTime } from '~/util';
-import { mapboxService } from '~/services';
-import { getStickerImageUrl } from '~/components/_assets/sticker';
+import {
+  useSharedCourseImageSource,
+  useSharedCourse,
+} from '../CourseShareState';
 
 export type Props = {
-  course: GQL.Course;
   onClickShareButton: (e: React.MouseEvent) => void;
 };
 
-const CourseShare: React.FC<Props> = ({ course, onClickShareButton }) => {
-  const [courseImageSource, setCourseImageSource] = React.useState(null);
+const CourseShare: React.FC<Props> = ({ onClickShareButton }) => {
+  const course = useSharedCourse();
+  const image = useSharedCourseImageSource();
   const closePopup = usePopupCloser();
   // TODO : 서버에서 내려주는 값으로 변경
   const time: string = formatTime(Math.floor(Date.now() / 1000), 'MM월 DD일');
@@ -21,30 +23,9 @@ const CourseShare: React.FC<Props> = ({ course, onClickShareButton }) => {
     closePopup();
   };
 
-  React.useEffect(() => {
-    const { stickers } = course;
-    const spotCoords = stickers.map(
-      (sticker) => [sticker.spot.x, sticker.spot.y] as [number, number]
-    );
-    const spotImageUrls = stickers.map((sticker) =>
-      getStickerImageUrl(sticker.sweet_percent, sticker.sticker_index)
-    );
-
-    mapboxService
-      .getStaticImageSource({
-        spotCoords,
-        spotImageUrls,
-        width: 496,
-        height: 496,
-      })
-      .then((source) => setCourseImageSource(source));
-  }, []);
-
   return (
     <$.SuccessCard>
-      <$.AreaCourse>
-        {courseImageSource && <$.CourseImage src={courseImageSource} />}
-      </$.AreaCourse>
+      <$.AreaCourse>{image && <$.CourseImage src={image} />}</$.AreaCourse>
       <$.AreaFooter>
         <$.Title>데이트 코스가 등록되었어요!</$.Title>
         <$.Description>

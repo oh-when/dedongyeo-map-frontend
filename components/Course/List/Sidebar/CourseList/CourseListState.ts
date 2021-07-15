@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeVar, ReactiveVar, useReactiveVar } from '@apollo/client';
-import { mapboxService } from '~/services';
+import mapboxService from '~/lib/mapboxService';
 
 export const currentCoursesVar: ReactiveVar<GQL.Course[]> = makeVar([]);
 export const currentCourseIndexVar: ReactiveVar<number> = makeVar(0);

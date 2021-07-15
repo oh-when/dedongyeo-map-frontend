@@ -59,9 +59,6 @@ export const CREATE_STICKER = gql`
 `;
 
 export const useCreateSticker = (): CreateSticker => {
-  // TODO : BE 측 추가 필요
-  // let partner: string = formPartnerState() || '';
-
   const [request] = useMutation<
     GQL.Mutation.CreateSticker.Data,
     GQL.Mutation.CreateSticker.Variables
@@ -70,8 +67,13 @@ export const useCreateSticker = (): CreateSticker => {
   const createSticker: CreateSticker = (place: SpotGeneratorProps['place']) => {
     const sweetPercent = formSweetState();
     const stickerIndex = formStickerState();
+    const partners = formPartnerState() ? [formPartnerState()] : [];
+    const inputDate = formDateState();
+    const date = inputDate
+      ? new Date(`${inputDate[0]}-${inputDate[1]}-${inputDate[2]}`)
+      : new Date();
+    const startAt = date.getTime();
 
-    // partner = formPartnerState();
     request({
       variables: {
         createStickerInput: {
@@ -81,6 +83,9 @@ export const useCreateSticker = (): CreateSticker => {
           y: place.y,
           sticker_index: stickerIndex,
           sweet_percent: sweetPercent,
+          partners,
+          startAt,
+          endAt: startAt,
         },
       },
     });

@@ -4,6 +4,8 @@ import { usePopupCloser } from '~/lib/apollo/hooks/usePopup';
 import SuccessCard from './SuccessCard';
 import ShareCard from './ShareCard';
 import type { PopupChildProps } from '~/@types/popup.d';
+import { useEffect } from 'react';
+import { setSharedCourse } from './CourseShareState';
 
 export type Props = PopupChildProps & {
   course: GQL.Course;
@@ -23,17 +25,18 @@ export default function CourseShare({ zIndex, course }: Props): ReactElement {
     setIsSharePage(true);
   };
 
+  useEffect(() => {
+    setSharedCourse(course);
+  }, [course]);
+
   return (
     <$.CourseShare zIndex={zIndex}>
       <$.Layer>
         <$.CloseLayerButton onClick={handleClickCloseButton} />
         {!isSharePage ? (
-          <SuccessCard
-            course={course}
-            onClickShareButton={handleClickShareButton}
-          />
+          <SuccessCard onClickShareButton={handleClickShareButton} />
         ) : (
-          <ShareCard course={course} />
+          <ShareCard />
         )}
       </$.Layer>
     </$.CourseShare>

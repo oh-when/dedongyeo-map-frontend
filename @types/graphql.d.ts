@@ -15,17 +15,20 @@ declare namespace GQL {
   }
   export type Course = {
     _id: string;
+    endAt: number;
+    isShare: boolean;
+    partners: string[];
+    startAt: number;
     stickers: Array<GQL.Sticker>;
     title: string;
-    isShare: boolean;
   };
   export type CourseSearchInput = {
-    startAt?: number;
     endAt?: number;
-    title?: string;
-    isShare?: boolean;
     ids?: string[];
+    isShare?: boolean;
     partners?: string[];
+    startAt?: number;
+    title?: string;
   };
   export type CreateCourseImageInput = {
     theme: GQL.ImageThemeType;
@@ -33,9 +36,9 @@ declare namespace GQL {
     height: number;
   };
   export type CreateCourseInput = {
+    isShare?: boolean;
     stickers?: string[];
     title?: string;
-    is_share?: boolean;
   };
   export type CreateCustomSpotInput = {
     place_name: string;
@@ -46,21 +49,24 @@ declare namespace GQL {
     is_custom_share?: boolean;
   };
   export type CreateStickerInput = {
-    place_id: string;
-    place_name: string;
-    x: number;
-    y: number;
-    category_name?: string;
+    address_name?: string;
     category_group_code?: string;
     category_group_name?: string;
-    phone?: string;
-    address_name?: string;
-    road_address_name?: string;
-    place_url?: string;
+    category_name?: string;
     distance?: string;
+    endAt: number;
+    is_used?: boolean;
+    partners?: string[];
+    phone?: string;
+    place_id: string;
+    place_name: string;
+    place_url?: string;
+    road_address_name?: string;
+    startAt: number;
     sticker_index: number;
     sweet_percent: number;
-    is_used?: boolean;
+    x: number;
+    y: number;
   };
   export type DeleteSpotDto = {
     ok: number;
@@ -131,6 +137,9 @@ declare namespace GQL {
     sticker_index: number;
     sweet_percent: number;
     is_used: boolean;
+    startAt: number;
+    endAt: number;
+    partners: string[];
     spot: Spot;
   };
   export type UpdateCustomSpotInput = {
@@ -186,13 +195,16 @@ declare namespace GQL {
       };
     }
     export namespace Courses {
+      export type Variables = {
+        searchCourseInput: GQL.CourseSearchInput;
+      };
       export type Data = {
         courses: GQL.Course[];
       };
     }
     export namespace Course {
       export type Variables = {
-        searchCourseInput: GQL.CourseSearchInput;
+        courseId: string;
       };
       export type Data = {
         course: GQL.Course;

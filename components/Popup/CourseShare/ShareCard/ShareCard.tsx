@@ -1,29 +1,36 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useSharedCourseImageSource } from '../CourseShareState';
 import * as $ from './ShareCardView';
 
 type Props = {
-  course: GQL.Course;
+  //
 };
 
-const ShareCard: React.FC<Props> = ({ course }) => {
+const ShareCard: React.FC<Props> = () => {
+  const hiddenInput = useRef(null);
+  const image = useSharedCourseImageSource();
+  const url = useSharedCourseImageSource();
   const handleClickCopyButton = (e: React.MouseEvent) => {
     e.preventDefault();
+    hiddenInput.current.select();
+    document.execCommand('copy');
   };
 
   return (
     <$.ShareCard>
+      <$.HiddenInput ref={hiddenInput} value={url} />
       <$.AreaCourse>
-        <$.CourseImage src={course.courseImage} />
+        <$.CourseImage src={image} />
       </$.AreaCourse>
       <$.Title>코스 이미지 공유하기</$.Title>
-      <$.DownloadButton href={course.courseImage}>
+      <$.DownloadButton href={url} download="course-image">
         <$.DownloadButtonImage></$.DownloadButtonImage>
         <$.DownloadButtonText>다운받기</$.DownloadButtonText>
       </$.DownloadButton>
       <$.AreaCopy>
         <$.CopyButton onClick={handleClickCopyButton}>링크 복사</$.CopyButton>
         <$.CopyUrl>
-          <$.CopyUrlInner>{course.courseImage}</$.CopyUrlInner>
+          <$.CopyUrlInner>{url}</$.CopyUrlInner>
         </$.CopyUrl>
       </$.AreaCopy>
     </$.ShareCard>

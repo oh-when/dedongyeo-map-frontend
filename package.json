@@ -20,6 +20,7 @@
     "graphql": "^15.4.0",
     "lodash": "^4.17.20",
     "mapbox-gl": "^2.3.0",
+    "mapbox-service": "^0.0.14",
     "next": "10.0.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",
