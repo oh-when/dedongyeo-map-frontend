@@ -23,6 +23,8 @@ type State = {
 };
 
 class CourseMap extends React.Component<Props, State> {
+  private isUnmounted: boolean;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -33,7 +35,12 @@ class CourseMap extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
+    this.isUnmounted = false;
     this.update();
+  }
+
+  public componentWillUnmount() {
+    this.isUnmounted = true;
   }
 
   public componentDidUpdate(prevProps: Props) {
@@ -102,6 +109,9 @@ class CourseMap extends React.Component<Props, State> {
   };
 
   private update() {
+    if (this.isUnmounted) {
+      return;
+    }
     const center = getCenter(this.props.stickers);
     const waitRoutes = fetchRoutes(this.props.stickers);
 
