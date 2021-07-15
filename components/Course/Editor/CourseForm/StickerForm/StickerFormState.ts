@@ -44,3 +44,10 @@ export function replacePlaceholder(order: number): void {
 export function resetFormTable(): void {
   formArrayVar([null]);
 }
+
+export function removeStickerCard(stickerId: string): void {
+  const nextFormArray = formArrayVar().filter(card => !card || card.id !== stickerId);
+
+  if (nextFormArray.length === 0) nextFormArray.push(null);
+  formArrayVar(nextFormArray);
+}
