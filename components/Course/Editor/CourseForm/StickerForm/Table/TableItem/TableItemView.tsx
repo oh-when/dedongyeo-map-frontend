@@ -44,7 +44,8 @@ export const Card = styled.div<{
     !props.isLayout &&
     `
   border-radius: 16px;
-  box-shadow: 0 0 8px 1px ${painter.grayscale[3](props)};
+  border: 1px solid ${painter.grayscale[3](props)};
+  box-shadow: 0 0 6px 2px ${painter.grayscale[3](props)};
   vertical-align: top;
   `}
 `;

@@ -6,7 +6,7 @@ export const PopupMenu = styled.div`
   width: 164px;
   border-radius: 8px;
   border: 1px solid ${painter.grayscale[3]};
-  box-shadow: 0 0 8px 1px ${painter.grayscale[3]};
+  box-shadow: 0 0 4px 1px ${painter.grayscale[2]};
   background-color: ${painter.basic.white};
 `;
 

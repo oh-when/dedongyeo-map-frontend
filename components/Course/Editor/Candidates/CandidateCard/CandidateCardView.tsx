@@ -5,7 +5,8 @@ export const CandidateCard = styled.div`
   position: relative;
   border-radius: 16px;
   background-color: #fff;
-  box-shadow: 0 0 8px 1px ${painter.grayscale[3]};
+  border: 1px solid ${painter.grayscale[3]};
+  box-shadow: 0 0 6px 2px ${painter.grayscale[2]};
   transform: translate(0, 0);
   ${(props) =>
     !props.draggable
