@@ -36,7 +36,8 @@ export const Stickers = styled.div`
 `;
 
 export const Title = styled.strong`
-  margin-top: 13px;
+  display: block;
+  margin-top: 14px;
   font-size: 24px;
   color: ${painter.basic.black};
 `;

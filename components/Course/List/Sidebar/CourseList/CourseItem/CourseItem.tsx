@@ -1,4 +1,5 @@
 import React from 'react';
+import StickerGroup from '~/components/_assets/sticker/StickerGroup';
 import { formatDate } from '~/util';
 import { changeCurrentCourseIndex } from '../CourseListState';
 import * as $ from './CourseItemView';
@@ -34,7 +35,14 @@ export default function CourseItem({
   return (
     <$.CourseItem isSelected={isSelected}>
       <$.AreaInfo>
-        <$.Stickers />
+        <$.Stickers>
+          <StickerGroup
+            keygen={`course-item-${idx}`}
+            stickers={course.stickers}
+            unitWidth={40}
+            unitHeight={40}
+          />
+        </$.Stickers>
         <$.Title>{course.title}</$.Title>
         <$.Info>
           <$.SpotCount>총 {course.stickers.length}개 스팟</$.SpotCount>
