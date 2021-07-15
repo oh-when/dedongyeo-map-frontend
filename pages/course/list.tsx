@@ -9,6 +9,7 @@ import type { GetServerSideProps } from 'next';
 import { GET_COURSES_BY_DATE } from '~/components/Course/List/SideBar/Calendar/CalendarState';
 import { changeCurrentCourses } from '~/components/Course/List/SideBar/CourseList/CourseListState';
 import Popup from '~/components/Popup';
+import { useEffect } from 'react';
 
 type Props = {
   courses: GQL.Course[];
@@ -23,8 +24,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
     query: GET_COURSES_BY_DATE,
     variables: {
       searchCourseInput: {
-        startAt: 1622505600000,
-        endAt: 1625097600000,
+        // startAt: 1622505600000,
+        // endAt: 1625097600000,
         isShare: true,
       },
     },
@@ -40,7 +41,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const CourseListPage: React.FC<Props> = ({ courses }) => {
-  changeCurrentCourses(courses);
+
+  useEffect(() => {
+    changeCurrentCourses(courses);
+  }, [courses])
 
   return (
     <>

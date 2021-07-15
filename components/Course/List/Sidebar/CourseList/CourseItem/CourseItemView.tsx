@@ -2,12 +2,16 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
-export const CourseItem = styled.div`
+export const CourseItem = styled.div<{ isSelected: boolean }>`
   position: relative;
   padding: 24px 24px 23px;
   border-radius: 16px;
-  border: 1px solid ${painter.grayscale[2]};
-  box-shadow: 0 0 3px 1px ${painter.grayscale[3]};
+  ${props => props.isSelected ? `
+  border: 2px solid ${painter.primary.basic(props)};
+  ` : `
+  border: 1px solid ${painter.grayscale[2](props)};
+  box-shadow: 0 0 3px 1px ${painter.grayscale[3](props)};
+  `}
   background-color: ${painter.basic.white};
   & + & {
     margin-top: 24px;
@@ -32,7 +36,8 @@ export const Stickers = styled.div`
 `;
 
 export const Title = styled.strong`
-  margin-top: 13px;
+  display: block;
+  margin-top: 14px;
   font-size: 24px;
   color: ${painter.basic.black};
 `;
@@ -57,15 +62,6 @@ export const Date = styled.span`
   margin-left: 8px;
   vertical-align: top;
   font-size: 14px;
-`;
-
-export const AreaLabel = styled.div`
-  position: absolute;
-  right: 24px;
-  bottom: 24px;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${painter.grayscale[6]};
 `;
 
 export const AreaButton = styled.div`
@@ -109,4 +105,14 @@ export const DeleteIcon = styled(Image).attrs({
   src: '/course/list/trashcan_gray.svg',
 })`
   display: block;
+`;
+
+export const ShareLabel = styled.div<{ isShare: boolean }>`
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${props => props.isShare ? painter.secondary[0](props) : painter.grayscale[6](props)};
 `;

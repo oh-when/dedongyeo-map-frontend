@@ -2,7 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { SweetPercent, StickerIndex } from '~/constants/stickers';
-import { ReactElement } from 'react';
 
 type StickerProps = {
   sweetPercent: SweetPercent;
@@ -32,7 +31,7 @@ export default function Sticker({
   className,
   width,
   height,
-}: StickerProps): ReactElement {
+}: StickerProps): JSX.Element {
   const src = getStickerImageUrl(sweetPercent, stickerIndex);
 
   return (
