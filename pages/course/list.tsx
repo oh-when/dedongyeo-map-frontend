@@ -8,6 +8,7 @@ import { addApolloState, initializeApollo } from '~/lib/apollo/client';
 import type { GetServerSideProps } from 'next';
 import { GET_COURSES_BY_DATE } from '~/components/Course/List/SideBar/Calendar/CalendarState';
 import { changeCurrentCourses } from '~/components/Course/List/SideBar/CourseList/CourseListState';
+import Popup from '~/components/Popup';
 
 type Props = {
   courses: GQL.Course[];
@@ -15,8 +16,18 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const client = initializeApollo();
-  const { data } = await client.query<GQL.Query.Courses.Data>({
+  const { data } = await client.query<
+    GQL.Query.Courses.Data,
+    GQL.Query.Courses.Variables
+  >({
     query: GET_COURSES_BY_DATE,
+    variables: {
+      searchCourseInput: {
+        startAt: 1622505600000,
+        endAt: 1625097600000,
+        isShare: true,
+      },
+    },
   });
   const courses = (data && data.courses) || [];
 
@@ -41,6 +52,7 @@ const CourseListPage: React.FC<Props> = ({ courses }) => {
         <GNB />
         <Main>
           <CourseList />
+          <Popup />
         </Main>
       </Wrap>
     </>

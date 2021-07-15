@@ -9,6 +9,10 @@ export const ShareCard = styled.div`
   text-align: center;
 `;
 
+export const HiddenInput = styled.input.attrs({ type: 'text' })`
+  display: none;
+`;
+
 export const AreaCourse = styled.div`
   height: 416px;
 `;

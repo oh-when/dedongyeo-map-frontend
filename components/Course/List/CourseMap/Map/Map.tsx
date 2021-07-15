@@ -1,52 +1,118 @@
 import React from 'react';
-import MapBox from '~/components/_common/MapBox';
-import { useCurrentStickers } from '~/components/Course/List/SideBar/CourseList/CourseListState';
-import { MB } from '~/components/_common/MapBox/MapBox.d';
-import CourseMarker, {
-  Props as CourseMarkerProps,
-} from '~/components/_assets/map/CourseMarker';
+import { Marker, ZoomControl } from 'react-mapbox-gl';
+import { CommonMap } from '~/components/_common/MapBox';
+import {
+  getCenter,
+  fetchRoutes,
+  inject,
+} from '~/components/Course/List/SideBar/CourseList/CourseListState';
+import CourseMarker from '~/components/_assets/map/CourseMarker';
+import type { Map } from 'mapbox-gl';
+import { ReactElement } from 'react';
+import cmp from '~/util/cmp';
+import CourseLine from '~/components/_assets/map/CourseLine';
 
-export default function Map(): JSX.Element {
-  const stickers = useCurrentStickers();
+type Props = {
+  stickers: GQL.Sticker[];
+};
 
-  if (stickers.length === 0) {
-    return null;
+type State = {
+  zoom: [number];
+  center: [number, number];
+  routes: [number, number][];
+};
+
+class CourseMap extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      zoom: [14],
+      center: [0, 0],
+      routes: [],
+    };
   }
 
-  const { markers, center } = getMapProps(stickers);
+  public componentDidMount() {
+    this.update();
+  }
 
-  return (
-    <MapBox id="course-list-map" zoom={14} markers={markers} center={center} />
-  );
-}
+  public componentDidUpdate(prevProps: Props) {
+    const prevStickers = prevProps.stickers.map(({ _id }) => _id);
+    const currentStickers = this.props.stickers.map(({ _id }) => _id);
 
-function getMapProps(stickers: GQL.Sticker[]): {
-  center: MB.Coordinate;
-  markers: MB.Marker[];
-} {
-  const center: MB.Coordinate = [0, 0];
-  const markers: MB.Marker<CourseMarkerProps>[] = [];
+    if (!cmp(prevStickers, currentStickers)) {
+      this.update();
+    }
+  }
 
-  for (let i = 0; i < stickers.length; ++i) {
-    const { _id, spot } = stickers[i];
+  public render(): ReactElement {
+    const { stickers } = this.props;
 
-    center[0] += spot.x;
-    center[1] += spot.y;
-    // onClick이 동작하기 위해서는 id 를 반드시 컴포넌트 루트요소에 넣어줘야 함.
-    markers.push({
-      id: `mk_${_id}`,
-      coord: [spot.x, spot.y],
-      num: `${i + 1}`,
-      onClick: (props) => console.log(props), // TODO : 임시
-      Component: CourseMarker,
+    if (!this.state.center[0] || !this.state.center[1]) {
+      return null;
+    }
+
+    return (
+      <CommonMap
+        center={this.state.center}
+        zoom={this.state.zoom}
+        style="mapbox://styles/mapbox/light-v10"
+        containerStyle={{
+          height: '100%',
+          width: '100%',
+        }}
+        onZoomEnd={this.onZoomEnd}
+        onStyleLoad={this.onStyleLoaded}
+      >
+        <ZoomControl />
+        <>
+          {stickers.map((sticker, i) => {
+            return (
+              <Marker
+                key={`mk-${sticker._id}`}
+                coordinates={[sticker.spot.x, sticker.spot.y]}
+                anchor="center"
+                onClick={(e) => console.log(e)}
+                style={{ zIndex: 10000 - i }}
+              >
+                <CourseMarker num={i + 1} zoom={this.state.zoom} />
+              </Marker>
+            );
+          })}
+        </>
+        <CourseLine routes={this.state.routes} zoom={this.state.zoom[0]} />
+      </CommonMap>
+    );
+  }
+
+  private onZoomEnd = (map: Map) => {
+    this.setState({
+      ...this.state,
+      zoom: [map.getZoom()],
+    });
+  };
+
+  private onStyleLoaded = (map: Map) => {
+    // 스타일 로드 후 강제 리렌더링을 해야 함. (간헐적으로 일부 소스가 렌더링되지 않는 이슈)
+    // React MapBoxGL의 버그로 보임
+    this.setState({
+      ...this.state,
+      zoom: [map.getZoom()],
+    });
+  };
+
+  private update() {
+    const center = getCenter(this.props.stickers);
+    const waitRoutes = fetchRoutes(this.props.stickers);
+
+    waitRoutes.then((routes) => {
+      this.setState({
+        ...this.state,
+        routes,
+        center,
+      });
     });
   }
-
-  center[0] = center[0] / stickers.length;
-  center[1] = center[1] / stickers.length;
-
-  return {
-    center,
-    markers,
-  };
 }
+
+export default inject(CourseMap);

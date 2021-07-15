@@ -43,6 +43,7 @@ module.exports = {
       'error',
       { varsIgnorePattern: '[_]+|React' },
     ],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
   globals: { React: 'writable' },
 };

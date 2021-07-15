@@ -6,8 +6,8 @@ export const CourseItem = styled.div`
   position: relative;
   padding: 24px 24px 23px;
   border-radius: 16px;
-  border: 1px solid ${painter.grayscale[1]};
-  box-shadow: 0 0 4px 1px ${painter.grayscale[2]};
+  border: 1px solid ${painter.grayscale[2]};
+  box-shadow: 0 0 3px 1px ${painter.grayscale[3]};
   background-color: ${painter.basic.white};
   & + & {
     margin-top: 24px;
