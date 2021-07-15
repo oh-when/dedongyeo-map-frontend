@@ -16,10 +16,7 @@ export default function CourseList(): JSX.Element {
         <CourseItem
           key={`cl-${course._id}`}
           idx={i}
-          title={course.title}
-          spotCount={course.stickers ? course.stickers.length : 0}
-          timestamp={Math.floor(Date.now() / 1000)}
-          isPrivate={!course.isShare}
+          course={course}
           isSelected={i === index}
         />
       ))}

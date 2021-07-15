@@ -5,22 +5,17 @@ import * as $ from './CourseItemView';
 
 type Props = {
   idx: number;
-  title: string;
-  spotCount: number;
-  timestamp: number;
-  isPrivate: boolean;
   isSelected: boolean;
+  course: GQL.Course;
 };
 
 export default function CourseItem({
   idx,
-  title,
-  spotCount,
-  timestamp,
-  isPrivate,
+  course,
   isSelected,
 }: Props): JSX.Element {
-  const dateStamp = formatDate(timestamp, true);
+  const unixTime = Math.floor(course.startAt / 1000)
+  const dateStamp = formatDate(unixTime, true);
 
   const handleClickLink = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -40,13 +35,12 @@ export default function CourseItem({
     <$.CourseItem isSelected={isSelected}>
       <$.AreaInfo>
         <$.Stickers />
-        <$.Title>{title}</$.Title>
+        <$.Title>{course.title}</$.Title>
         <$.Info>
-          <$.SpotCount>총 {spotCount}개 스팟</$.SpotCount>
+          <$.SpotCount>총 {course.stickers.length}개 스팟</$.SpotCount>
           <$.Date>{dateStamp}</$.Date>
         </$.Info>
       </$.AreaInfo>
-      {isPrivate && <$.AreaLabel>비공개</$.AreaLabel>}
       <$.CourseLink onClick={handleClickLink} />
       <$.AreaButton>
         <$.ItemButton onClick={handleClickShare}>
@@ -59,6 +53,7 @@ export default function CourseItem({
           <$.DeleteIcon />
         </$.ItemButton>
       </$.AreaButton>
+      <$.ShareLabel isShare={course.isShare}>{course.isShare ? '공개' : '비공개'}</$.ShareLabel>
     </$.CourseItem>
   );
 }

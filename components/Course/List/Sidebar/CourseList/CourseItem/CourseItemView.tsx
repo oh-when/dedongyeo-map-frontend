@@ -63,15 +63,6 @@ export const Date = styled.span`
   font-size: 14px;
 `;
 
-export const AreaLabel = styled.div`
-  position: absolute;
-  right: 24px;
-  bottom: 24px;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${painter.grayscale[6]};
-`;
-
 export const AreaButton = styled.div`
   position: absolute;
   top: 24px;
@@ -113,4 +104,14 @@ export const DeleteIcon = styled(Image).attrs({
   src: '/course/list/trashcan_gray.svg',
 })`
   display: block;
+`;
+
+export const ShareLabel = styled.div<{ isShare: boolean }>`
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${props => props.isShare ? painter.secondary[0](props) : painter.grayscale[6](props)};
 `;
