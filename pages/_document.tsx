@@ -48,6 +48,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <div id="modal-root" />
+          <div id="independent-root"></div>
           <div id="marker-shadow" style={{ display: 'none' }}></div>
           <NextScript />
         </body>

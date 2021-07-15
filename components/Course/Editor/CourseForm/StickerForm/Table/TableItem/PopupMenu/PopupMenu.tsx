@@ -1,0 +1,27 @@
+import React from 'react';
+import { CLASSNAME_COURSE_EDITOR_SPOT } from '~/constants/dom';
+import * as $ from './PopupMenuView';
+import type { StickerCardDTO } from '~/components/Course/Editor/Editor.d';
+import { usePopupSticker } from './PopupMenuState';
+
+type Props = {
+  sticker: StickerCardDTO
+};
+
+export default function PopupMenu(props: Props): JSX.Element {
+  const currentSticker = usePopupSticker();
+
+  const onClickDeleteButton = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
+  if (!currentSticker || props.sticker.id !== currentSticker.id) {
+    return null;
+  }
+
+  return (
+    <$.PopupMenu className={CLASSNAME_COURSE_EDITOR_SPOT}>
+      <$.Button onClick={onClickDeleteButton}>삭제</$.Button>
+    </$.PopupMenu>
+  );
+}

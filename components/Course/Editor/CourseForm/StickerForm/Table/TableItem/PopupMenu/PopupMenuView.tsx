@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
-export const SpotOptionLayer = styled.div`
+export const PopupMenu = styled.div`
   position: absolute;
-  top: 160px;
-  left: 90px;
   width: 164px;
   border-radius: 8px;
   border: 1px solid ${painter.grayscale[3]};

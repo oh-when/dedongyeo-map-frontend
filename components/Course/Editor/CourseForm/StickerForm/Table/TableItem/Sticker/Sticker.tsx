@@ -1,5 +1,6 @@
 import React from 'react';
 import StickerIcon from '~/components/_assets/sticker';
+import PopupMenu, { setPopupSticker } from '~/components/Course/Editor/CourseForm/StickerForm/Table/TableItem/PopupMenu';
 import { formatDate } from '~/util';
 import * as $ from './StickerView';
 import * as $Common from '../TableItemView';
@@ -10,10 +11,15 @@ export default function StickerCard(props: Props): JSX.Element {
     item: { order, sticker },
   } = props;
 
+  const onContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setPopupSticker(sticker);
+  }
+
   return (
     <$Common.TableItem>
       <$Common.Order>{order}</$Common.Order>
-      <$Common.Card>
+      <$Common.Card onContextMenu={onContextMenu}>
         <$.Card isPressed={false}>
           <$.AreaSticker>
             <StickerIcon
@@ -32,6 +38,7 @@ export default function StickerCard(props: Props): JSX.Element {
           </$.AreaDescription>
         </$.Card>
       </$Common.Card>
+      <PopupMenu sticker={sticker} />
     </$Common.TableItem>
   );
 }
