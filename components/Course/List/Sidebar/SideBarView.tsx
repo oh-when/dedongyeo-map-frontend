@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
-export const SideBar = styled.div`
+export const SideBar = styled.div<{ isOpened: boolean }>`
+  ${props => props.isOpened ? '' : 'display: none;'}
+  position: relative;
   height: 100%;
   background-color: ${painter.grayscale[1]};
+  border: 1px solid ${painter.grayscale[1]};
   overflow-y: auto;
   user-drag: none;
   user-select: none;

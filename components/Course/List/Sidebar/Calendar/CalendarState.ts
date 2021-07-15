@@ -65,7 +65,6 @@ export function useCursorState(): [Cursor, (newCursor: Cursor) => void] {
         },
       })
       .then(({ data }) => {
-        console.log(data);
         changeCurrentCourses(data.courses);
       });
   }, [cursor]);
