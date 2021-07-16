@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import SpotGenerator from './SpotGenerator';
 import CourseShare from './CourseShare';
+import CourseDelete from "./CourseDelete";
 import { PopupType } from '~/@types/popup.d';
 import { popupState } from '~/lib/apollo/vars/global';
 import Modal from '~/components/_common/Modal';
@@ -30,6 +31,13 @@ export default function Popup(): ReactElement {
           <CourseShare zIndex="10001" {...popupProps} />
         </Modal>
       );
+    }
+    case PopupType.COURSE_DELETE: {
+      return (
+        <Modal>
+          <CourseDelete zIndex="10001" {...popupProps} />
+        </Modal>
+      )
     }
     default:
       return null;

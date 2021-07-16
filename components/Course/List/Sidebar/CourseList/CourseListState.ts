@@ -78,3 +78,8 @@ export function changeCurrentCourses(courses: GQL.Course[]): void {
 export function changeCurrentCourseIndex(index: number): void {
   currentCourseIndexVar(index);
 }
+
+export function removeCourseInList(courseId: string): void {
+  const nextCourses = currentCoursesVar().filter(({ _id }) => _id !== courseId);
+  currentCoursesVar(nextCourses);
+}

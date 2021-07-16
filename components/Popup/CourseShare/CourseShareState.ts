@@ -2,7 +2,15 @@ import mapboxService from '~/lib/mapboxService';
 import { getStickerImageUrl } from '~/components/_assets/sticker';
 import { makeVar, useReactiveVar } from '@apollo/client';
 
-export const sharedCourseVar = makeVar(null);
+export const sharedCourseVar = makeVar<GQL.Course>({
+  _id: null,
+  endAt: Date.now(),
+  isShare: true,
+  partners: [],
+  startAt: Date.now(),
+  stickers: [],
+  title: ""
+});
 export const sharedCourseImageSourceVar = makeVar(''); // TODO: 기본 이미지
 export const sharedCourseImageUrlVar = makeVar('');
 
@@ -36,7 +44,7 @@ export function useSharedCourseImageSource(): string {
   return useReactiveVar(sharedCourseImageSourceVar);
 }
 
-export function useShareCourseImageUrl(): string {
+export function useSharedCourseImageUrl(): string {
   return useReactiveVar(sharedCourseImageUrlVar);
 }
 
@@ -47,11 +55,11 @@ export async function getSharedImageUrl({
   spotCoords: Array<[number, number]>;
   spotImageUrls: string[];
 }): Promise<string> {
-  const lineCoords = await this.direction.getDirections({
+  const lineCoords = await mapboxService.direction.getDirections({
     type: 'cycling',
     spotCoords,
   });
-  const geojson = this.url.getGeoJson({
+  const geojson = mapboxService.url.getGeoJson({
     spots: spotCoords.map((coord, i) => ({
       coord,
       imageUrl: spotImageUrls[i],

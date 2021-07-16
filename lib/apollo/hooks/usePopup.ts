@@ -1,11 +1,11 @@
 import { popupState } from '../vars/global';
-import type { PopupProps } from '~/@types/popup';
+import type { PopupProps, PopupType } from '~/@types/popup';
 
-export const usePopupOpener =
-  () =>
-  (popupProps: PopupProps): void => {
-    popupState(popupProps);
-  };
+export function usePopupOpener<T extends PopupType>() {
+  return (props: PopupProps<T>) => {
+    popupState(props);
+  }
+}
 
 export const usePopupCloser = () => (): void => {
   popupState({

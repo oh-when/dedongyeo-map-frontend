@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
-import { useSharedCourseImageSource } from '../CourseShareState';
+import React from 'react';
+import { copyToClipboard } from '~/util/clipboard';
+import { useSharedCourseImageSource, useSharedCourseImageUrl } from '../CourseShareState';
 import * as $ from './ShareCardView';
 
 type Props = {
@@ -7,24 +8,25 @@ type Props = {
 };
 
 const ShareCard: React.FC<Props> = () => {
-  const hiddenInput = useRef(null);
   const image = useSharedCourseImageSource();
-  const url = useSharedCourseImageSource();
+  const url = useSharedCourseImageUrl();
   const handleClickCopyButton = (e: React.MouseEvent) => {
     e.preventDefault();
-    hiddenInput.current.select();
-    document.execCommand('copy');
+    copyToClipboard(url);
   };
 
   return (
     <$.ShareCard>
-      <$.HiddenInput ref={hiddenInput} value={url} />
       <$.AreaCourse>
         <$.CourseImage src={image} />
       </$.AreaCourse>
       <$.Title>코스 이미지 공유하기</$.Title>
-      <$.DownloadButton href={url} download="course-image">
-        <$.DownloadButtonImage></$.DownloadButtonImage>
+      <$.DownloadButton href={image} download="course-image">
+        <$.DownloadButtonImage>
+          <$.IconWrap>
+            <$.DownloadIcon />
+          </$.IconWrap>
+        </$.DownloadButtonImage>
         <$.DownloadButtonText>다운받기</$.DownloadButtonText>
       </$.DownloadButton>
       <$.AreaCopy>
