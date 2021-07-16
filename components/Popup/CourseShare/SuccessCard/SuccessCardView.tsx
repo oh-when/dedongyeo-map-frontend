@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
 export const SuccessCard = styled.div`
+  overflow: hidden;
   height: 100%;
   border-radius: 16px;
   background-color: #fff;

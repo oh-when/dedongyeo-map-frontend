@@ -1,6 +1,8 @@
 import React from 'react';
 import StickerGroup from '~/components/_assets/sticker/StickerGroup';
+import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
 import { formatDate } from '~/util';
+import { PopupType } from "~/@types/popup.d";
 import { changeCurrentCourseIndex } from '../CourseListState';
 import * as $ from './CourseItemView';
 
@@ -15,6 +17,7 @@ export default function CourseItem({
   course,
   isSelected,
 }: Props): JSX.Element {
+  const openPopup = usePopupOpener();
   const unixTime = Math.floor(course.startAt / 1000)
   const dateStamp = formatDate(unixTime, true);
 
@@ -23,7 +26,10 @@ export default function CourseItem({
     changeCurrentCourseIndex(idx);
   };
   const handleClickShare = () => {
-    // TODO;
+    openPopup({
+      popupType: PopupType.COURSE_SHARE,
+      popupProps: { course },
+    })
   };
   const handleClickEdit = () => {
     // TODO;
