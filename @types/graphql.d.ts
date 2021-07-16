@@ -260,5 +260,16 @@ declare namespace GQL {
         createCourse: GQL.Course;
       };
     }
+    export namespace RemoveCourse {
+      export type Variables = {
+        id: string;
+      }
+      export type Data = {
+        removeCourse: {
+          n: number;
+          ok: number;
+        }
+      }
+    }
   }
 }

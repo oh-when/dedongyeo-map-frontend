@@ -35,7 +35,10 @@ export default function CourseItem({
     // TODO;
   };
   const handleClickDelete = () => {
-    // TODO;
+    openPopup({
+      popupType: PopupType.COURSE_DELETE,
+      popupProps: { courseId: course._id },
+    })
   };
 
   return (
