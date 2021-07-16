@@ -8,7 +8,6 @@ export default function List(): JSX.Element {
     <CourseLayout
       renderSideBar={() => <SideBar />}
       renderContent={() => <CourseMap />}
-      isToggleButton={true}
     />
   );
 }

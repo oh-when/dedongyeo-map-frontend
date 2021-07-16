@@ -41,7 +41,6 @@ const TextForm: React.FC = () => {
         <$.AreaCheckBox>
           <$.RealCheckBox
             id={CHECKBOX_ID}
-            defaultChecked={true}
             checked={isShare}
             onChange={() => {}}
           />

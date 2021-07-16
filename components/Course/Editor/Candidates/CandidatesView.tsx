@@ -2,8 +2,12 @@ import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
 export const Candidate = styled.div`
+  width: 452px;
   height: 100%;
   padding-top: 48px;
+  box-shadow: 0 0 24px 2px ${painter.grayscale[4]};
+  background-color: ${painter.basic.white};
+  border: 1px solid ${painter.grayscale[1]};
   overflow-y: auto;
   user-drag: none;
   user-select: none;
