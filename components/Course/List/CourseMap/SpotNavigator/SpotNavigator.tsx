@@ -1,6 +1,6 @@
 import React from 'react';
 import SpotNavigatorItem from './SpotNavigatorItem';
-import { useCurrentStickers } from '~/components/Course/List/SideBar/CourseList/CourseListState';
+import { useCurrentStickers } from '~/components/Course/List/Sidebar/CourseList/CourseListState';
 import * as $ from './SpotNavigatorView';
 
 export default function SpotNavigator(): JSX.Element {

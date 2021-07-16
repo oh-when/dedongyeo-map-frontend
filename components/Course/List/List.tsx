@@ -1,6 +1,6 @@
 import React from 'react';
 import CourseMap from './CourseMap';
-import SideBar from './SideBar';
+import SideBar from './Sidebar';
 import { CourseLayout } from '../CourseView';
 
 export default function List(): JSX.Element {

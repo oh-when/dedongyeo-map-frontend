@@ -2,7 +2,7 @@ import React from 'react';
 import * as $ from "./CourseDeleteView";
 import { usePopupCloser } from '~/lib/apollo/hooks/usePopup';
 import { useCourseRemover } from './CourseDeleteState';
-import { removeCourseInList } from '~/components/Course/List/SideBar/CourseList/CourseListState';
+import { removeCourseInList } from '~/components/Course/List/Sidebar/CourseList/CourseListState';
 import type { PopupChildProps } from '~/@types/popup.d';
 
 export type CourseDeleteProps = PopupChildProps & {

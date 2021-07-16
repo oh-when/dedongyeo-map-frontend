@@ -6,7 +6,7 @@ import {
   useReactiveVar,
 } from '@apollo/client';
 import { useEffect } from 'react';
-import { changeCurrentCourses } from '~/components/Course/List/SideBar/CourseList/CourseListState';
+import { changeCurrentCourses } from '~/components/Course/List/Sidebar/CourseList/CourseListState';
 import Calendar from '~/util/Calendar';
 
 export const GET_COURSES_BY_DATE = gql`

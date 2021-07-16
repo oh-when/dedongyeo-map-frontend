@@ -6,8 +6,8 @@ import Main from '~/components/_layout/Main';
 import CourseList from '~/components/Course/List';
 import { addApolloState, initializeApollo } from '~/lib/apollo/client';
 import type { GetServerSideProps } from 'next';
-import { GET_COURSES_BY_DATE } from '~/components/Course/List/SideBar/Calendar/CalendarState';
-import { changeCurrentCourses } from '~/components/Course/List/SideBar/CourseList/CourseListState';
+import { GET_COURSES_BY_DATE } from '~/components/Course/List/Sidebar/Calendar/CalendarState';
+import { changeCurrentCourses } from '~/components/Course/List/Sidebar/CourseList/CourseListState';
 import Popup from '~/components/Popup';
 import { useEffect } from 'react';
 

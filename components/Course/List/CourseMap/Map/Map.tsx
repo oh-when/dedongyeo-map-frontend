@@ -5,7 +5,7 @@ import {
   getCenter,
   fetchRoutes,
   inject,
-} from '~/components/Course/List/SideBar/CourseList/CourseListState';
+} from '~/components/Course/List/Sidebar/CourseList/CourseListState';
 import CourseMarker from '~/components/_assets/map/CourseMarker';
 import type { Map } from 'mapbox-gl';
 import { ReactElement } from 'react';
