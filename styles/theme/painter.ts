@@ -1,4 +1,5 @@
 import { DefaultTheme } from 'styled-components';
+import { SweetPercent } from '~/constants/stickers';
 
 type ImportColor = (props: {
   theme: DefaultTheme;
@@ -35,11 +36,11 @@ const painter: Painter = {
   },
   secondary: {
     all: (props) => props.theme.secondary.all,
-    sugar0: (props) => props.theme.secondary.sugar0,
-    sugar30: (props) => props.theme.secondary.sugar30,
-    sugar50: (props) => props.theme.secondary.sugar50,
-    sugar70: (props) => props.theme.secondary.sugar70,
-    sugar100: (props) => props.theme.secondary.sugar100,
+    [SweetPercent.$0]: (props) => props.theme.secondary[SweetPercent.$0],
+    [SweetPercent.$30]: (props) => props.theme.secondary[SweetPercent.$30],
+    [SweetPercent.$50]: (props) => props.theme.secondary[SweetPercent.$50],
+    [SweetPercent.$70]: (props) => props.theme.secondary[SweetPercent.$70],
+    [SweetPercent.$100]: (props) => props.theme.secondary[SweetPercent.$100],
   },
   basic: {
     black: (props) => props.theme.basic.black,

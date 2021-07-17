@@ -112,4 +112,14 @@ export default class Calendar {
   public setCursor(cursorDate: Date): void {
     this.cursor = cursorDate;
   }
+
+  public static getRangeByDate(dateObj: Date = new Date()): [number, number] {
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth() + 1;
+    const date = dateObj.getDate();
+    const startDate = new Date(`${year}-${month}-${date} 00:00:00`);
+    const endDate = new Date(`${year}-${month}-${date} 23:59:59`);
+
+    return [startDate.getTime(), endDate.getTime()];
+  }
 }

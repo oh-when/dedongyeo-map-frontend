@@ -9,8 +9,6 @@ export type Props = PopupChildProps;
 const ForgotId: React.FC<Props> = ({ zIndex }) => {
   // const { pathname } = useRouter();
   const closePopup = usePopupCloser();
-  const phoneRegExp =
-    (/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3');
   const emailRegExp = /^[0-9a-z]([-_\.]?[0-9a-z])*@[0-9a-z]([-_\.]?[0-9a-z])*\.[a-z]/;
 
   const [nickName, setNickName] = useState('');
@@ -56,16 +54,7 @@ const ForgotId: React.FC<Props> = ({ zIndex }) => {
     return num;
   };
 
-  const handleButton = (e: any) => {
-    modalStep === 0 ? checkUser() : resetId();
-  };
-
-  const handleEmailValue = (e: any) => {
-    e.preventDefault();
-    setEmail(e.target.value);
-  };
-
-  const checkUser = (e: any) => {
+  const checkUser = () => {
     // '다음'버튼 클릭시 유저 찾는 요청 보내고
     // 1. 유저id와 boolean값이 true로 넘어온다면(?)
     // setModalStep((prev) => prev+1 )
@@ -73,7 +62,7 @@ const ForgotId: React.FC<Props> = ({ zIndex }) => {
     // setIsError(true)
   };
 
-  const resetId = (e: any) => {
+  const resetId = () => {
     if (email === '') {
       alert('이메일주소를 입력해주세요.');
     } else if (email.match(emailRegExp) === null) {
@@ -81,6 +70,15 @@ const ForgotId: React.FC<Props> = ({ zIndex }) => {
     } else {
       // 아이디 재설정 쿼리 요청 (백 작업 미정)
     }
+  };
+
+  const handleButton = (e: any) => {
+    modalStep === 0 ? checkUser() : resetId();
+  };
+
+  const handleEmailValue = (e: any) => {
+    e.preventDefault();
+    setEmail(e.target.value);
   };
 
   return (
@@ -118,7 +116,7 @@ const ForgotId: React.FC<Props> = ({ zIndex }) => {
                   value={phoneNum}
                   onChange={handlePhoneNum}
                   placeholder="010-0000-0000"
-                  maxLength="13"
+                  maxLength={13}
                 />
               </$.InputBox>
             </>

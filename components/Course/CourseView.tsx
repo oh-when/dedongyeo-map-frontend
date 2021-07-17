@@ -1,9 +1,9 @@
+import React from 'react';
 import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
+import CourseTab from '~/components/Course/Tab';
 
-export const Wrap = styled.div`
-  display: flex;
-  flex-direction: row;
+const Wrap = styled.div`
   width: 100%;
   height: 100%;
   &::after {
@@ -13,30 +13,45 @@ export const Wrap = styled.div`
   }
 `;
 
-export const Sidebar = styled.div`
-  flex-grow: 0;
-  flex-shrink: 0;
+const Sidebar = styled.div`
+  float: left;
   position: relative;
   z-index: 2;
-  width: 452px;
   height: 100%;
-  box-shadow: 0 0 24px 2px ${painter.grayscale[4]};
-  background-color: ${painter.basic.white};
-  overflow: auto;
 `;
 
-export const Content = styled.div`
-  overflow: auto;
-  width: 100%;
+const Content = styled.div`
+  overflow: hidden;
   height: 100%;
   background-color: ${painter.grayscale[1]};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
-export const ContentInner = styled.div`
+const ContentInner = styled.div`
+  overflow: auto;
   position: relative;
-  min-width: 916px;
+  width: 100%;
+  height: 100%;
 `;
+
+type Props = {
+  renderSideBar: () => JSX.Element;
+  renderContent: () => JSX.Element;
+};
+
+export function CourseLayout(props: Props): JSX.Element {
+
+  return (
+    <Wrap>
+      <Sidebar>
+        {props.renderSideBar()}
+      </Sidebar>
+      <Content>
+        <ContentInner>
+          <CourseTab />
+          {props.renderContent()}
+        </ContentInner>
+      </Content>
+    </Wrap>
+  );
+}
+

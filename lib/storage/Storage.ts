@@ -1,9 +1,5 @@
 import { findIndex } from '~/util/Array';
-import type {
-  StickerCardRecord,
-  PositionRecord,
-  CourseCardRecord,
-} from '~/@types/record.d';
+import type { PositionRecord } from '~/@types/record.d';
 
 export enum StorageKey {
   StickerCards = 'service__sticker_cards',
@@ -82,40 +78,6 @@ export function makeStorageRemover<StorageRecordItem, ItemId>(
   };
 }
 
-const getStickerCards = makeStorageGetter<StickerCardRecord[]>(
-  StorageKey.StickerCards,
-  []
-);
-
-const addStickerCard = makeStorageAdder<StickerCardRecord>(
-  StorageKey.StickerCards,
-  getStickerCards,
-  (argItem, item) => argItem.id === item.id
-);
-
-const removeStickerCard = makeStorageRemover<StickerCardRecord, string>(
-  StorageKey.StickerCards,
-  getStickerCards,
-  (argItemId, item) => argItemId === item.id
-);
-
-const getCourseCards = makeStorageGetter<CourseCardRecord[]>(
-  StorageKey.CourseCards,
-  []
-);
-
-const addCourseCard = makeStorageAdder<CourseCardRecord>(
-  StorageKey.CourseCards,
-  getCourseCards,
-  (argItem, item) => argItem.id === item.id
-);
-
-const removeCourseCard = makeStorageRemover<CourseCardRecord, string>(
-  StorageKey.CourseCards,
-  getCourseCards,
-  (argItemId, item) => argItemId === item.id
-);
-
 const getCurrentPosition = makeStorageGetter<PositionRecord>(
   StorageKey.CurrentPosition,
   {
@@ -129,14 +91,6 @@ const setCurrentPosition = makeStorageSetter<PositionRecord>(
 );
 
 export default class Storage {
-  public static getStickerCards = getStickerCards;
-  public static addStickerCard = addStickerCard;
-  public static removeStickerCard = removeStickerCard;
-
-  public static getCourseCards = getCourseCards;
-  public static addCourseCard = addCourseCard;
-  public static removeCourseCard = removeCourseCard;
-
   public static getCurrentPosition = getCurrentPosition;
   public static setCurrentPosition = setCurrentPosition;
 }

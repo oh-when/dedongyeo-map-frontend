@@ -1,12 +1,12 @@
 import React from 'react';
-import SpotForm from './SpotForm';
+import StickerForm from './StickerForm';
 import TextForm from './TextForm';
 import * as $ from './CourseFormView';
 
 const CourseForm: React.FC = () => {
   return (
     <$.CourseForm>
-      <SpotForm />
+      <StickerForm />
       <TextForm />
     </$.CourseForm>
   );

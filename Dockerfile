@@ -1,16 +1,9 @@
-FROM node:14.15.4-alpine3.11
+ FROM node:14-alpine
 
-WORKDIR /usr/daedong
-RUN npm install --global pm2
-COPY ./package.json ./
-COPY ./yarn.lock ./
-RUN yarn
-COPY ./ ./
+ COPY . /usr/app
+ WORKDIR /usr/app
 
-RUN yarn build
-EXPOSE 3000
+ RUN yarn install
+ RUN yarn build
 
-# node:14.15.4-alpine3.11 에 등록된 기본 유저
-USER node
-
-CMD [ "pm2-runtime", "npm", "--", "start" ]
+ CMD ["yarn", "start"]

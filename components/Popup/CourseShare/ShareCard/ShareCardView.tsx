@@ -1,12 +1,14 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
 export const ShareCard = styled.div`
+  overflow: hidden;
   height: 100%;
   border-radius: 16px;
   padding: 40px;
   background-color: #fff;
-  text-align: center;
+  text-align: center
 `;
 
 export const AreaCourse = styled.div`
@@ -36,11 +38,29 @@ export const DownloadButton = styled.a`
 `;
 
 export const DownloadButtonImage = styled.div`
+  position: relative;
   width: 56px;
   height: 56px;
   border-radius: 50%;
   background-color: ${painter.grayscale[2]};
 `;
+
+export const IconWrap = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  margin: auto;
+`;
+
+export const DownloadIcon = styled(Image).attrs({
+  width: '32',
+  height: '32',
+  src: '/course/popup/download_black.svg',
+})``;
 
 export const DownloadButtonText = styled.div`
   height: 20px;
@@ -87,5 +107,6 @@ export const CopyUrlInner = styled.p`
   font-size: 14px;
   line-height: 40px;
   text-align: left;
+  white-space: nowrap;
   color: ${painter.grayscale[6]};
 `;

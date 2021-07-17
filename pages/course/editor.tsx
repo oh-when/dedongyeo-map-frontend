@@ -6,18 +6,34 @@ import Main from '~/components/_layout/Main';
 import CourseEditor from '~/components/Course/Editor';
 import Popup from '~/components/Popup';
 import { addApolloState, initializeApollo } from '~/lib/apollo/client';
-import type { GetStaticProps } from 'next';
+import {
+  GET_CANDIDATE_STICKERS,
+  updateCandidates,
+} from '~/components/Course/Editor/Candidates/CandidatesState';
+import type { GetServerSideProps } from 'next';
 
-export const getStaticProps: GetStaticProps = async () => {
-  const apolloClient = initializeApollo();
+type Props = {
+  candidates: GQL.Sticker[];
+};
 
-  return addApolloState(apolloClient, {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const client = initializeApollo();
+  const { data } = await client.query<GQL.Query.Stickers.Data>({
+    query: GET_CANDIDATE_STICKERS,
+  });
+  const candidates = (data && data.stickers) || [];
+
+  addApolloState(client, {
     props: {},
     revalidate: 1,
   });
+
+  return { props: { candidates } };
 };
 
-const CourseEditorPage: React.FC = () => {
+const CourseEditorPage: React.FC<Props> = ({ candidates }) => {
+  updateCandidates(candidates);
+
   return (
     <>
       <Head>

@@ -30,8 +30,6 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
 
   const emailRegExp = /^[0-9a-z]([-_\.]?[0-9a-z])*@[0-9a-z]([-_\.]?[0-9a-z])*\.[a-z]/;
   const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-  const phoneRegExp =
-    (/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3');
 
   const handleClickCloseButton = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -128,12 +126,11 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                 <$.DivForCheck>
                   <$.RealCheckBox
                     id="isAllAgree"
-                    defaultChecked={false}
-                    value={isAllAgree}
+                    checked={isAllAgree}
                     onClick={(e) => handleCheck(e, 'isAllAgree')}
                   />
                   <$.ViewCheckBox />
-                  <$.CheckBoxLabel htmlFor={isAllAgree}>
+                  <$.CheckBoxLabel htmlFor="isAllAgree">
                     서비스 약관 전체 동의
                   </$.CheckBoxLabel>
                 </$.DivForCheck>
@@ -144,12 +141,11 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                 <$.DivForCheck>
                   <$.RealCheckBox
                     id="agreeOne"
-                    defaultChecked={false}
-                    value={agreeOne}
+                    checked={agreeOne}
                     onClick={(e) => handleCheck(e, 'agreeOne')}
                   />
                   <$.ViewCheckBox />
-                  <$.CheckBoxLabel htmlFor={agreeOne}>
+                  <$.CheckBoxLabel htmlFor="agreeOne">
                     개인정보 수집 및 이용 안내 (필수)
                   </$.CheckBoxLabel>
                 </$.DivForCheck>
@@ -160,12 +156,11 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                 <$.DivForCheck>
                   <$.RealCheckBox
                     id="agreeTwo"
-                    defaultChecked={false}
-                    value={agreeTwo}
+                    checked={agreeTwo}
                     onClick={(e) => handleCheck(e, 'agreeTwo')}
                   />
                   <$.ViewCheckBox />
-                  <$.CheckBoxLabel htmlFor={agreeTwo}>
+                  <$.CheckBoxLabel htmlFor="agreeTwo">
                     위치정보 수집 및 이용 안내 (필수)
                   </$.CheckBoxLabel>
                 </$.DivForCheck>
@@ -176,12 +171,11 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                 <$.DivForCheck>
                   <$.RealCheckBox
                     id="agreeThree"
-                    defaultChecked={false}
-                    value={agreeThree}
+                    checked={agreeThree}
                     onClick={(e) => handleCheck(e, 'agreeThree')}
                   />
                   <$.ViewCheckBox />
-                  <$.CheckBoxLabel htmlFor={agreeThree}>
+                  <$.CheckBoxLabel htmlFor="agreeThree">
                     제 3자 제공 동의 (필수)
                   </$.CheckBoxLabel>
                 </$.DivForCheck>
@@ -192,12 +186,11 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                 <$.DivForCheck>
                   <$.RealCheckBox
                     id="agreeFour"
-                    defaultChecked={false}
-                    value={agreeFour}
+                    checked={agreeFour}
                     onClick={(e) => handleCheck(e, 'agreeFour')}
                   />
                   <$.ViewCheckBox />
-                  <$.CheckBoxLabel htmlFor={agreeFour}>
+                  <$.CheckBoxLabel htmlFor="agreeFour">
                     마케팅 수신 동의
                   </$.CheckBoxLabel>
                 </$.DivForCheck>
@@ -263,7 +256,7 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                   value={phoneNum}
                   onChange={handlePhoneNum}
                   placeholder="010-0000-0000"
-                  maxLength="13"
+                  maxLength={13}
                 />
               </$.InputBox>
             </>

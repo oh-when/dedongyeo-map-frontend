@@ -1,38 +1,31 @@
-import { makeVar, gql, useMutation, useApolloClient } from '@apollo/client';
-import createReactiveVarHooks from '~/util/createReactiveVarHooks';
-import { useEndSpotsRemover } from '../CandidateSpots/CandidateSpotsState';
-import { useSpotFormResetter } from './SpotForm/SpotFormState';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
+import { removeMovedCandidates } from '~/components/Course/Editor/Candidates/CandidatesState';
+import { resetFormTable, formArrayVar } from './StickerForm/StickerFormState';
+import { formTitleVar } from './TextForm/TextFormState';
 import { PopupType } from '~/@types/popup.d';
 import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
-import Storage from '~/lib/storage';
-import type { StickerCardRecord } from '~/@types/record.d';
 
-const formTitle = makeVar<string>('');
-const formSpots = makeVar<StickerCardRecord[]>([]);
-
-export const [
-  useFormTitle,
-  useFormTitleSetter,
-  useFormTitleState,
-] = createReactiveVarHooks(formTitle);
-
-export const [
-  useFormSpots,
-  useFormSpotsSetter,
-  useFormSpotsState,
-] = createReactiveVarHooks(formSpots);
-
-const GET_COURSE = gql`
-  query Course($courseInput: CourseInput!) {
-    course(courseInput: $courseInput) {
+const GET_COURSES_BY_ID = gql`
+  query GetCoursesById($courseId: ID!) {
+    courses(courseId: $courseId) {
       _id
+      endAt
+      isShare
+      partners
+      startAt
       stickers(populate: true) {
-        sweet_percent
+        _id
         sticker_index
+        sweet_percent
+        spot(populate: true) {
+          _id
+          place_id
+          place_name
+          x
+          y
+        }
       }
       title
-      is_share
-      courseImage
     }
   }
 `;
@@ -41,13 +34,6 @@ const CREATE_COURSE = gql`
   mutation CreateCourse($createCourseInput: CreateCourseInput!) {
     createCourse(createCourseInput: $createCourseInput) {
       _id
-      stickers(populate: true) {
-        sweet_percent
-        sticker_index
-      }
-      title
-      is_share
-      courseImage
     }
   }
 `;
@@ -56,57 +42,42 @@ export const useFormSubmitter = (): (() => void) => {
   const client = useApolloClient();
   const openPopup = usePopupOpener();
   const [createCourse] = useMutation<
-    GQL.CreateCourse.Data,
-    GQL.CreateCourse.Variables
+    GQL.Mutation.CreateCourse.Data,
+    GQL.Mutation.CreateCourse.Variables
   >(CREATE_COURSE, {
-    onCompleted({ createCourse: data }) {
+    onCompleted: ({ createCourse }) => {
       client
-        .query<GQL.GetCourse.Data, GQL.GetCourse.Variables>({
-          query: GET_COURSE,
+        .query<GQL.Query.Course.Data, GQL.Query.Course.Variables>({
+          query: GET_COURSES_BY_ID,
           variables: {
-            courseInput: {
-              courseId: data._id,
-              courseImageInput: {
-                theme: 'street',
-                width: 800,
-                height: 800,
-              },
-            },
+            courseId: createCourse._id,
           },
         })
         .then(({ data: { course } }) => {
-          Storage.addCourseCard({
-            id: course._id,
-            numStickers: course.stickers.length,
-            stickers: course.stickers,
-            timestamp: Math.floor(Date.now() / 1000),
-            ...course,
-          });
           openPopup({
             popupType: PopupType.COURSE_SHARE,
             popupProps: {
               course,
             },
           });
-        })
-        .catch((err) => {
-          console.error(err);
         });
     },
   });
 
-  const removeEndSpots = useEndSpotsRemover();
-  const resetSpotForm = useSpotFormResetter();
-
   return () => {
-    removeEndSpots();
-    resetSpotForm();
+    const stickers = formArrayVar()
+      .filter((sticker) => sticker !== null)
+      .map((sticker) => sticker.id);
+    const title = formTitleVar();
+
+    removeMovedCandidates();
+    resetFormTable();
     createCourse({
       variables: {
         createCourseInput: {
-          stickers: formSpots().map((spot) => spot.id),
-          title: formTitle(),
-          is_share: true,
+          stickers,
+          title,
+          isShare: true,
         },
       },
     });
