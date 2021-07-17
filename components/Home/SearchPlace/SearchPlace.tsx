@@ -13,41 +13,81 @@ import {
 //TODO: 스팟 클릭시 지도 이동
 const PLACES_AND_SPOTS_BY_KEYWORDID = gql`
   query placesAndSpotsByKeyword(
-    $query: String!
+    #    $query: String!
     $keyword: String!
     $X: Float
     $Y: Float
-    $currentPage: Int
+    #    $currentPage: Int
+    $category_group_code: String
+    $page: Int
+    $radius: Int
+    $rect: String
+    $query: String!
+    $size: Int
+    $sort: SortType
   ) {
     places(
-      filters: { query: $query, x: $X, y: $Y, page: $currentPage, size: 10 }
-    ) {
-      pageInfo {
-        total_count
-        is_end
-        cur_page
-        total_page_count
+      keywordSearchDto: {
+        category_group_code: $category_group_code
+        page: $page
+        query: $query
+        radius: $radius
+        rect: $rect
+        size: $size
+        sort: $sort
+        x: $X
+        y: $Y
       }
+    ) {
+      cur_page
+      is_end
       places {
         id
         place_name
+        place_url
+        category_group_code
         category_name
         category_group_name
         address_name
         road_address_name
+        phone
         x
         y
       }
+      total_count
+      total_page_count
     }
-    spots(searchSpotDto: { keyword: $keyword, x: $X, y: $Y }) {
-      _id
-      place_name
-      category_name
-      category_group_name
-      address_name
-      road_address_name
-      x
-      y
+    spots(searchSpotDto: { keyword: $keyword, page: $page, size: $size }) {
+      cur_page
+      is_end
+      spots {
+        _id
+        address_name
+        is_custom
+        is_custom_share
+        place_id
+        place_name
+        place_url
+        category_group_code
+        category_name
+        category_group_name
+        address_name
+        road_address_name
+        phone
+        x
+        y
+        stickers {
+          _id
+          endAt
+          is_used
+          partners
+          startAt
+          sticker_index
+          sweet_percent
+        }
+      }
+      total_count
+      total_page_count
     }
   }
 `;
@@ -79,7 +119,17 @@ const SearchPlace: React.FC = () => {
   const [loadData, { loading, data: placesAndSpotsByKeyword }] = useLazyQuery(
     PLACES_AND_SPOTS_BY_KEYWORDID,
     {
-      variables: { query, keyword, X, Y, currentPage },
+      variables: {
+        query,
+        keyword,
+        category_group_code: '',
+        page: pagination,
+        radius: 100,
+        rect: '',
+        size: 100,
+        X,
+        Y,
+      },
       onError(error) {
         console.log('error', error);
       },
