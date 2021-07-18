@@ -6,8 +6,11 @@ import Wrap from '~/components/_layout/Wrap';
 import Main from '~/components/_layout/Main';
 import { addApolloState, initializeApollo } from '../lib/apollo/client';
 import type { GetStaticProps } from 'next';
-import { usePopupOpener } from '../lib/apollo/hooks/usePopup';
+import { usePopupOpener, usePopupCloser } from '../lib/apollo/hooks/usePopup';
 import { PopupType } from '~/@types/popup.d';
+import { useSession } from 'next-auth/client';
+import { GET_COURSES_BY_DATE } from '~/components/Course/List/Sidebar/Calendar/CalendarState';
+import { useApolloClient } from '@apollo/client';
 
 export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
@@ -22,14 +25,22 @@ const Home = dynamic(() => import('~/components/Home'), {
   ssr: false,
 });
 
-const openPopup = usePopupOpener();
 const HomePage: React.FC = () => {
+  const [session, loading] = useSession();
+
+  const openPopup = usePopupOpener();
+  const closePopup = usePopupCloser();
+
   useEffect(() => {
-    // TODO: 로그인 안한 사람이면 로그인 팝업 뜨게 하기
-    openPopup({
-      popupType: PopupType.SIGN_IN,
-    });
-  }, []);
+    if (loading) return;
+    if (!session) {
+      openPopup({
+        popupType: PopupType.SIGN_IN,
+      });
+    } else {
+      closePopup();
+    }
+  }, [session, loading]);
 
   return (
     <>
@@ -46,5 +57,26 @@ const HomePage: React.FC = () => {
     </>
   );
 };
+
+function tempRequest() {
+  const client = useApolloClient();
+
+  React.useEffect(() => {
+    client
+      .query<GQL.Query.Courses.Data, GQL.Query.Courses.Variables>({
+        query: GET_COURSES_BY_DATE,
+        variables: {
+          searchCourseInput: {
+            // startAt: range[0],
+            // endAt: range[1],
+            isShare: true
+          },
+        },
+      })
+      .then(({ data }) => {
+        console.log("요청 완료")
+      });
+  }, [])
+}
 
 export default HomePage;

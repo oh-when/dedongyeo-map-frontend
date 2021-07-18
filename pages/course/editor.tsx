@@ -11,16 +11,17 @@ import {
   updateCandidates,
 } from '~/components/Course/Editor/Candidates/CandidatesState';
 import type { GetServerSideProps } from 'next';
+import { serverSideQuery } from '~/lib/apollo/fetch';
 
 type Props = {
   candidates: GQL.Sticker[];
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const client = initializeApollo();
-  const { data } = await client.query<GQL.Query.Stickers.Data>({
+  const { data } = await serverSideQuery<GQL.Query.Stickers.Data>({
     query: GET_CANDIDATE_STICKERS,
-  });
+  }, req);
   const candidates = (data && data.stickers) || [];
 
   addApolloState(client, {

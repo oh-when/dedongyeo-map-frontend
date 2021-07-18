@@ -8,6 +8,7 @@ import '../styles/swiper-bundle.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { resetCourseState } from '~/components/Course/CourseState';
+import { Provider as AuthProvider } from 'next-auth/client';
 
 Router.events.on('routeChangeComplete', (url) => {
   if (url.indexOf('/course') === -1) {
@@ -21,7 +22,9 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <ThemeProvider theme={theme}>
       <ApolloProvider client={client}>
-        <Component {...pageProps} />
+        <AuthProvider session={pageProps.session}>
+          <Component {...pageProps} />
+        </AuthProvider>
       </ApolloProvider>
     </ThemeProvider>
   );
