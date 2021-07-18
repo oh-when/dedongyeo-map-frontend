@@ -12,7 +12,6 @@ export async function encode({ token }: { token: any }) {
   };
   return jwt
     .sign(payload, process.env.JWT_SECRET, { algorithm: signConfig.alg })
-    .then(() => jwt.sign());
 }
 
 export function decode({ token }: { token: string }) {

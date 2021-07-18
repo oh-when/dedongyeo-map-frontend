@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import { encode } from '~/util/jwt';
 // import { encode, decode } from '~/util/jwt';
 
 export default NextAuth({
@@ -31,10 +32,14 @@ export default NextAuth({
       if (token.picture.indexOf('kakao') > 0) {
         provider = 'kakao';
       }
-      return {
+      const data = {
         ...token,
         provider,
+        token: null
       };
+      data.token = await encode({ token: data });
+      
+      return data;
     },
   },
 });

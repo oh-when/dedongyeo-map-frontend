@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { createCache } from './cache';
+import { createLink } from './link';
 import { isBrowser } from '~/util';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> = null;
@@ -14,10 +15,7 @@ export const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
   const ssrMode = !isBrowser();
   const client = new ApolloClient({
     ssrMode,
-    link: new HttpLink({
-      uri: 'https://korean-date-map.herokuapp.com/graphql',
-      credentials: 'same-origin',
-    }),
+    link: createLink(),
     cache: createCache(),
     connectToDevTools: true,
   });
