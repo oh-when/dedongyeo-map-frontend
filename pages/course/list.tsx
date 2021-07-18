@@ -10,14 +10,15 @@ import { GET_COURSES_BY_DATE } from '~/components/Course/List/Sidebar/Calendar/C
 import { changeCurrentCourses } from '~/components/Course/List/Sidebar/CourseList/CourseListState';
 import Popup from '~/components/Popup';
 import { useEffect } from 'react';
+import { serverSideQuery } from '~/lib/apollo/fetch';
 
 type Props = {
   courses: GQL.Course[];
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const client = initializeApollo();
-  const { data } = await client.query<
+  const { data } = await serverSideQuery<
     GQL.Query.Courses.Data,
     GQL.Query.Courses.Variables
   >({
@@ -29,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
         isShare: true,
       },
     },
-  });
+  }, req);
   const courses = (data && data.courses) || [];
 
   addApolloState(client, {

@@ -9,14 +9,15 @@ export function createLink() {
     credentials: 'same-origin',
   });
   
-  const authLink = setContext(async (_, { headers }) => {
-    let token = "";
+  const authLink = setContext(async (_, current) => {
+    const { headers } = current;
+    let token = current ? current["x-dedong-token"] : "";
 
-    if (isBrowser()) {
+    if (!token && isBrowser()) {
       const session = await getSession();
       if (session) token = session.token as string;
     }
-  
+
     return {
       headers: {
         ...headers,
