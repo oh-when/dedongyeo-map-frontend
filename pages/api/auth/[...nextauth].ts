@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
-import { encode } from '~/util/jwt';
-// import { encode, decode } from '~/util/jwt';
+import { encode, decode } from './_jwt';
 
 export default NextAuth({
   providers: [
@@ -13,15 +12,8 @@ export default NextAuth({
   session: { jwt: true },
   jwt: {
     secret: process.env.JWT_SECRET,
-    signingKey: JSON.stringify({
-      kty: 'oct',
-      kid: '--',
-      alg: 'HS256',
-      k: '--',
-    }),
-    verificationOptions: {
-      algorithms: ['HS256'],
-    },
+    encode: async ({ token }) => encode(token),
+    decode: async ({ token }) => decode(token),
   },
   callbacks: {
     async session(_, token) {
@@ -35,9 +27,11 @@ export default NextAuth({
       const data = {
         ...token,
         provider,
-        token: null
       };
-      data.token = await encode({ token: data });
+
+      if (!(data as any).token) {
+        (data as any).token = encode(data);
+      }
       
       return data;
     },
