@@ -73,7 +73,7 @@ const SignIn: React.FC<Props> = ({ zIndex }) => {
             </$.CheckBoxLabel>
           </$.AreaCheckBox>
 
-          <$.SignInButton>로그인</$.SignInButton>
+          <$.SignInButton onClick={() => signIn('dedong', { email, password })}>로그인</$.SignInButton>
 
           <$.ContentCenterDiv>
             <hr

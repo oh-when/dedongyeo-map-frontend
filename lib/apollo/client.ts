@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { ApolloClient, HttpLink, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { useMemo } from 'react';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
