@@ -6,7 +6,7 @@ import Wrap from '~/components/_layout/Wrap';
 import Main from '~/components/_layout/Main';
 import { addApolloState, initializeApollo } from '../lib/apollo/client';
 import type { GetStaticProps } from 'next';
-import { usePopupOpener } from '../lib/apollo/hooks/usePopup';
+import { usePopupOpener, usePopupCloser } from '../lib/apollo/hooks/usePopup';
 import { PopupType } from '~/@types/popup.d';
 import { useSession } from 'next-auth/client';
 
@@ -27,13 +27,18 @@ const HomePage: React.FC = () => {
   const [session, loading] = useSession();
 
   const openPopup = usePopupOpener();
+  const closePopup = usePopupCloser();
 
   useEffect(() => {
-    // TODO: 로그인 안한 사람이면 로그인 팝업 뜨게 하기
-    openPopup({
-      popupType: PopupType.SIGN_IN,
-    });
-  }, []);
+    if (loading) return;
+    if (!session) {
+      openPopup({
+        popupType: PopupType.SIGN_IN,
+      });
+    } else {
+      closePopup();
+    }
+  }, [session, loading]);
 
   return (
     <>
