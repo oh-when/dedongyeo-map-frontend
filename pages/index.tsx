@@ -8,6 +8,7 @@ import { addApolloState, initializeApollo } from '../lib/apollo/client';
 import type { GetStaticProps } from 'next';
 import { usePopupOpener } from '../lib/apollo/hooks/usePopup';
 import { PopupType } from '~/@types/popup.d';
+import { useSession } from 'next-auth/client';
 
 export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
@@ -22,8 +23,11 @@ const Home = dynamic(() => import('~/components/Home'), {
   ssr: false,
 });
 
-const openPopup = usePopupOpener();
 const HomePage: React.FC = () => {
+  const [session, loading] = useSession();
+
+  const openPopup = usePopupOpener();
+
   useEffect(() => {
     // TODO: 로그인 안한 사람이면 로그인 팝업 뜨게 하기
     openPopup({

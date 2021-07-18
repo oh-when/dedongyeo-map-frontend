@@ -5,6 +5,7 @@ import type { PopupChildProps } from '~/@types/popup.d';
 import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
 import { PopupType } from '~/@types/popup.d';
 import { usePopupCloser } from '~/lib/apollo/hooks/usePopup';
+import { signIn } from 'next-auth/client';
 
 export type Props = PopupChildProps;
 const CHECKBOX_ID = 'daedong_chbox_allow';
@@ -95,9 +96,15 @@ const SignIn: React.FC<Props> = ({ zIndex }) => {
           </$.ContentCenterDiv>
 
           <$.ContentCenterDiv>
-            <$.KakaoButton />
-            <$.NaverButton />
-            <$.GoogleButton />
+            <$.SnsButton onClick={() => signIn('kakao')}>
+              <$.KakaoImg />
+            </$.SnsButton>
+            <$.SnsButton>
+              <$.NaverButton />
+            </$.SnsButton>
+            <$.SnsButton>
+              <$.GoogleButton />
+            </$.SnsButton>
           </$.ContentCenterDiv>
 
           <$.SpaceBetweenDiv>

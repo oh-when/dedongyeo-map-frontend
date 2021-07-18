@@ -144,11 +144,13 @@ export const Span = styled.span`
   color: ${painter.grayscale['7']};
 `;
 
-export const KakaoButton = styled.img.attrs({
-  src: '/Kakao.png',
-})`
+export const SnsButton = styled.button`
   cursor: pointer;
 `;
+
+export const KakaoImg = styled.img.attrs({
+  src: '/Kakao.png',
+})``;
 
 export const NaverButton = styled.img.attrs({
   src: '/Naver.png',
