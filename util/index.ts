@@ -1,3 +1,6 @@
+export * from './cmp';
+export * from './Registry';
+
 export const isBrowser = (): boolean => {
   return typeof window !== 'undefined';
 };
@@ -32,3 +35,17 @@ export const formatDate = (
 
   return `${date}.${month}.${year}`;
 };
+
+export function formatTime(unixTime: number, placeholder: string): string {
+  const dateObject: Date = new Date(unixTime * 1000);
+
+  const year: number = dateObject.getFullYear();
+  const month: string = toDigit(dateObject.getMonth() + 1, 2);
+  const date: string = toDigit(dateObject.getDate(), 2);
+  const result = placeholder
+    .replace('YYYY', year.toString())
+    .replace('MM', month.toString())
+    .replace('DD', date.toString());
+
+  return result;
+}

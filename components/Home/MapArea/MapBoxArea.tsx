@@ -87,10 +87,7 @@ const getLocation = () => {
 const MapBoxArea: React.FC = () => {
   const [map, setMap] = useState(null);
   const mapContainer = useRef(null);
-  const [getMapSpots, { loading, data, called }] = useLazyQuery<
-    GQL.GetMapSpots.Data,
-    GQL.GetMapSpots.Variables
-  >(GET_MAP_SPOTS);
+  const [getMapSpots, { loading, data, called }] = useLazyQuery(GET_MAP_SPOTS);
   const [mapSpots, setMapSpots] = useMapSpotsState();
   const [currentPosition, setCurrentPosition] = useCurrentPositionState();
   const isCustomSpotFlag = useIsCustomSpotFlag();
@@ -133,7 +130,7 @@ const MapBoxArea: React.FC = () => {
     mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
     const initMap = ({ setMap, mapContainer, currentPosition }) => {
-      const map = new mapboxgl.Map({
+      const map = new (mapboxgl as any).Map({
         container: mapContainer.current, // container ID
         style: 'mapbox://styles/mapbox/light-v10', // style URL
         center: [currentPosition.lngX, currentPosition.latY], // starting position [lng, lat]
