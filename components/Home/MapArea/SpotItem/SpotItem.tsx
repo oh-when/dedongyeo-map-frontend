@@ -54,7 +54,9 @@ const SpotItem: React.FC<Props> = ({ spot = DUMMY_SPOT }) => {
       {spot.stickers.slice(0, 4).map((sticker, idx) => {
         return (
           <StickerContainer
-            src={`./stickers/sticker_${sticker.sweet_percent}_${sticker.sticker_index}.png`}
+            // src={`./stickers/sticker_${sticker.sweet_percent}_${sticker.sticker_index}.png`}
+            sweetPercent={sticker.sweet_percent}
+            stickerIndex={sticker.sticker_index}
             width={72}
             height={72}
             className="test"
@@ -94,7 +96,7 @@ const StickerNumberContainer = styled.div<{ stickerNum: number }>`
   padding: 5px 8px;
   position: relative;
   bottom: 60px;
-  left: ${(props) => 40 + props.stickerNum * 40}px;
+  left: ${(props) => 40 + props.stickerNum * 20}px;
   z-index: 11;
 `;
 

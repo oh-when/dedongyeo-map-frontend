@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
+import React, { useEffect, useState } from 'react';
+// import mapboxgl from 'mapbox-gl';
 import { gql, useLazyQuery, useReactiveVar } from '@apollo/client';
 import {
   useCurrentPositionState,
@@ -7,11 +7,13 @@ import {
   useMapSpotsState,
 } from '~/lib/apollo/vars/home';
 import Storage from '~/lib/storage';
-import * as $ from '~/components/Home/MapArea/MapAreaView';
+// import * as $ from '~/components/Home/MapArea/MapAreaView';
 import SpotItem from '~/components/Home/MapArea/SpotItem';
 import { DUMMY_SPOT } from '~/components/Home/MapArea/SpotItem/SpotItem';
 import CustomSpotForm from '~/components/Popup/CustomSpotForm/CustomSpotForm';
 import SpotInfoModal from '~/components/Home/MapArea/SpotInfoModal';
+import { CommonMap } from '~/components/_common/MapBox';
+import { Marker } from 'react-mapbox-gl';
 
 const GET_MAP_SPOTS = gql`
   query GetMapSpots($searchSpotDto: SearchSpotDto) {
@@ -85,21 +87,32 @@ const getLocation = () => {
 // };
 
 const MapBoxArea: React.FC = () => {
-  const [map, setMap] = useState(null);
-  const mapContainer = useRef(null);
+  // const [map, setMap] = useState(null);
+  // const mapContainer = useRef(null);
   const [getMapSpots, { loading, data, called }] = useLazyQuery(GET_MAP_SPOTS);
   const [mapSpots, setMapSpots] = useMapSpotsState();
   const [currentPosition, setCurrentPosition] = useCurrentPositionState();
   const isCustomSpotFlag = useIsCustomSpotFlag();
+  const [state, setState] = useState({
+    zoom: [14],
+    center: [0, 0],
+    routes: [],
+  });
+  console.log(state);
 
-  // const [customSpotLatLng, setCustomSpotLatLng] = useState<LatLng>({
-  //   lngX: null,
-  //   latY: null,
-  // });
+  useEffect(() => {
+    setState({
+      ...state,
+      center: [currentPosition.lngX, currentPosition.latY],
+    });
+  }, [currentPosition]);
 
-  // const customSpotMarker = new mapboxgl.Marker();
-
-  // const handleClickMap = (e: React.MouseEvent) => {};
+  useEffect(() => {
+    if (data && data?.spots && data?.spots?.spots) {
+      console.log(data.spots.spots);
+      setMapSpots(data.spots.spots);
+    }
+  }, [data, called, loading]);
 
   useEffect(() => {
     async function fetchCurrentPosition() {
@@ -127,8 +140,19 @@ const MapBoxArea: React.FC = () => {
       });
     }
     fetchCurrentPosition();
-    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
+  }, []);
 
+  // const [customSpotLatLng, setCustomSpotLatLng] = useState<LatLng>({
+  //   lngX: null,
+  //   latY: null,
+  // });
+
+  // const customSpotMarker = new mapboxgl.Marker();
+
+  // const handleClickMap = (e: React.MouseEvent) => {};
+
+  /*
+  useEffect(() => {
     const initMap = ({ setMap, mapContainer, currentPosition }) => {
       const map = new (mapboxgl as any).Map({
         container: mapContainer.current, // container ID
@@ -163,45 +187,38 @@ const MapBoxArea: React.FC = () => {
       });
     };
 
-    if (!map) {
-      console.log('init map');
-      initMap({ setMap, mapContainer, currentPosition });
-    } else {
-      map.jumpTo({ center: [currentPosition.lngX, currentPosition.latY] });
-
-      // 스팟들을 지도에 그리기
-      console.log(mapSpots);
-      // console.log(<SpotItem spot={DUMMY_SPOT} />);
-      mapSpots.forEach((spot) => {
-        new mapboxgl.Marker(<SpotItem spot={spot} />)
-          .setLngLat([spot.x, spot.y])
-          .addTo(map);
-      });
-      // new mapboxgl.Marker(<SpotItem spot={DUMMY_SPOT} />)
-      //   .setLngLat([DUMMY_SPOT.x, DUMMY_SPOT.y])
-      //   .addTo(map);
-    }
   }, [map, isCustomSpotFlag, mapSpots]);
-
-  useEffect(() => {
-    console.log(currentPosition);
-  }, [currentPosition]);
-
-  useEffect(() => {
-    if (data && data?.spots && data?.spots?.spots) {
-      console.log(data.spots.spots);
-      setMapSpots(data.spots.spots);
-    }
-  }, [data, called, loading]);
+  */
 
   return (
     <>
-      <$.MapArea
-        // onClick={handleClickMap}
-        ref={(el) => (mapContainer.current = el)}
-      />
+      <CommonMap
+        center={state.center}
+        zoom={state.zoom}
+        style="mapbox://styles/mapbox/light-v10"
+        containerStyle={{
+          height: '100%',
+          width: '100%',
+        }}
+      >
+        {mapSpots &&
+          mapSpots.map((spot) => {
+            return (
+              <Marker
+                anchor="center"
+                coordinates={[spot.x, spot.y]}
+                key={`mk-${spot._id}`}
+              >
+                <SpotItem spot={spot} />
+              </Marker>
+            );
+          })}
+      </CommonMap>
+      {/*<$.MapArea*/}
+      {/*  // onClick={handleClickMap}*/}
+      {/*  ref={(el) => (mapContainer.current = el)}*/}
+      {/*/>*/}
       <CustomSpotForm />
-      <SpotItem spot={DUMMY_SPOT} />
       <SpotInfoModal />
     </>
   );
