@@ -3,9 +3,27 @@ import * as $ from './SignUpView';
 // import { useRouter } from 'next/router';
 import type { PopupChildProps } from '~/@types/popup.d';
 import { usePopupCloser } from '~/lib/apollo/hooks/usePopup';
+import { gql, useMutation } from '@apollo/client';
+import { signIn } from 'next-auth/client';
 
 export type Props = PopupChildProps;
 const CHECKBOX_ID = 'daedong_chbox_allow';
+
+const CREATE_USER = gql`
+  mutation CreateUser($createUserInput: createUserInput!) {
+    createUser(createUserInput: $createUserInput) {
+      _id
+      createdAt
+      email
+      password
+      isAcceptTerms
+      nickName
+      phone
+      status
+      updatedAt
+    }
+  }
+`;
 
 const SignUp: React.FC<Props> = ({ zIndex }) => {
   // const { pathname } = useRouter();
@@ -28,8 +46,10 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
   const [isValidPasswordConfirm, setIsValidPasswordConfirm] = useState(true);
   const [modalStep, setModalStep] = useState(1);
 
-  const emailRegExp = /^[0-9a-z]([-_\.]?[0-9a-z])*@[0-9a-z]([-_\.]?[0-9a-z])*\.[a-z]/;
-  const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+  const emailRegExp =
+    /^[0-9a-z]([-_\.]?[0-9a-z])*@[0-9a-z]([-_\.]?[0-9a-z])*\.[a-z]/;
+  const passwordRegExp =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
   const handleClickCloseButton = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -37,12 +57,7 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
   };
 
   const handleEmail = (e: any) => {
-    const val = e.target.value;
-    if (emailRegExp.test(val)) {
-      // 사용중인 이메일 계정인지 쿼리 날려서 검증 필요
-      // setIsVaildEmail 결정
-      setEmail(e.target.value);
-    }
+    setEmail(e.target.value);
   };
 
   const handlePassword = (e: any) => {
@@ -107,6 +122,65 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
   const handleCheck = (e: any, id: string) => {
     console.log(e.target.checked, 'e,target.checked');
     console.log(id, 'id');
+  };
+
+  const [createUser] = useMutation<
+    GQL.Mutation.CreateUser.Data,
+    GQL.Mutation.CreateUser.Variables
+  >(CREATE_USER, {
+    onCompleted: ({ createUser }) => {
+      const email = createUser.email;
+      signIn('dedong', { email, password, redirect: false })
+        .then((data) => {
+          alert('로그인 성공했습니다.');
+        })
+        .catch((err) => {
+          alert('로그인 실패했습니다. 다시 시도해주세요.');
+          console.log(err, 'err');
+        });
+    },
+  });
+
+  const handleClickSignUp = (e) => {
+    e.preventDefault();
+    if (modalStep === 1) {
+      if (!email) {
+        alert('이메일을 입력해주세요.');
+        return;
+      } else if (!emailRegExp.test(email)) {
+        alert('이메일을 올바른 형식으로 작성해주세요.');
+        return;
+      } else if (!password) {
+        alert('비밀번호를 입력해주세요.');
+        return;
+      } else if (!passwordConfirm) {
+        alert('비밀번호를 확인해주세요.');
+        return;
+      } else if (password !== passwordConfirm) {
+        alert('비밀번호를 다시 확인해주세요.');
+        return;
+      } else if (!nickName) {
+        alert('닉네임을 입력해주세요');
+        return;
+      } else if (!phoneNum) {
+        alert('핸드폰 번호를 입력해주세요');
+        return;
+      } else if (phoneNum.replace(/-/g, '').length < 11) {
+        alert('핸드폰 번호를 올바른 형식으로 입력해주세요.');
+        return;
+      }
+      closePopup();
+      createUser({
+        variables: {
+          createUserInput: {
+            email,
+            nickName,
+            password,
+            phone: phoneNum.replace(/-/g, ''),
+          },
+        },
+      });
+    }
   };
 
   return (
@@ -196,9 +270,11 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                 </$.DivForCheck>
                 <$.DivForCheck>자세히</$.DivForCheck>
               </$.AreaCheckBox>
+
+              <$.SignUpButton>동의하고 회원가입하기</$.SignUpButton>
             </>
           ) : (
-            <>
+            <$.Form onSubmit={handleClickSignUp}>
               <$.InputLabel>계정 이메일</$.InputLabel>
               <$.InputBox>
                 <$.Input
@@ -217,6 +293,7 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                   value={password}
                   onChange={handlePassword}
                   placeholder="비밀번호 (8~32자리)"
+                  type="password"
                 />
               </$.InputBox>
               {!isValidPassword && (
@@ -230,6 +307,7 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                   value={passwordConfirm}
                   onChange={handlePasswordConfirm}
                   placeholder="비밀번호 확인"
+                  type="password"
                 />
               </$.InputBox>
               {!isValidPasswordConfirm && (
@@ -259,12 +337,11 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                   maxLength={13}
                 />
               </$.InputBox>
-            </>
+              <$.SignUpButton onClick={handleClickSignUp}>
+                회원가입
+              </$.SignUpButton>
+            </$.Form>
           )}
-
-          <$.SignUpButton>
-            {modalStep === 0 ? '동의하고 회원가입하기' : '회원가입'}
-          </$.SignUpButton>
         </$.ModalContentDiv>
       </$.ModalDiv>
     </>

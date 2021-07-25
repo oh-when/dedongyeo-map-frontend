@@ -11,6 +11,14 @@ export const MainTitle = styled.span`
   line-height: 24px;
 `;
 
+export const Form = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: auto;
+`;
+
 export const InputLabel = styled.label`
   color: ${painter.grayscale[1]};
   font-family: Noto Sans CJK KR;
@@ -31,7 +39,9 @@ export const InputBox = styled.div`
   justify-content: space-between;
 `;
 
-export const Input = styled.input.attrs({ type: 'text' })`
+export const Input = styled.input.attrs((props) => ({
+  type: props.type || 'text',
+}))`
   display: block;
   width: 100%;
   height: 100%;
