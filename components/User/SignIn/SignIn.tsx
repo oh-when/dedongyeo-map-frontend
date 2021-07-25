@@ -30,6 +30,27 @@ const SignIn: React.FC<Props> = ({ zIndex }) => {
     closePopup();
   };
 
+  const handleClickSignIn = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      alert('이메일을 입력해주세요.');
+      return;
+    } else if (!password) {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
+    closePopup();
+    signIn('dedong', { email, password, redirect: false })
+      .then((data) => {
+        alert('로그인 성공했습니다.');
+        setEmail('');
+        setPassword('');
+      })
+      .catch((err) => {
+        console.log(err, 'err');
+      });
+  };
+
   return (
     <>
       <$.ModalDiv zIndex={zIndex}>
@@ -51,29 +72,32 @@ const SignIn: React.FC<Props> = ({ zIndex }) => {
             <$.SignInImg />
           </div>
 
-          <$.InputBox>
-            <$.Input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="이메일 (example@gmail.com)"
-            />
-          </$.InputBox>
-          <$.InputBox>
-            <$.Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호"
-            />
-          </$.InputBox>
-          <$.AreaCheckBox>
-            <$.RealCheckBox id={CHECKBOX_ID} defaultChecked={true} />
-            <$.ViewCheckBox />
-            <$.CheckBoxLabel htmlFor={CHECKBOX_ID}>
-              로그인 상태 유지
-            </$.CheckBoxLabel>
-          </$.AreaCheckBox>
+          <$.Form onSubmit={handleClickSignIn}>
+            <$.InputBox>
+              <$.Input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일 (example@gmail.com)"
+              />
+            </$.InputBox>
+            <$.InputBox>
+              <$.Input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호"
+                type="password"
+              />
+            </$.InputBox>
+            <$.AreaCheckBox>
+              <$.RealCheckBox id={CHECKBOX_ID} defaultChecked={true} />
+              <$.ViewCheckBox />
+              <$.CheckBoxLabel htmlFor={CHECKBOX_ID}>
+                로그인 상태 유지
+              </$.CheckBoxLabel>
+            </$.AreaCheckBox>
 
-          <$.SignInButton onClick={() => signIn('dedong', { email, password })}>로그인</$.SignInButton>
+            <$.SignInButton onClick={handleClickSignIn}>로그인</$.SignInButton>
+          </$.Form>
 
           <$.ContentCenterDiv>
             <hr

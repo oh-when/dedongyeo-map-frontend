@@ -1,6 +1,26 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import { encode, decode } from './_jwt';
+import { gql } from '@apollo/client';
+import { initializeApollo } from '~/lib/apollo/client';
+
+const LOG_IN = gql`
+  mutation LogIn($loginInput: loginInput!) {
+    login(loginInput: $loginInput) {
+      accessToken
+      user {
+        _id
+        createdAt
+        email
+        isAcceptTerms
+        nickName
+        phone
+        status
+        updatedAt
+      }
+    }
+  }
+`;
 
 export default NextAuth({
   providers: [
@@ -11,26 +31,35 @@ export default NextAuth({
     Providers.Credentials({
       id: 'dedong',
       name: 'dedong',
-      type: "credentials",
+      type: 'credentials',
       credentials: {
-        email: { type: "text", placeholder: "이메일 (example@gmail.com)" },
-        password: { type: "password", placeholder: "비밀번호" }
+        email: {
+          type: 'text',
+          placeholder: '이메일 (example@gmail.com)',
+        },
+        password: {
+          type: 'password',
+          placeholder: '비밀번호',
+        },
       },
       authorize: async (credentials) => {
-        // const client = initializeApollo();
         const { email, password } = credentials;
-        let user = null;
+        const client = initializeApollo();
 
-        // 로그인 성공시 return user
-        // client.query({ ... });
-        console.log({ email, password });
-        user = { email, nickname: "김재원" };
+        const user = await client.mutate({
+          mutation: LOG_IN,
+          variables: {
+            loginInput: { email, password },
+          },
+        });
 
-        // 로그인 실패시 return null
-
-        return user;
-      }
-    })
+        if (user) {
+          return user;
+        } else {
+          return null;
+        }
+      },
+    }),
   ],
   session: { jwt: true },
   jwt: {
@@ -55,7 +84,7 @@ export default NextAuth({
       if (!(data as any).token) {
         (data as any).token = encode(data);
       }
-      
+
       return data;
     },
   },
