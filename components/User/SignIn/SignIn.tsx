@@ -123,10 +123,10 @@ const SignIn: React.FC<Props> = ({ zIndex }) => {
             <$.SnsButton onClick={() => signIn('kakao')}>
               <$.KakaoImg />
             </$.SnsButton>
-            <$.SnsButton>
+            <$.SnsButton onClick={() => signIn('naver')}>
               <$.NaverButton />
             </$.SnsButton>
-            <$.SnsButton>
+            <$.SnsButton onClick={() => signIn('google')}>
               <$.GoogleButton />
             </$.SnsButton>
           </$.ContentCenterDiv>
