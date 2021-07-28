@@ -54,7 +54,6 @@ const SpotItem: React.FC<Props> = ({ spot = DUMMY_SPOT }) => {
       {spot.stickers.slice(0, 4).map((sticker, idx) => {
         return (
           <StickerContainer
-            // src={`./stickers/sticker_${sticker.sweet_percent}_${sticker.sticker_index}.png`}
             sweetPercent={sticker.sweet_percent}
             stickerIndex={sticker.sticker_index}
             width={72}
@@ -122,7 +121,7 @@ const SpotNameBalloon = styled.div<{ nameLen: number }>`
     position: absolute;
     content: '';
     top: 44px;
-    left: ${(props) => 12 + props.nameLen * 8}px;
+    left: ${(props) => 2 + props.nameLen * 8}px;
     filter: drop-shadow(0px 2px 20px rgba(73, 80, 87, 0.2));
   }
 `;

@@ -14,6 +14,8 @@ import CustomSpotForm from '~/components/Popup/CustomSpotForm/CustomSpotForm';
 import SpotInfoModal from '~/components/Home/MapArea/SpotInfoModal';
 import { CommonMap } from '~/components/_common/MapBox';
 import { Marker } from 'react-mapbox-gl';
+import { CustomSpotMarker } from './MapAreaView';
+// import SpotMarkerImg from 'public/spot_marker.png';
 
 const GET_MAP_SPOTS = gql`
   query GetMapSpots($searchSpotDto: SearchSpotDto) {
@@ -94,11 +96,16 @@ const MapBoxArea: React.FC = () => {
   const [currentPosition, setCurrentPosition] = useCurrentPositionState();
   const isCustomSpotFlag = useIsCustomSpotFlag();
   const [state, setState] = useState({
-    zoom: [14],
-    center: [0, 0],
+    zoom: [12],
+    center: [127.01168879703, 37.5570641564289],
     routes: [],
   });
-  console.log(state);
+  const [spotInfoModalIdx, setSpotInfoModalIdx] = useState<number>(-1);
+  const [isCreateCustomSpot, setIsCreateCustomSpot] = useState<boolean>(false);
+  const [createCustomSpotPos, setCreateCustomSpotPos] = useState([
+    127.01168879703, 37.5570641564289,
+  ]);
+  console.log(createCustomSpotPos);
 
   useEffect(() => {
     setState({
@@ -109,7 +116,6 @@ const MapBoxArea: React.FC = () => {
 
   useEffect(() => {
     if (data && data?.spots && data?.spots?.spots) {
-      console.log(data.spots.spots);
       setMapSpots(data.spots.spots);
     }
   }, [data, called, loading]);
@@ -147,49 +153,35 @@ const MapBoxArea: React.FC = () => {
   //   latY: null,
   // });
 
-  // const customSpotMarker = new mapboxgl.Marker();
+  const handleClickMap = (map: any, event: any) => {
+    const lngLat = event.lngLat;
+    // console.log(isCustomSpotFlag);
+    // if (isCustomSpotFlag) {
+    setIsCreateCustomSpot(true);
+    setCreateCustomSpotPos([lngLat.lng, lngLat.lat]);
+    // } else setIsCreateCustomSpot(false);
+  };
 
-  // const handleClickMap = (e: React.MouseEvent) => {};
-
-  /*
   useEffect(() => {
-    const initMap = ({ setMap, mapContainer, currentPosition }) => {
-      const map = new (mapboxgl as any).Map({
-        container: mapContainer.current, // container ID
-        style: 'mapbox://styles/mapbox/light-v10', // style URL
-        center: [currentPosition.lngX, currentPosition.latY], // starting position [lng, lat]
-        zoom: 14, // starting zoom
-      });
+    if (isCustomSpotFlag) {
+      document.querySelector('.mapboxgl-map').classList.add('spot-marker');
+      document.querySelector('.mapboxgl-canvas').classList.add('spot-marker');
+    } else {
+      document.querySelector('.mapboxgl-map').classList.remove('spot-marker');
+      document
+        .querySelector('.mapboxgl-canvas')
+        .classList.remove('spot-marker');
+    }
+  }, [isCustomSpotFlag]);
 
-      map.on('load', () => {
-        setMap(map);
-        map.resize();
-      });
-
-      map.on('click', (e) => {
-        // 이전 커스텀 스팟 삭제
-        const arr = document.getElementsByClassName('custom-marker');
-        console.log(arr);
-        for (let i = 0; i < arr.length; i++) {
-          arr[i].parentNode.removeChild(arr[i]);
-        }
-
-        // 커스텀 스팟 마커 만들기
-        const el = document.createElement('div');
-        el.className = 'marker custom-marker';
-        el.style.backgroundImage =
-          'url(https://s3.ap-northeast-2.amazonaws.com/asset-dev.goodoc.kr/owen/spot_marker.png)';
-        el.style.width = '50px';
-        el.style.height = '50px';
-        el.style.backgroundSize = '100%';
-        console.log(el);
-        new mapboxgl.Marker(el).setLngLat(e.lngLat).addTo(map);
-      });
-    };
-
-  }, [map, isCustomSpotFlag, mapSpots]);
-  */
-
+  const markerClickHandler = (idx: number) => {
+    if (spotInfoModalIdx === idx) {
+      setSpotInfoModalIdx(-1);
+      return;
+    }
+    setSpotInfoModalIdx(idx);
+    return;
+  };
   return (
     <>
       <CommonMap
@@ -200,26 +192,39 @@ const MapBoxArea: React.FC = () => {
           height: '100%',
           width: '100%',
         }}
+        onClick={handleClickMap}
       >
         {mapSpots &&
-          mapSpots.map((spot) => {
+          mapSpots.map((spot, idx) => {
             return (
               <Marker
                 anchor="center"
                 coordinates={[spot.x, spot.y]}
                 key={`mk-${spot._id}`}
+                onClick={() => markerClickHandler(idx)}
               >
-                <SpotItem spot={spot} />
+                <>
+                  {idx === spotInfoModalIdx ? (
+                    <SpotInfoModal spot={spot} />
+                  ) : null}
+                  <SpotItem spot={spot} />
+                </>
               </Marker>
             );
           })}
+        {isCreateCustomSpot && (
+          <Marker anchor="center" coordinates={createCustomSpotPos}>
+            <>
+              <CustomSpotForm />
+              {/*<CustomSpotMarker src={SpotMarkerImg} />*/}
+            </>
+          </Marker>
+        )}
       </CommonMap>
       {/*<$.MapArea*/}
       {/*  // onClick={handleClickMap}*/}
       {/*  ref={(el) => (mapContainer.current = el)}*/}
       {/*/>*/}
-      <CustomSpotForm />
-      <SpotInfoModal />
     </>
   );
 };

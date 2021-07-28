@@ -20,7 +20,7 @@ a {
 }
 
 .spot-marker {
-  cursor: url("/public/spot_marker.png"), auto;
+  cursor: url("https://s3.ap-northeast-2.amazonaws.com/asset-dev.goodoc.kr/owen/spot_marker.png"), default;
 }
 
 .map-spotoverlay {

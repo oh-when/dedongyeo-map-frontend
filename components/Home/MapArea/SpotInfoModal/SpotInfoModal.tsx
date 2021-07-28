@@ -7,9 +7,11 @@ import {
   SettingIcon,
 } from './SpotInfoModalView';
 
-type Props = {};
+type Props = {
+  spot?: GQL.Spot;
+};
 
-const SpotInfoModal: React.FC<Props> = ({}: Props) => {
+const SpotInfoModal: React.FC<Props> = ({ spot }: Props) => {
   return (
     <$.ModalWrapper>
       <$.ContainerRow justifyContent="space-between">
@@ -19,14 +21,14 @@ const SpotInfoModal: React.FC<Props> = ({}: Props) => {
         </$.CloseBtn>
       </$.ContainerRow>
       <$.ContainerRow>
-        <h1>비밀 휴식터</h1>
+        <h1>{spot.place_name}</h1>
         <h2>나만의 장소</h2>
         <Empty />
         <$.SettingIcon src="/edit_icon.png" />
         <$.SettingIcon src="/delete_icon.png" />
       </$.ContainerRow>
       <$.ContainerRow justifyContent="space-between">
-        <h3>서울 성동구 아차산로9길 8</h3>
+        <h3>{spot.road_address_name}</h3>
         <h4>비공개</h4>
       </$.ContainerRow>
       <$.SweetContainer>

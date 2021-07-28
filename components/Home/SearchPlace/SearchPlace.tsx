@@ -213,7 +213,7 @@ const SearchPlace: React.FC = () => {
 
   const resetSearch = () => {
     setIsClicked(false);
-    console.log(isClicked, '??');
+    console.log('isClicked', isClicked);
     setKeyword('');
     setSearchKeyword('');
   };
