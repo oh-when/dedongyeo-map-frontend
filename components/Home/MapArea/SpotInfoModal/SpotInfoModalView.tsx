@@ -12,6 +12,7 @@ export const ModalWrapper = styled.div`
   font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, Segoe UI,
     Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
     sans-serif;
+  z-index: 10000;
 
   filter: drop-shadow(0px 2px 20px rgba(73, 80, 87, 0.2));
 

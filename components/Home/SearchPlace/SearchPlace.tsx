@@ -112,7 +112,7 @@ const SearchPlace: React.FC = () => {
   const Y = myPosition.latY;
   console.log(X, 'x');
   console.log(Y, 'y');
-  const [pagination, setPagination] = useState(0);
+  const [pagination, setPagination] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const nums = [1, 2, 3, 4, 5];
   const pages = nums.map((num) => 5 * pagination + num);
@@ -126,7 +126,7 @@ const SearchPlace: React.FC = () => {
         page: pagination,
         radius: 100,
         rect: '',
-        size: 100,
+        size: 10,
         X,
         Y,
       },
@@ -152,7 +152,7 @@ const SearchPlace: React.FC = () => {
 
   const submitValue = (e: any) => {
     e.preventDefault();
-    setPagination(0);
+    setPagination(1);
     setCurrentPage(1);
     loadData();
     setSearchKeyword(keyword);

@@ -201,19 +201,26 @@ const MapBoxArea: React.FC = () => {
         {mapSpots &&
           mapSpots.map((spot, idx) => {
             return (
-              <Marker
-                anchor="center"
-                coordinates={[spot.x, spot.y]}
-                key={`mk-${spot._id}`}
-                onClick={() => markerClickHandler(idx)}
-              >
-                <>
-                  {idx === spotInfoModalIdx ? (
+              <>
+                {idx === spotInfoModalIdx ? (
+                  <Marker
+                    anchor="bottom"
+                    coordinates={[spot.x, spot.y + 0.0005]}
+                    key={`modal-${spot._id}`}
+                    onClick={() => markerClickHandler(idx)}
+                  >
                     <SpotInfoModal spot={spot} />
-                  ) : null}
+                  </Marker>
+                ) : null}
+                <Marker
+                  anchor="center"
+                  coordinates={[spot.x, spot.y]}
+                  key={`mk-${spot._id}`}
+                  onClick={() => markerClickHandler(idx)}
+                >
                   <SpotItem spot={spot} />
-                </>
-              </Marker>
+                </Marker>
+              </>
             );
           })}
         {isCreateCustomSpot && (
