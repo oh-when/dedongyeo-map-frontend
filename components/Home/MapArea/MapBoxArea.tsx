@@ -182,6 +182,10 @@ const MapBoxArea: React.FC = () => {
     setSpotInfoModalIdx(idx);
     return;
   };
+
+  const closeHandler = () => {
+    setIsCreateCustomSpot(false);
+  };
   return (
     <>
       <CommonMap
@@ -215,8 +219,10 @@ const MapBoxArea: React.FC = () => {
         {isCreateCustomSpot && (
           <Marker anchor="center" coordinates={createCustomSpotPos}>
             <>
-              <CustomSpotForm />
-              {/*<CustomSpotMarker src={SpotMarkerImg} />*/}
+              <CustomSpotForm
+                closeHandler={closeHandler}
+                coordinates={createCustomSpotPos}
+              />
             </>
           </Marker>
         )}
