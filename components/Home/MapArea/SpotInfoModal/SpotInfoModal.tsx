@@ -9,9 +9,13 @@ import {
 
 type Props = {
   spot?: GQL.Spot;
+  attachStickerHandler: () => void;
 };
 
-const SpotInfoModal: React.FC<Props> = ({ spot }: Props) => {
+const SpotInfoModal: React.FC<Props> = ({
+  spot,
+  attachStickerHandler,
+}: Props) => {
   return (
     <$.ModalWrapper>
       <$.ContainerRow justifyContent="space-between">
@@ -53,7 +57,9 @@ const SpotInfoModal: React.FC<Props> = ({ spot }: Props) => {
           <span>0</span>
         </$.IconContainer>
       </$.SweetContainer>
-      <$.SubmitButton>스티커 붙이기</$.SubmitButton>
+      <$.SubmitButton onClick={attachStickerHandler}>
+        스티커 붙이기
+      </$.SubmitButton>
     </$.ModalWrapper>
   );
 };

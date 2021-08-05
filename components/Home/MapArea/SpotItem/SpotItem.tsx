@@ -79,7 +79,7 @@ const SpotContainer = styled.div`
 
 const StickerContainer = styled(Sticker)<{ order: number }>`
   position: relative;
-  top: 20px;
+  top: 0;
   left: ${(props) => 40 + props.order * -40}px;
   z-index: ${(props) => 10 - props.order};
 `;

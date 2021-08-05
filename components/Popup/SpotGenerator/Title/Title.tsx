@@ -1,19 +1,15 @@
 import React from 'react';
 import * as $ from './TitleView';
-import { usePopupCloser } from '~/lib/apollo/hooks/usePopup';
 
-const Title: React.FC = () => {
-  const closePopup = usePopupCloser();
+type Props = {
+  closePopup: () => void;
+};
 
-  const handleClickCloseLayerButton = (e) => {
-    e.preventDefault();
-    closePopup();
-  };
-
+const Title: React.FC<Props> = ({ closePopup }) => {
   return (
     <$.Title>
       <$.Text>스티커 붙이기</$.Text>
-      <$.CloseLayerButton onClick={handleClickCloseLayerButton} />
+      <$.CloseLayerButton onClick={closePopup} />
     </$.Title>
   );
 };

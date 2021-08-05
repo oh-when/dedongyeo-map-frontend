@@ -12,12 +12,13 @@ export type Props = PopupChildProps & {
     x: number;
     y: number;
   };
+  closePopup: () => void;
 };
 
-const SpotGenerator: React.FC<Props> = ({ place, zIndex }) => {
+const SpotGenerator: React.FC<Props> = ({ place, zIndex, closePopup }) => {
   return (
     <$.SpotGenerator zIndex={zIndex}>
-      <Title />
+      <Title closePopup={closePopup} />
       <$.Inner>
         <$.AreaText>
           <$.HelpTitle>스티커를 원하는 장소에 붙여보세요</$.HelpTitle>

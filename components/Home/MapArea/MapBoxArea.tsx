@@ -13,6 +13,7 @@ import CustomSpotForm from '~/components/Popup/CustomSpotForm/CustomSpotForm';
 import SpotInfoModal from '~/components/Home/MapArea/SpotInfoModal';
 import { CommonMap } from '~/components/_common/MapBox';
 import { Marker } from 'react-mapbox-gl';
+import SpotGenerator from '~/components/Popup/SpotGenerator/SpotGenerator';
 // import SpotMarkerImg from 'public/spot_marker.png';
 
 const GET_MAP_SPOTS = gql`
@@ -103,7 +104,10 @@ const MapBoxArea: React.FC = () => {
   const [createCustomSpotPos, setCreateCustomSpotPos] = useState([
     127.01168879703, 37.5570641564289,
   ]);
-  console.log(createCustomSpotPos);
+  const [stickerAttachPopupOpen, setStickerAttachPopupOpen] =
+    useState<boolean>(false);
+
+  // console.log(createCustomSpotPos);
 
   useEffect(() => {
     setState({
@@ -185,6 +189,15 @@ const MapBoxArea: React.FC = () => {
   const closeHandler = () => {
     setIsCreateCustomSpot(false);
   };
+
+  const openPopup = () => {
+    setStickerAttachPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setStickerAttachPopupOpen(false);
+  };
+
   return (
     <>
       <CommonMap
@@ -209,7 +222,10 @@ const MapBoxArea: React.FC = () => {
                     onClick={() => markerClickHandler(idx)}
                     style={{ zIndex: 10 }}
                   >
-                    <SpotInfoModal spot={spot} />
+                    <SpotInfoModal
+                      spot={spot}
+                      attachStickerHandler={openPopup}
+                    />
                   </Marker>
                 ) : null}
                 <Marker
@@ -232,6 +248,12 @@ const MapBoxArea: React.FC = () => {
               />
             </>
           </Marker>
+        )}
+        {stickerAttachPopupOpen && (
+          <SpotGenerator
+            place={{ id: '', name: '', x: 1, y: 1 }}
+            closePopup={closePopup}
+          />
         )}
       </CommonMap>
       {/*<$.MapArea*/}
