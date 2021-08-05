@@ -137,6 +137,9 @@ declare namespace GQL {
     sticker_index: number;
     sweet_percent: number;
     is_used: boolean;
+    spot?: Spot;
+  }
+  export interface Course {
     startAt: number;
     endAt: number;
     partners: string[];
@@ -211,6 +214,23 @@ declare namespace GQL {
       };
     }
   }
+  export namespace GetMapSpots {
+    export type Variables = {
+      searchSpotDto?: {
+        keyword: string;
+        page: number;
+        size: number;
+      };
+    };
+    export type Data = {
+      spots: {
+        spots: Array<Spot>;
+        cur_page: number;
+        is_end: boolean;
+        total_count: number;
+        total_page_count: number;
+      };
+    };
   export namespace Mutation {
     export namespace RemoveSpot {
       export type Variables = {
