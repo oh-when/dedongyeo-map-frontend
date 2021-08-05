@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import mapboxgl from 'mapbox-gl';
-import { gql, useLazyQuery, useReactiveVar } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 import {
   useCurrentPositionState,
   useIsCustomSpotFlag,
@@ -9,12 +9,10 @@ import {
 import Storage from '~/lib/storage';
 // import * as $ from '~/components/Home/MapArea/MapAreaView';
 import SpotItem from '~/components/Home/MapArea/SpotItem';
-import { DUMMY_SPOT } from '~/components/Home/MapArea/SpotItem/SpotItem';
 import CustomSpotForm from '~/components/Popup/CustomSpotForm/CustomSpotForm';
 import SpotInfoModal from '~/components/Home/MapArea/SpotInfoModal';
 import { CommonMap } from '~/components/_common/MapBox';
 import { Marker } from 'react-mapbox-gl';
-import { CustomSpotMarker } from './MapAreaView';
 // import SpotMarkerImg from 'public/spot_marker.png';
 
 const GET_MAP_SPOTS = gql`
@@ -138,13 +136,14 @@ const MapBoxArea: React.FC = () => {
       getMapSpots({
         variables: {
           searchSpotDto: {
-            keyword: '',
+            keyword: ' ',
             page: 1,
             size: 100,
           },
         },
       });
     }
+
     fetchCurrentPosition();
   }, []);
 
@@ -208,6 +207,7 @@ const MapBoxArea: React.FC = () => {
                     coordinates={[spot.x, spot.y + 0.0005]}
                     key={`modal-${spot._id}`}
                     onClick={() => markerClickHandler(idx)}
+                    style={{ zIndex: 10 }}
                   >
                     <SpotInfoModal spot={spot} />
                   </Marker>
