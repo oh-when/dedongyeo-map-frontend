@@ -1,7 +1,20 @@
 import type { DefaultTheme } from 'styled-components';
 import { SweetPercent } from '~/constants/stickers';
 
+const deviceSizes = {
+  mobile: '375px',
+  tablet: '1500px',
+  laptop: '1706px',
+};
+
+const device = {
+  mobile: `screen and (max-width: ${deviceSizes.mobile})`,
+  tablet: `screen and (max-width: ${deviceSizes.tablet})`,
+  laptop: `screen and (max-width: ${deviceSizes.laptop})`,
+};
+
 const theme: DefaultTheme = {
+  device,
   primary: {
     basic: '#FD476D',
     light: '#FE91A7',

@@ -133,6 +133,7 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
       signIn('dedong', { email, password, redirect: false })
         .then((data) => {
           alert('로그인 성공했습니다.');
+          console.log(data, '회원가입 성공 data');
         })
         .catch((err) => {
           alert('로그인 실패했습니다. 다시 시도해주세요.');
@@ -281,6 +282,7 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                   value={email}
                   onChange={handleEmail}
                   placeholder="이메일 주소 입력"
+                  type="email"
                 />
               </$.InputBox>
               {!isVaildEmail && (
@@ -330,7 +332,6 @@ const SignUp: React.FC<Props> = ({ zIndex }) => {
                 <$.Input
                   id="phoneNum"
                   name="phoneNum"
-                  type="text"
                   value={phoneNum}
                   onChange={handlePhoneNum}
                   placeholder="010-0000-0000"

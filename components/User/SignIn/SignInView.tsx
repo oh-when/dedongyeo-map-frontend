@@ -185,6 +185,10 @@ export const ModalDiv = styled.div<{ zIndex: string }>`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  @media ${({ theme }) => theme.device.laptop} {
+    left: 40%;
+    top: 2%;
+  }
 `;
 
 export const ModalContentDiv = styled.div`

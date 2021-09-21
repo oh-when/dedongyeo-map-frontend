@@ -5,6 +5,11 @@ declare module 'styled-components' {
    * @see figma 사이드바 > inspect 탭에서 확인 가능
    */
   export interface DefaultTheme {
+    device: {
+      mobile: string;
+      tablet: string;
+      laptop: string;
+    };
     primary: {
       basic: string;
       light: string;

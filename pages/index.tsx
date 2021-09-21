@@ -33,6 +33,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (loading) return;
+    console.log(session, 'session');
     if (!session) {
       openPopup({
         popupType: PopupType.SIGN_IN,
@@ -69,14 +70,14 @@ function tempRequest() {
           searchCourseInput: {
             // startAt: range[0],
             // endAt: range[1],
-            isShare: true
+            isShare: true,
           },
         },
       })
       .then(({ data }) => {
-        console.log("요청 완료")
+        console.log('요청 완료');
       });
-  }, [])
+  }, []);
 }
 
 export default HomePage;
