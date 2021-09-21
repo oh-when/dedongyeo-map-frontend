@@ -1,26 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import { encode, decode } from './_jwt';
-import { gql } from '@apollo/client';
-import { initializeApollo } from '~/lib/apollo/client';
-
-const LOG_IN = gql`
-  mutation LogIn($loginInput: loginInput!) {
-    login(loginInput: $loginInput) {
-      accessToken
-      user {
-        _id
-        createdAt
-        email
-        isAcceptTerms
-        nickName
-        phone
-        status
-        updatedAt
-      }
-    }
-  }
-`;
 
 export default NextAuth({
   providers: [
@@ -28,48 +8,29 @@ export default NextAuth({
       clientId: process.env.KAKAO_CLIENT_ID,
       clientSecret: process.env.KAKAO_CLIENT_SECRET,
     }),
-    Providers.Naver({
-      clientId: process.env.NAVER_CLIENT_ID,
-      clientSecret: process.env.NAVER_CLIENT_SECRET,
-    }),
-    Providers.Google({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-      authorizationUrl:
-        'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
-    }),
     Providers.Credentials({
       id: 'dedong',
       name: 'dedong',
-      type: 'credentials',
+      type: "credentials",
       credentials: {
-        email: {
-          type: 'text',
-          placeholder: '이메일 (example@gmail.com)',
-        },
-        password: {
-          type: 'password',
-          placeholder: '비밀번호',
-        },
+        email: { type: "text", placeholder: "이메일 (example@gmail.com)" },
+        password: { type: "password", placeholder: "비밀번호" }
       },
       authorize: async (credentials) => {
+        // const client = initializeApollo();
         const { email, password } = credentials;
-        const client = initializeApollo();
+        let user = null;
 
-        const user = await client.mutate({
-          mutation: LOG_IN,
-          variables: {
-            loginInput: { email, password },
-          },
-        });
+        // 로그인 성공시 return user
+        // client.query({ ... });
+        console.log({ email, password });
+        user = { email, nickname: "김재원" };
 
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
-      },
-    }),
+        // 로그인 실패시 return null
+
+        return user;
+      }
+    })
   ],
   session: { jwt: true },
   jwt: {
@@ -85,10 +46,6 @@ export default NextAuth({
       let provider = 'dedong';
       if (token.picture && token.picture.indexOf('kakao') > 0) {
         provider = 'kakao';
-      } else if (token.picture && token.picture.indexOf('naver') > 0) {
-        provider = 'naver';
-      } else if (token.picture && token.picture.indexOf('google') > 0) {
-        provider = 'google';
       }
       const data = {
         ...token,
@@ -98,7 +55,7 @@ export default NextAuth({
       if (!(data as any).token) {
         (data as any).token = encode(data);
       }
-
+      
       return data;
     },
   },
