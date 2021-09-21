@@ -158,6 +158,24 @@ declare namespace GQL {
     _id: string;
     is_used: boolean;
   };
+  export type createUserInput = {
+    email: string;
+    nickName: string;
+    password: string;
+    phone: string;
+  };
+  export type User = {
+    _id: string;
+    createdAt: string;
+    email: string;
+    isAcceptTerms: boolean;
+    nickName: string;
+    password: string;
+    phone: string;
+    socialUid: string;
+    status: string;
+    updatedAt: string;
+  };
 
   export namespace Query {
     export namespace Place {
@@ -283,13 +301,21 @@ declare namespace GQL {
     export namespace RemoveCourse {
       export type Variables = {
         id: string;
-      }
+      };
       export type Data = {
         removeCourse: {
           n: number;
           ok: number;
-        }
-      }
+        };
+      };
+    }
+    export namespace CreateUser {
+      export type Variables = {
+        createUserInput: GQL.createUserInput;
+      };
+      export type Data = {
+        createUser: GQL.User;
+      };
     }
   }
 }

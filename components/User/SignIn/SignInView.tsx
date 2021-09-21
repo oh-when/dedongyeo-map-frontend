@@ -23,6 +23,10 @@ export const MainTitle = styled.span`
   color: ${painter.basic.white};
 `;
 
+export const Form = styled.form`
+  width: 100%;
+`;
+
 export const InputBox = styled.div`
   height: 48px;
   width: 100%;
@@ -31,7 +35,9 @@ export const InputBox = styled.div`
   background-color: transparent;
 `;
 
-export const Input = styled.input.attrs({ type: 'text' })`
+export const Input = styled.input.attrs((props) => ({
+  type: props.type || 'text',
+}))`
   display: block;
   width: 100%;
   height: 100%;
