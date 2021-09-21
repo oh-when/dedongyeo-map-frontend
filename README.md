@@ -1,34 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 데동여지도 dedongyeo-map
 
-## Getting Started
+연인들이 데이트 장소를 기록하고 코스를 저장할 수 있는 데동여지도의 웹 프론트엔드 레포입니다.
 
-First, run the development server:
 
+## 실행하기
+
+### 패키지 설치
+
+```bash
+npm install --save
+# or
+yarn
+```
+
+### 개발 서버 실행
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 빌드
+```bash
+npm run build
+# or
+yarn build
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## 기술 스택
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Frameworks & Languages
+- Next.js 10.X
+- React.js 17.X
+- TypeScript 4.X
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Libraries & Third Party
+- GraphQL
+- Apollo Client
+- styled-components
+- Mapbox
 
-## Learn More
+### Infra
+- GCP
+- Docker
 
-To learn more about Next.js, take a look at the following resources:
+## 주요 기능
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 홈 화면, 스팟 페이지 (/)
+- 스팟 검색하기
+- 검색한 스팟에 스티커 추가하기
+- 커스텀 스팟 생성하기
+- 당도 기반으로 필터링 하기
+- 지역 기반 실시간 채팅
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 코스 화면, (/course)
+- 날짜별로 코스 히스토리 조회하기
+- 만들었던 스팟 기반으로 코스를 생성하기
+- 생성한 코스 공유하기
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### 마이페이지
+- 로그인/회원가입
+- 개인 정보 수정

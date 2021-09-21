@@ -1,21 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { SweetPercent } from '~/constants/stickers';
 import painter from '~/styles/theme/painter';
-import type { Sugar } from '~/constants/sugar';
 
 export const AreaFilter = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  margin-bottom: 30px;
 `;
 
-export const SugarList = styled.ul`
+export const SweetList = styled.ul`
   margin-top: 30px;
   font-size: 0;
   white-space: nowrap;
 `;
 
-export const SugarItem = styled.li`
+export const SweetItem = styled.li`
   display: inline-block;
   vertical-align: top;
   & + & {
@@ -23,8 +22,8 @@ export const SugarItem = styled.li`
   }
 `;
 
-export const SugarButton = styled.a.attrs({ href: '#', role: 'button' })<{
-  sugar: Sugar;
+export const SweetButton = styled.a.attrs({ href: '#', role: 'button' })<{
+  sweetPercent: SweetPercent;
 }>`
   display: block;
   height: 42px;
@@ -35,12 +34,12 @@ export const SugarButton = styled.a.attrs({ href: '#', role: 'button' })<{
   font-size: 16px;
   line-height: 16px;
   background-color: ${painter.basic.white};
-  color: ${(props) => painter.secondary[props.sugar](props)};
+  color: ${(props) => painter.secondary[props.sweetPercent](props)};
   ${(props) =>
     props['aria-selected'] &&
     `
-  border-color: ${painter.secondary[props.sugar](props)};
-  background-color: ${painter.secondary[props.sugar](props)};
+  border-color: ${painter.secondary[props.sweetPercent](props)};
+  background-color: ${painter.secondary[props.sweetPercent](props)};
   color: ${painter.basic.white(props)};
   `}
 `;

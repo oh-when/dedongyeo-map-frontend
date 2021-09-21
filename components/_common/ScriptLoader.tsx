@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 
 type Props = {
   src: string;
-  blocker: () => Promise<void>;
+  blocker?: () => Promise<void>;
   children: ({ isScriptLoaded: boolean }) => ReactElement;
 };
 

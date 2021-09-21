@@ -1,6 +1,20 @@
 import type { DefaultTheme } from 'styled-components';
+import { SweetPercent } from '~/constants/stickers';
+
+const deviceSizes = {
+  mobile: '375px',
+  tablet: '1500px',
+  laptop: '1706px',
+};
+
+const device = {
+  mobile: `screen and (max-width: ${deviceSizes.mobile})`,
+  tablet: `screen and (max-width: ${deviceSizes.tablet})`,
+  laptop: `screen and (max-width: ${deviceSizes.laptop})`,
+};
 
 const theme: DefaultTheme = {
+  device,
   primary: {
     basic: '#FD476D',
     light: '#FE91A7',
@@ -8,11 +22,11 @@ const theme: DefaultTheme = {
   },
   secondary: {
     all: '#343A40',
-    sugar0: '#449AFF',
-    sugar30: '#4CE5B7',
-    sugar50: '#FFCF52',
-    sugar70: '#FF845E',
-    sugar100: '#9971FF',
+    [SweetPercent.$0]: '#449AFF',
+    [SweetPercent.$30]: '#4CE5B7',
+    [SweetPercent.$50]: '#FFCF52',
+    [SweetPercent.$70]: '#FF845E',
+    [SweetPercent.$100]: '#9971FF',
   },
   basic: {
     black: '#000',
