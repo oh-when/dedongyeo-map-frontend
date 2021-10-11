@@ -40,10 +40,6 @@ const GET_MAP_SPOTS = gql`
         distance
         x
         y
-        groupedSticker {
-          sticker_index
-          total_count
-        }
         is_custom
         is_custom_share
       }
@@ -89,11 +85,17 @@ const getLocation = () => {
 const MapBoxArea: React.FC = () => {
   // const [map, setMap] = useState(null);
   // const mapContainer = useRef(null);
-  const [getMapSpots, { loading, data, called }] = useLazyQuery(GET_MAP_SPOTS);
+  const [getMapSpots, { loading, data, called, error: error2 }] =
+    useLazyQuery(GET_MAP_SPOTS);
   const [mapSpots, setMapSpots] = useMapSpotsState();
   const [currentPosition, setCurrentPosition] = useCurrentPositionState();
   const isCustomSpotFlag = useIsCustomSpotFlag();
-  const [state, setState] = useState({
+  if (error2) console.log(error2);
+  const [state, setState] = useState<{
+    zoom: [number];
+    center: [number, number];
+    routes: number[];
+  }>({
     zoom: [12],
     center: [127.01168879703, 37.5570641564289],
     routes: [],
@@ -197,42 +199,44 @@ const MapBoxArea: React.FC = () => {
         }}
         onClick={handleClickMap}
       >
-        {mapSpots &&
-          mapSpots.map((spot, idx) => {
-            return (
-              <>
-                {idx === spotInfoModalIdx ? (
+        <>
+          {mapSpots &&
+            mapSpots.map((spot, idx) => {
+              return (
+                <>
+                  {idx === spotInfoModalIdx ? (
+                    <Marker
+                      anchor="bottom"
+                      coordinates={[spot.x, spot.y + 0.0005]}
+                      key={`modal-${spot._id}`}
+                      onClick={() => markerClickHandler(idx)}
+                      style={{ zIndex: 10 }}
+                    >
+                      <SpotInfoModal spot={spot} />
+                    </Marker>
+                  ) : null}
                   <Marker
-                    anchor="bottom"
-                    coordinates={[spot.x, spot.y + 0.0005]}
-                    key={`modal-${spot._id}`}
+                    anchor="center"
+                    coordinates={[spot.x, spot.y]}
+                    key={`mk-${spot._id}`}
                     onClick={() => markerClickHandler(idx)}
-                    style={{ zIndex: 10 }}
                   >
-                    <SpotInfoModal spot={spot} />
+                    <SpotItem spot={spot} />
                   </Marker>
-                ) : null}
-                <Marker
-                  anchor="center"
-                  coordinates={[spot.x, spot.y]}
-                  key={`mk-${spot._id}`}
-                  onClick={() => markerClickHandler(idx)}
-                >
-                  <SpotItem spot={spot} />
-                </Marker>
+                </>
+              );
+            })}
+          {isCreateCustomSpot && (
+            <Marker anchor="center" coordinates={createCustomSpotPos}>
+              <>
+                <CustomSpotForm
+                  closeHandler={closeHandler}
+                  coordinates={createCustomSpotPos}
+                />
               </>
-            );
-          })}
-        {isCreateCustomSpot && (
-          <Marker anchor="center" coordinates={createCustomSpotPos}>
-            <>
-              <CustomSpotForm
-                closeHandler={closeHandler}
-                coordinates={createCustomSpotPos}
-              />
-            </>
-          </Marker>
-        )}
+            </Marker>
+          )}
+        </>
       </CommonMap>
       {/*<$.MapArea*/}
       {/*  // onClick={handleClickMap}*/}
