@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import StickerListItem from "~/components/Home/StickerList/StickerListItem";
-
+import Pagination from './Pagination';
 
 const example_data = [
     {
@@ -47,12 +47,15 @@ const example_data = [
 
 
 const StickerListMenu_0_All: React.FC = () => {
+
+    const [currentPage, setCurrentPage] = useState(1);
+
     return(
-        <div>
+        <div style={{marginTop:15}}>
             <span style={{color:'darkgray', fontSize:15, marginLeft:15}}>전체 </span>
             <span style={{color:'#FD476D', fontWeight:'bold', fontSize:15}}>30</span>
             {/* List Items*/}
-            <div style={{marginLeft:25, marginRight:25, marginTop:20}}>
+            <div style={{marginLeft:25, marginRight:25, marginTop:25}}>
                 {/* sticker list content goes here */}
                 {example_data.map(({stickerImgSrc, placeName, placeCategory, sweetnessRate, visitWith, visitDate})=>
                     (
@@ -69,6 +72,7 @@ const StickerListMenu_0_All: React.FC = () => {
                 {/* 한 페이지에 네개씩..? */}
             </div>
             {/* TO DO : implement pagination */}
+            <Pagination postsPerPage={5} totalPosts={25} paginate={setCurrentPage} currentPage={currentPage}/>
         </div>
     )
 }

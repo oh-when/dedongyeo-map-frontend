@@ -33,7 +33,7 @@ const StickerListItem: React.FC<StickerListItemProps> = (props) => {
                 </div>
 
             </div>
-            <div style={{marginTop:5, marginBottom:5}}>
+            <div style={{marginTop:2, marginBottom:5}}>
               <span style={{fontSize:13.5, color:'black'}}>
                   당도 {props.sweetnessRate}% · {props.visitWith} · {props.visitDate}
               </span>
