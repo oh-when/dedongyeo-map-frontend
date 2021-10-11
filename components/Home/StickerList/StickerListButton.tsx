@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as $ from './StickerListView';
-import {StickerListModalContainer} from "./StickerListView";
+import StickerListModal from './StickerListModal';
 
 const buttons = [
     { id: 'FAB_Spotlist_Unclicked.png'},
@@ -29,27 +29,29 @@ const StickerListButton: React.FC = () => {
 
 
     return (
+        <>
         <$.MainStickerList>
-      {activated ?
-                <$.StickerListBtn
-                    src={buttons[1].id}
-                    onClick={(e) => handleClickButton(e, buttons[1].id)}
-                ></$.StickerListBtn>
-          :
-                <$.StickerListBtn
-                    src={buttons[0].id}
-                    onClick={(e) => handleClickButton(e, buttons[0].id)}
-                ></$.StickerListBtn>
-      }
-      {modalVisible?
-          <$.StickerListModalContainer>
-            <span>HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello</span>
-              {/*Sticker List Modal Content goes here*/}
-          </$.StickerListModalContainer>
-          :
-          <></>
-      }
+          {activated ?
+                    <$.StickerListBtn
+                        src={buttons[1].id}
+                        onClick={(e) => handleClickButton(e, buttons[1].id)}
+                    ></$.StickerListBtn>
+              :
+                    <$.StickerListBtn
+                        src={buttons[0].id}
+                        onClick={(e) => handleClickButton(e, buttons[0].id)}
+                    ></$.StickerListBtn>
+          }
         </$.MainStickerList>
+        {modalVisible?
+            <$.StickerListModalContainer>
+                {/*Sticker List Modal Content goes here*/}
+                <StickerListModal/>
+            </$.StickerListModalContainer>
+            :
+            <></>
+        }
+        </>
     );
 };
 
