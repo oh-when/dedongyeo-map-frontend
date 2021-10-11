@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as $ from './StickerListView';
+import {StickerListModalContainer} from "./StickerListView";
 
 const buttons = [
     { id: 'FAB_Spotlist_Unclicked.png'},
@@ -9,6 +10,7 @@ const buttons = [
 const StickerListButton: React.FC = () => {
     
     const [activated, setActivated] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     
     const handleClickButton = (e: React.MouseEvent, id: string) => {
         e.preventDefault();
@@ -16,10 +18,12 @@ const StickerListButton: React.FC = () => {
             setActivated(true);
             // TO-DO
             // also make Sticker List pop up
+            setModalVisible(true);
         } else {
             setActivated(false);
             // TO-DO
             // also make Sticker List disappear
+            setModalVisible(false);
         }
     };
 
@@ -36,6 +40,14 @@ const StickerListButton: React.FC = () => {
                     src={buttons[0].id}
                     onClick={(e) => handleClickButton(e, buttons[0].id)}
                 ></$.StickerListBtn>
+      }
+      {modalVisible?
+          <$.StickerListModalContainer>
+            <span>HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello</span>
+              {/*Sticker List Modal Content goes here*/}
+          </$.StickerListModalContainer>
+          :
+          <></>
       }
         </$.MainStickerList>
     );

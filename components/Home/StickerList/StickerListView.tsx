@@ -10,6 +10,20 @@ export const MainStickerList = styled.div`
   z-index: 5;
 `;
 
+export const StickerListModalContainer = styled.div`
+  position: absolute;
+  top: 90px;
+  right: 15px;
+  z-index: 4;
+  width: 400px,
+  height: 600px;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 20px;
+  padding: 0 5px;
+`;
+
 export const StickerListDropDownBtn = styled.img.attrs({
   src: '/FAB.png',
 })`
