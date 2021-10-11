@@ -1,32 +1,33 @@
 import React, { useState } from 'react';
 import * as $ from './StickerListView';
-import {StickerListBtnsContainer, StickerListMenuButtonFocused, StickerListTitleText} from "./StickerListView";
+import StickerListMenu_0_All from "~/components/Home/StickerList/MenuContent/StickerListMenu_0_All";
+import StickerListMenu_1_Official from "~/components/Home/StickerList/MenuContent/StickerListMenu_1_Official";
+import StickerListMenu_2_Custom from "~/components/Home/StickerList/MenuContent/StickerListMenu_2_Custom";
+import StickerListMenu_3_MyCustom from "~/components/Home/StickerList/MenuContent/StickerListMenu_3_MyCustom";
+
+
 
 
 const content = [
     {
         tab: "All",
-        icon_src: "",
         content:
-            "컴퓨팅에서 리액트는 자바스크립트 라이브러리의 하나로서 사용자 인터페이스를 만들기 위해 사용된다. 페이스북과 개별 개발자 및 기업들 공동체에 의해 유지보수된다. 리액트는 싱글 페이지나 모바일 애플리케이션의 개발 시 토대로 사용될 수 있다."
+        <StickerListMenu_0_All/>
     },
     {
         tab: "공식",
-        icon_src: "",
         content:
-            "Node.js는 확장성 있는 네트워크 애플리케이션 개발에 사용되는 소프트웨어 플랫폼이다. 작성 언어로 자바스크립트를 활용하며 Non-blocking I/O와 단일 스레드 이벤트 루프를 통한 높은 처리 성능을 가지고 있다"
+        <StickerListMenu_1_Official/>
     },
     {
         tab: "커스텀",
-        icon_src: "",
         content:
-            "자바스크립트는 객체 기반의 스크립트 프로그래밍 언어이다. 이 언어는 웹 브라우저 내에서 주로 사용하며, 다른 응용 프로그램의 내장 객체에도 접근할 수 있는 기능을 가지고 있다. 또한 Node.js와 같은 런타임 환경과 같이 서버 사이드 네트워크 프로그래밍에도 사용되고 있다."
+        <StickerListMenu_2_Custom/>
     },
     {
         tab: "마이 커스텀",
-        icon_src: "",
         content:
-            "Node.js는 확장성 있는 네트워크 애플리케이션 개발에 사용되는 소프트웨어 플랫폼이다. 작성 언어로 자바스크립트를 활용하며 Non-blocking I/O와 단일 스레드 이벤트 루프를 통한 높은 처리 성능을 가지고 있다"
+        <StickerListMenu_3_MyCustom/>
     },
 ];
 
@@ -80,8 +81,6 @@ const StickerListModal: React.FC = () => {
                     </button>
                 ))}
             </$.StickerListBtnsContainer>
-            <br />
-            <br />
             {/* 각 메뉴 선택에 따른 서로다른 modal content display */}
             {contentItem.content}
         </div>
