@@ -25,8 +25,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     query: GET_COURSES_BY_DATE,
     variables: {
       searchCourseInput: {
-        // startAt: 1622505600000,
-        // endAt: 1625097600000,
+        startAt: 1622505600000,
+        endAt: 1625097600000,
         isShare: true,
       },
     },

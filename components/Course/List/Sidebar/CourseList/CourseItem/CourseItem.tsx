@@ -18,7 +18,8 @@ export default function CourseItem({
   isSelected,
 }: Props): JSX.Element {
   const openPopup = usePopupOpener();
-  const unixTime = Math.floor(course.startAt / 1000)
+  // const unixTime = Math.floor(course.startAt / 1000);
+  const unixTime = Math.floor(1000 / 1000); // for tmp
   const dateStamp = formatDate(unixTime, true);
 
   const handleClickLink = (e: React.MouseEvent) => {

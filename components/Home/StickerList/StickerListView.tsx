@@ -2,21 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import painter from '~/styles/theme/painter';
 
-export const MainMood = styled.div`
+export const MainStickerList = styled.div`
   display: inline-block;
   position: absolute;
   top: 0px;
-  right: 90px;
+  right: 15px;
   z-index: 5;
 `;
 
-export const MoodDropDownBtn = styled.img.attrs({
+export const StickerListDropDownBtn = styled.img.attrs({
   src: '/FAB.png',
 })`
   cursor: pointer;
 `;
 
-export const MoodBtnsContainer = styled.div`
+export const StickerListBtnsContainer = styled.div`
   background-color: white;
   width: 230px;
   height: 40px;
@@ -35,7 +35,7 @@ export const MoodBtnsContainer = styled.div`
     `}
 `;
 
-export const MoodButton = styled.button`
+export const StickerListButton = styled.button`
   border: none;
   outline: none;
   padding: 8px 16px;
@@ -53,7 +53,7 @@ export const MoodButton = styled.button`
   }
 `;
 
-export const MoodBtn = styled.img.attrs((props) => ({
+export const StickerListBtn = styled.img.attrs((props) => ({
   src: props.src,
 }))`
   cursor: pointer;
