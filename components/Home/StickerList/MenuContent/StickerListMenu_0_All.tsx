@@ -1,54 +1,74 @@
 import React, { useState } from 'react';
+import StickerListItem from "~/components/Home/StickerList/StickerListItem";
 
 
-const stickerListItem = () => {
-    return(
-      <div style={{display:'flex', flexDirection:'column', marginTop:10}}>
-          <img src={'stickers/sticker_30_1.svg'} style={{width:32, height:32, marginBottom:8,}}/>
-          <div style={{display:'flex', flexDirection:'row', justifyContent: 'space-between', alignItems:'center'}}>
-
-              <div style={{display:'flex', flexDirection:'row'}}>
-                  <span style={{fontSize:15, fontWeight:'bold', color:'black'}}>블루보틀</span>
-                  <span style={{fontSize:15, fontWeight:'bold', color:'lightgray', marginLeft:10}}>카페</span>
-              </div>
-
-              <div style={{display:'flex', flexDirection:'row'}}>
-                  <button onClick={()=>{}} style={{cursor:'pointer', marginRight:10}}>
-                      {/* 수정버튼 */}
-                      <img src={'edit_icon.png'} style={{width:22, height:22}}/>
-                  </button>
-                  <button onClick={()=>{}} style={{cursor:'pointer'}}>
-                      {/* 삭제버튼 */}
-                      <img src={'delete_icon.png'} style={{width:22, height:22}}/>
-                  </button>
-              </div>
-
-          </div>
-          <div style={{marginTop:5, marginBottom:5}}>
-              <span style={{fontSize:13.5, color:'black'}}>
-                  당도 0% · 엄마 · 2021.02.11
-              </span>
-          </div>
-          <div style={{width:'100%', height:0.5, backgroundColor:'lightgray', marginTop:10}}/>
-      </div>
-    );
-}
+const example_data = [
+    {
+        stickerImgSrc:'stickers/sticker_30_1.svg',
+        placeName:'블루보틀',
+        placeCategory:'카페',
+        sweetnessRate:30,
+        visitWith:'엄마',
+        visitDate:'2021.02.11'
+    },
+    {
+        stickerImgSrc:'stickers/sticker_50_0.svg',
+        placeName:'성수 인생샷',
+        placeCategory:'나만의 장소',
+        sweetnessRate:50,
+        visitWith:'남자친구',
+        visitDate:'2021.06.12'
+    },
+    {
+        stickerImgSrc:'stickers/sticker_100_3.svg',
+        placeName:'인생샷 골목길',
+        placeCategory:'나만의 장소',
+        sweetnessRate:100,
+        visitWith:'남자친구',
+        visitDate:'2020.04.01'
+    },
+    {
+        stickerImgSrc:'stickers/sticker_70_1.svg',
+        placeName:'비밀 휴식터',
+        placeCategory:'나만의 장소',
+        sweetnessRate:70,
+        visitWith:'동생',
+        visitDate:'2021.02.19'
+    },
+    {
+        stickerImgSrc:'stickers/sticker_0_1.svg',
+        placeName:'어니언',
+        placeCategory:'카페',
+        sweetnessRate:0,
+        visitWith:'엄마',
+        visitDate:'2021.02.11'
+    },
+]
 
 
 const StickerListMenu_0_All: React.FC = () => {
     return(
         <div>
-        <span style={{color:'darkgray', fontSize:15, marginLeft:15}}>전체 </span>
-        <span style={{color:'#FD476D', fontWeight:'bold', fontSize:15}}>30</span>
-        <div style={{marginLeft:25, marginRight:25}}>
-            <br/>
-            {/* sticker list content goes here */}
-            {stickerListItem()}
-            {stickerListItem()}
-            {stickerListItem()}
-            {stickerListItem()}
-            {/* 한 페이지에 네개씩..? */}
-        </div>
+            <span style={{color:'darkgray', fontSize:15, marginLeft:15}}>전체 </span>
+            <span style={{color:'#FD476D', fontWeight:'bold', fontSize:15}}>30</span>
+            {/* List Items*/}
+            <div style={{marginLeft:25, marginRight:25, marginTop:20}}>
+                {/* sticker list content goes here */}
+                {example_data.map(({stickerImgSrc, placeName, placeCategory, sweetnessRate, visitWith, visitDate})=>
+                    (
+                        <StickerListItem
+                            stickerImgSrc={stickerImgSrc}
+                            placeName={placeName}
+                            placeCategory={placeCategory}
+                            sweetnessRate={sweetnessRate}
+                            visitWith={visitWith}
+                            visitDate={visitDate}
+                        />
+                    )
+                )}
+                {/* 한 페이지에 네개씩..? */}
+            </div>
+            {/* TO DO : implement pagination */}
         </div>
     )
 }

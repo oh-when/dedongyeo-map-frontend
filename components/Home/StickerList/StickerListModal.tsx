@@ -47,7 +47,7 @@ const StickerListModal: React.FC = () => {
     const { contentItem, contentIndex, contentChange } = useTabs(0, content);
 
     return(
-        <div style={{width:400, height:700}}>
+        <div style={{width:400, height:800}}>
             <br/>
             <$.StickerListTitleText>스티커 리스트</$.StickerListTitleText>
             <$.StickerListBtnsContainer>

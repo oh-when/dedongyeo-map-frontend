@@ -16,7 +16,7 @@ export const StickerListModalContainer = styled.div`
   right: 30px;
   z-index: 4;
   width: 400px,
-  height: 700px;
+  height: 800px;
   background-color: white;
   display: flex;
   justify-content: space-around;
