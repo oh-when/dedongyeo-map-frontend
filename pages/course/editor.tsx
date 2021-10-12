@@ -19,9 +19,12 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const client = initializeApollo();
-  const { data } = await serverSideQuery<GQL.Query.Stickers.Data>({
-    query: GET_CANDIDATE_STICKERS,
-  }, req);
+  const { data } = await serverSideQuery<GQL.Query.Stickers.Data>(
+    {
+      query: GET_CANDIDATE_STICKERS,
+    },
+    req
+  );
   const candidates = (data && data.stickers) || [];
 
   addApolloState(client, {

@@ -5,7 +5,7 @@ import Storage from '~/lib/storage';
 import { gql, useLazyQuery, useReactiveVar } from '@apollo/client';
 import {
   useCurrentPositionState,
-  useIsCustomSpotSetting,
+  isCustomSpotFlag,
   useMapSpotsState,
 } from '~/lib/apollo/vars/home';
 import SpotOverlay from './SpotOverlay';
@@ -81,7 +81,7 @@ const MapArea: React.FC = () => {
   >(GET_MAP_SPOTS);
   const [mapSpots, setMapSpots] = useMapSpotsState();
   const [currentPosition, setCurrentPosition] = useCurrentPositionState();
-  const isCustomSpotSetting = useReactiveVar(useIsCustomSpotSetting);
+  const isCustomSpotSetting = useReactiveVar(isCustomSpotFlag);
 
   // 카카오에서 지원하는 오버레이 클릭 방식이
   // 아키텍쳐나 OOP 상 좋지 않은 방식이라서, 직접 event delegation으로 구현하는게 나을듯 함.

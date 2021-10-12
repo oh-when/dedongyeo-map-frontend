@@ -138,13 +138,13 @@ declare namespace GQL {
     sweet_percent: number;
     is_used: boolean;
     spot?: Spot;
-  }
+  };
   export interface Course {
     startAt: number;
     endAt: number;
     partners: string[];
     spot: Spot;
-  };
+  }
   export type UpdateCustomSpotInput = {
     place_name?: string;
     x?: number;
@@ -249,6 +249,7 @@ declare namespace GQL {
         total_page_count: number;
       };
     };
+  }
   export namespace Mutation {
     export namespace RemoveSpot {
       export type Variables = {

@@ -11,26 +11,35 @@ import { changeCurrentCourses } from '~/components/Course/List/Sidebar/CourseLis
 import Popup from '~/components/Popup';
 import { useEffect } from 'react';
 import { serverSideQuery } from '~/lib/apollo/fetch';
+import { getTodayTimeRange } from '~/util/time';
 
 type Props = {
   courses: GQL.Course[];
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const now = new Date();
+  const [startAt, endAt] = getTodayTimeRange(
+    now.getFullYear(),
+    now.getMonth() + 1,
+    now.getDate()
+  );
   const client = initializeApollo();
   const { data } = await serverSideQuery<
     GQL.Query.Courses.Data,
     GQL.Query.Courses.Variables
-  >({
-    query: GET_COURSES_BY_DATE,
-    variables: {
-      searchCourseInput: {
-        // startAt: 1622505600000,
-        // endAt: 1625097600000,
-        isShare: true,
+  >(
+    {
+      query: GET_COURSES_BY_DATE,
+      variables: {
+        searchCourseInput: {
+          startAt,
+          endAt,
+        },
       },
     },
-  }, req);
+    req
+  );
   const courses = (data && data.courses) || [];
 
   addApolloState(client, {
@@ -42,10 +51,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 const CourseListPage: React.FC<Props> = ({ courses }) => {
-
   useEffect(() => {
     changeCurrentCourses(courses);
-  }, [courses])
+  }, [courses]);
 
   return (
     <>

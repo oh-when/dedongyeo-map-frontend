@@ -50,7 +50,7 @@ export function useCursorState(): [Cursor, (newCursor: Cursor) => void] {
     cursorVar(newCursor);
   };
   const dateObj = new Date(`${cursor[0]}-${cursor[1]}-${cursor[2]}`);
-  const range = Calendar.getRangeByDate(dateObj);
+  const [startAt, endAt] = Calendar.getRangeByDate(dateObj);
 
   useEffect(() => {
     client
@@ -58,9 +58,8 @@ export function useCursorState(): [Cursor, (newCursor: Cursor) => void] {
         query: GET_COURSES_BY_DATE,
         variables: {
           searchCourseInput: {
-            // startAt: range[0],
-            // endAt: range[1],
-            isShare: true
+            startAt,
+            endAt,
           },
         },
       })
