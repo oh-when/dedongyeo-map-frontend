@@ -1,7 +1,7 @@
 import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { removeMovedCandidates } from '~/components/Course/Editor/Candidates/CandidatesState';
 import { resetFormTable, formArrayVar } from './StickerForm/StickerFormState';
-import { formTitleVar } from './TextForm/TextFormState';
+import { formTitleVar, formIsShareVar } from './TextForm/TextFormState';
 import { PopupType } from '~/@types/popup.d';
 import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
 
@@ -69,6 +69,7 @@ export const useFormSubmitter = (): (() => void) => {
       .filter((sticker) => sticker !== null)
       .map((sticker) => sticker.id);
     const title = formTitleVar();
+    const isShare = formIsShareVar();
 
     removeMovedCandidates();
     resetFormTable();
@@ -77,7 +78,7 @@ export const useFormSubmitter = (): (() => void) => {
         createCourseInput: {
           stickers,
           title,
-          isShare: true,
+          isShare,
         },
       },
     });

@@ -6,8 +6,8 @@ import type { CandidateCardDTO } from '~/components/Course/Editor/Editor.d';
 export const candidatesVar = makeVar<CandidateCardDTO[]>([]);
 
 export const GET_CANDIDATE_STICKERS = gql`
-  query GetStickers {
-    stickers {
+  query GetStickers($searchStickerInput: SearchStickerInput) {
+    stickers(searchStickerInput: $searchStickerInput) {
       _id
       sticker_index
       sweet_percent
@@ -51,8 +51,13 @@ export function useCandidates(): CandidateCardDTO[] {
 
   useEffect(() => {
     client
-      .query<GQL.Query.Stickers.Data>({
+      .query<GQL.Query.Stickers.Data, GQL.Query.Stickers.Variables>({
         query: GET_CANDIDATE_STICKERS,
+        variables: {
+          searchStickerInput: {
+            is_used: false,
+          },
+        },
       })
       .then(({ data }) => {
         updateCandidates(data.stickers);

@@ -203,6 +203,11 @@ declare namespace GQL {
       };
     }
     export namespace Stickers {
+      export type Variables = {
+        searchStickerInput: {
+          is_used: boolean;
+        };
+      };
       export type Data = {
         stickers: Array<GQL.Sticker>;
       };
