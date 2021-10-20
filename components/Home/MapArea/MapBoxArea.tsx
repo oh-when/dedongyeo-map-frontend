@@ -239,10 +239,6 @@ const MapBoxArea: React.FC = () => {
           )}
         </>
       </CommonMap>
-      {/*<$.MapArea*/}
-      {/*  // onClick={handleClickMap}*/}
-      {/*  ref={(el) => (mapContainer.current = el)}*/}
-      {/*/>*/}
     </>
   );
 };

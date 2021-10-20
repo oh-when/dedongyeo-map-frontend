@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import * as $ from './CustomSpotFormView';
 import * as GeoJSON from 'geojson';
 import { gql, useApolloClient, useMutation } from '@apollo/client';
+import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
+// @ts-ignore
+import { PopupType } from '~/@types/popup.d.ts';
 
 type Props = {
   closeHandler: () => void;
@@ -35,20 +38,32 @@ const CustomSpotForm: React.FC<Props> = ({
     category: '',
     isPublic: false,
   });
+  const openPopup = usePopupOpener();
 
   const submitForm = () => {
-    createCustomSpot({
-      variables: {
-        createCustomSpotInput: {
-          category_group_name: 'FD6',
-          is_custom: true,
-          is_custom_share: customSpot.isPublic,
-          place_name: customSpot.name,
+    openPopup({
+      popupType: PopupType.SPOT_GENERATOR,
+      popupProps: {
+        place: {
+          id: 1223,
+          name: '테스트',
           x: coordinates[0],
           y: coordinates[1],
         },
       },
     });
+    // createCustomSpot({
+    //   variables: {
+    //     createCustomSpotInput: {
+    //       category_group_name: 'FD6',
+    //       is_custom: true,
+    //       is_custom_share: customSpot.isPublic,
+    //       place_name: customSpot.name,
+    //       x: coordinates[0],
+    //       y: coordinates[1],
+    //     },
+    //   },
+    // });
     closeHandler();
   };
 
