@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Sticker from '~/components/_assets/sticker/Sticker';
 import theme from '~/styles/theme';
@@ -46,12 +46,27 @@ export const DUMMY_SPOT: GQL.Spot = {
 };
 
 const SpotItem: React.FC<Props> = ({ spot = DUMMY_SPOT }) => {
+  const [stickers, setStickers] = useState([]);
+
+  useEffect(() => {
+    if (spot.stickers.length === 0)
+      setStickers([
+        {
+          _id: '609cfa7705214bea49705b7f',
+          is_used: false,
+          sticker_index: 0,
+          sweet_percent: 50,
+        },
+      ]);
+    else setStickers(spot.stickers);
+  }, [spot.stickers]);
+
   return (
     <SpotContainer className="spot-item">
       <SpotNameBalloon nameLen={spot.place_name.length}>
         {spot.place_name}
       </SpotNameBalloon>
-      {spot.stickers.slice(0, 4).map((sticker, idx) => {
+      {stickers.slice(0, 4).map((sticker, idx) => {
         return (
           <StickerContainer
             sweetPercent={sticker.sweet_percent}
@@ -65,7 +80,7 @@ const SpotItem: React.FC<Props> = ({ spot = DUMMY_SPOT }) => {
         );
       })}
       <StickerNumberContainer stickerNum={spot.stickers.slice(0, 4).length}>
-        {spot.stickers.length}
+        {Math.max(spot.stickers.length, 1)}
       </StickerNumberContainer>
     </SpotContainer>
   );
@@ -80,7 +95,7 @@ const SpotContainer = styled.div`
 const StickerContainer = styled(Sticker)<{ order: number }>`
   position: relative;
   top: 20px;
-  left: ${(props) => 40 + props.order * -40}px;
+  left: calc(50% - 30px);
   z-index: ${(props) => 10 - props.order};
 `;
 
@@ -94,8 +109,8 @@ const StickerNumberContainer = styled.div<{ stickerNum: number }>`
   width: fit-content;
   padding: 5px 8px;
   position: relative;
-  bottom: 60px;
-  left: ${(props) => 40 + props.stickerNum * 20}px;
+  bottom: 10px;
+  left: calc(50% + 30px);
   z-index: 11;
 `;
 

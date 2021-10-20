@@ -187,6 +187,7 @@ const MapBoxArea: React.FC = () => {
   const closeHandler = () => {
     setIsCreateCustomSpot(false);
   };
+  console.log(mapSpots);
   return (
     <>
       <CommonMap
