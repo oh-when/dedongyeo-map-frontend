@@ -67,7 +67,7 @@ export const useFormSubmitter = (): (() => void) => {
   return () => {
     const stickers = formArrayVar()
       .filter((sticker) => sticker !== null)
-      .map((sticker) => sticker.id);
+      .map((sticker) => sticker?.id);
     const title = formTitleVar();
 
     removeMovedCandidates();

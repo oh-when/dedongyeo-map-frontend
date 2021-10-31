@@ -24,7 +24,7 @@ function Table(props: Props): JSX.Element {
               <TableItem
                 key={
                   item?.sticker?.id
-                    ? `item-${item.sticker.id}`
+                    ? `item-${item.sticker?.id}`
                     : `col-${i}-${j}`
                 }
                 item={item}

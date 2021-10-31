@@ -7,7 +7,7 @@ import { removeStickerCard } from '~/components/Course/Editor/CourseForm/Sticker
 import { activeCandidate } from '~/components/Course/Editor/Candidates/CandidatesState';
 
 type Props = {
-  sticker: StickerCardDTO
+  sticker: StickerCardDTO;
 };
 
 export default function PopupMenu(props: Props): JSX.Element {
@@ -16,8 +16,8 @@ export default function PopupMenu(props: Props): JSX.Element {
 
   const onClickDeleteButton = (e: React.MouseEvent) => {
     e.preventDefault();
-    removeStickerCard(props.sticker.id);
-    activeCandidate(props.sticker.id);
+    removeStickerCard(props.sticker?.id);
+    activeCandidate(props.sticker?.id);
   };
 
   if (!currentSticker || props.sticker.id !== currentSticker.id) {

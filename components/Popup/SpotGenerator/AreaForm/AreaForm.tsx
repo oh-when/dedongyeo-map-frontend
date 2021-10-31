@@ -45,11 +45,15 @@ const AreaForm: React.FC<Props> = ({ place }) => {
 
   const handleClickSubmit = (e: React.MouseEvent): void => {
     e.preventDefault();
-    createSticker(place);
-    closePopup();
-    resetForm();
+    // 스티커, 당도, 사람, 날짜값이 다 있는지 체크
+    if (!formPartner || !formDate) {
+      alert('form을 다 채워주세요.');
+    } else {
+      createSticker(place);
+      closePopup();
+      resetForm();
+    }
   };
-
   return (
     <$.AreaForm>
       <$.FieldSet>

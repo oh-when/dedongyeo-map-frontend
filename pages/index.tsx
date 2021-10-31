@@ -9,8 +9,6 @@ import type { GetStaticProps } from 'next';
 import { usePopupOpener, usePopupCloser } from '../lib/apollo/hooks/usePopup';
 import { PopupType } from '~/@types/popup.d';
 import { useSession } from 'next-auth/client';
-import { GET_COURSES_BY_DATE } from '~/components/Course/List/Sidebar/Calendar/CalendarState';
-import { useApolloClient } from '@apollo/client';
 
 export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
@@ -59,25 +57,25 @@ const HomePage: React.FC = () => {
   );
 };
 
-function tempRequest() {
-  const client = useApolloClient();
-
-  React.useEffect(() => {
-    client
-      .query<GQL.Query.Courses.Data, GQL.Query.Courses.Variables>({
-        query: GET_COURSES_BY_DATE,
-        variables: {
-          searchCourseInput: {
-            // startAt: range[0],
-            // endAt: range[1],
-            isShare: true,
-          },
-        },
-      })
-      .then(({ data }) => {
-        console.log('요청 완료');
-      });
-  }, []);
-}
+// function tempRequest() {
+//   const client = useApolloClient();
+//
+//   React.useEffect(() => {
+//     client
+//       .query<GQL.Query.Courses.Data, GQL.Query.Courses.Variables>({
+//         query: GET_COURSES_BY_DATE,
+//         variables: {
+//           searchCourseInput: {
+//             // startAt: range[0],
+//             // endAt: range[1],
+//             isShare: true,
+//           },
+//         },
+//       })
+//       .then(({ data }) => {
+//         console.log('요청 완료');
+//       });
+//   }, []);
+// }
 
 export default HomePage;

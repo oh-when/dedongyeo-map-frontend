@@ -1,7 +1,6 @@
 import React from 'react';
-import Image from 'next/image';
 import styled from 'styled-components';
-import { SweetPercent, StickerIndex } from '~/constants/stickers';
+import { StickerIndex, SweetPercent } from '~/constants/stickers';
 
 type StickerProps = {
   sweetPercent: SweetPercent;
@@ -11,12 +10,13 @@ type StickerProps = {
   height?: number;
 };
 
-const $Image = styled(Image)`
+const $Image = styled.img`
   display: inline-block;
   width: ${(props) => props.width || 120}px;
   height: ${(props) => props.height || 120}px;
   border-radius: 50%;
   vertical-align: top;
+  top: 40px;
   user-drag: none;
   user-select: none;
   -moz-user-select: none;

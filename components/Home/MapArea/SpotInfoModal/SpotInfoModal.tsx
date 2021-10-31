@@ -1,17 +1,30 @@
 import React from 'react';
 import * as $ from './SpotInfoModalView';
-import {
-  ContainerColumn,
-  Empty,
-  IconContainer,
-  SettingIcon,
-} from './SpotInfoModalView';
+import { Empty } from './SpotInfoModalView';
+// @ts-ignore
+import { PopupType } from '~/@types/popup.d.ts';
+import { usePopupOpener } from '~/lib/apollo/hooks/usePopup';
 
 type Props = {
   spot?: GQL.Spot;
 };
 
 const SpotInfoModal: React.FC<Props> = ({ spot }: Props) => {
+  const openPopup = usePopupOpener();
+
+  const stickerAddHandler = () => {
+    openPopup({
+      popupType: PopupType.SPOT_GENERATOR,
+      popupProps: {
+        place: {
+          id: spot._id,
+          name: spot.place_name,
+          x: spot.x,
+          y: spot.y,
+        },
+      },
+    });
+  };
   return (
     <$.ModalWrapper>
       <$.ContainerRow justifyContent="space-between">
@@ -53,7 +66,7 @@ const SpotInfoModal: React.FC<Props> = ({ spot }: Props) => {
           <span>0</span>
         </$.IconContainer>
       </$.SweetContainer>
-      <$.SubmitButton>스티커 붙이기</$.SubmitButton>
+      <$.SubmitButton onClick={stickerAddHandler}>스티커 붙이기</$.SubmitButton>
     </$.ModalWrapper>
   );
 };

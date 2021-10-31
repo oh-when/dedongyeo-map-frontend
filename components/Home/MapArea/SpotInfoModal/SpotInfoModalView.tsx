@@ -16,6 +16,8 @@ export const ModalWrapper = styled.div`
 
   filter: drop-shadow(0px 2px 20px rgba(73, 80, 87, 0.2));
 
+  cursor: default;
+
   h1 {
     font-size: 24px;
     color: #343a40;

@@ -25,7 +25,7 @@ export function addPlaceholder(): void {
 export function replacePlaceholder(order: number): void {
   const dropped: CandidateCardDTO = getMovingCandidate();
   const stickerCardDTO: StickerCardDTO = {
-    id: dropped.id,
+    id: dropped?.id,
     spotName: dropped.spotName,
     sweetPercent: dropped.sweetPercent,
     stickerIndex: dropped.stickerIndex,
@@ -38,7 +38,7 @@ export function replacePlaceholder(order: number): void {
 
   nextFormArray.splice(index, 1, stickerCardDTO);
   formArrayVar(nextFormArray);
-  setCandidateStatus(dropped.id, CandidateCardStatus.Moved);
+  setCandidateStatus(dropped?.id, CandidateCardStatus.Moved);
 }
 
 export function resetFormTable(): void {
@@ -46,7 +46,9 @@ export function resetFormTable(): void {
 }
 
 export function removeStickerCard(stickerId: string): void {
-  const nextFormArray = formArrayVar().filter(card => !card || card.id !== stickerId);
+  const nextFormArray = formArrayVar().filter(
+    (card) => !card || card.id !== stickerId
+  );
 
   if (nextFormArray.length === 0) nextFormArray.push(null);
   formArrayVar(nextFormArray);

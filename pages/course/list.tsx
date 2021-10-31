@@ -21,16 +21,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { data } = await serverSideQuery<
     GQL.Query.Courses.Data,
     GQL.Query.Courses.Variables
-  >({
-    query: GET_COURSES_BY_DATE,
-    variables: {
-      searchCourseInput: {
-        // startAt: 1622505600000,
-        // endAt: 1625097600000,
-        isShare: true,
+  >(
+    {
+      query: GET_COURSES_BY_DATE,
+      variables: {
+        searchCourseInput: {
+          // startAt: 1622505600000,
+          // endAt: 1625097600000,
+          isShare: true,
+        },
       },
     },
-  }, req);
+    req
+  );
   const courses = (data && data.courses) || [];
 
   addApolloState(client, {
@@ -42,10 +45,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 const CourseListPage: React.FC<Props> = ({ courses }) => {
-
   useEffect(() => {
     changeCurrentCourses(courses);
-  }, [courses])
+  }, [courses]);
 
   return (
     <>
