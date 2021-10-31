@@ -19,7 +19,6 @@ const AreaSticker: React.FC = () => {
   const [sticker, setSticker] = useFormStickerState();
   const firstStickers = stickerIndexes.slice(0, 6);
   const secondStickers = stickerIndexes.slice(6);
-
   const handleClickSticker = (
     e: React.MouseEvent,
     stickerInput: StickerIndex
@@ -58,6 +57,7 @@ const AreaSticker: React.FC = () => {
               <$.StickerItem key={`sf-${sweet}-${stickerIndex}`}>
                 <$.StickerButton
                   onClick={(e) => handleClickSticker(e, stickerIndex)}
+                  aria-selected={sticker === stickerIndex}
                 >
                   <$.Sticker
                     sweetPercent={sweet}
@@ -76,6 +76,7 @@ const AreaSticker: React.FC = () => {
               <$.StickerItem key={`sf-${sweet}-${stickerIndex}`}>
                 <$.StickerButton
                   onClick={(e) => handleClickSticker(e, stickerIndex)}
+                  aria-selected={sticker === stickerIndex}
                 >
                   <$.Sticker
                     sweetPercent={sweet}
