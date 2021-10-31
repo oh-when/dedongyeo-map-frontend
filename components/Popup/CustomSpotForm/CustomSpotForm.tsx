@@ -45,7 +45,7 @@ const CustomSpotForm: React.FC<Props> = ({
       popupType: PopupType.SPOT_GENERATOR,
       popupProps: {
         place: {
-          id: 1223,
+          id: '1223',
           name: '테스트',
           x: coordinates[0],
           y: coordinates[1],

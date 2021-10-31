@@ -77,7 +77,7 @@ export const useCreateSticker = (): CreateSticker => {
     request({
       variables: {
         createStickerInput: {
-          place_id: place.id,
+          place_id: place?.id,
           place_name: place.name,
           x: place.x,
           y: place.y,
